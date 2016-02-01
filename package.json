@@ -1,5 +1,6 @@
 {
   "name": "ig_markerfactory",
+  "main": "markerfactory",
   "jspm": {
     "format": "amd",
     "directories": {
