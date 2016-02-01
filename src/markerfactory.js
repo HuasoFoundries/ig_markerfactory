@@ -1,9 +1,9 @@
 /* global google:false  */
 
-(function(root, factory) {
+(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD & RequireJS
-        define(["underscore"], function(_) {
+        define(["underscore"], function (_) {
             return factory(_);
         });
     } else if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
@@ -14,7 +14,7 @@
         root.MarkerFactory = factory(root._);
     }
 
-}(this, function(_) {
+}(this, function (_) {
     'use strict';
     var MarkerFactory = {};
     MarkerFactory._ = _;
@@ -26,20 +26,20 @@
         a: 1
     };
 
-    var getColor = function(val, range) {
+    var getColor = function (val, range) {
         defaults.h = Math.floor((360 / range) * val);
         return "hsla(" + defaults.h + "," + defaults.s + "%," + defaults.l + "%," + defaults.a + ")";
     };
 
-    var getColor1 = function() {
+    var getColor1 = function () {
         return "hsla(" + defaults.h + "," + defaults.s + "%," + (defaults.l - 30) + "%," + defaults.a + ")";
     };
 
-    var parseHalf = function(foo) {
+    var parseHalf = function (foo) {
         return parseInt(foo / 2, 10);
     };
 
-    var darken = function(stringcolor) {
+    var darken = function (stringcolor) {
         var darkercolor = {};
         if (stringcolor.fillColor.indexOf('rgb') !== -1) {
             darkercolor.r = parseHalf(stringcolor.r);
@@ -56,7 +56,7 @@
         return darkercolor;
     };
 
-    var parseHex = function(hexstring) {
+    var parseHex = function (hexstring) {
         var hexcolor = {
             hex: hexstring
         };
@@ -72,7 +72,7 @@
         return hexcolor;
     };
 
-    var parseHSL = function(hslstring) {
+    var parseHSL = function (hslstring) {
         var hslcolor = {},
             hslparts = _.compact(hslstring.split(/hsla?\(|\,|\)|\%/));
         hslcolor.h = parseFloat(hslparts[0], 10);
@@ -85,7 +85,7 @@
         return hslcolor;
     };
 
-    var parseRGB = function(rgbstring) {
+    var parseRGB = function (rgbstring) {
         var rgbcolor = {},
             rgbparts = _.compact(rgbstring.split(/rgba?\(|\,|\)/));
 
@@ -100,7 +100,7 @@
     };
 
 
-    var rgbToHSL = function(r, g, b, a) {
+    var rgbToHSL = function (r, g, b, a) {
         r /= 255;
         g /= 255;
         b /= 255;
@@ -114,18 +114,18 @@
             var d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
             switch (max) {
-                case r:
-                    h = (g - b) / d + (g < b ? 6 : 0);
-                    break;
-                case g:
-                    h = (b - r) / d + 2;
-                    break;
-                case b:
-                    h = (r - g) / d + 4;
-                    break;
-                default:
-                    h = 0;
-                    break;
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+            default:
+                h = 0;
+                break;
             }
 
             h /= 6;
@@ -146,7 +146,7 @@
         return hsl;
     };
 
-    var hslToRGB = function(h, s, l, a) {
+    var hslToRGB = function (h, s, l, a) {
         var r, g, b;
 
         h = parseFloat(h, 10) / 360;
@@ -156,7 +156,7 @@
         if (s === 0) {
             r = g = b = l; // achromatic
         } else {
-            var hue2rgb = function(p, q, t) {
+            var hue2rgb = function (p, q, t) {
                 if (t < 0) {
                     t += 1;
                 }
@@ -203,7 +203,7 @@
 
     };
 
-    var toDecColor = function(stringcolor) {
+    var toDecColor = function (stringcolor) {
         var parsedcolor = {};
         if (!stringcolor) {
             parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
@@ -219,8 +219,8 @@
     };
 
 
-    var createFatMarkerIcon = function(theoptions) {
-        var generateFatCanvas = function(options) {
+    var createFatMarkerIcon = function (theoptions) {
+        var generateFatCanvas = function (options) {
             var canvas = document.createElement("canvas");
 
             canvas.width = 42;
@@ -326,8 +326,8 @@
     };
 
 
-    var createMarkerIcon = function(theoptions) {
-        var generateMarkerCanvas = function(options) {
+    var createMarkerIcon = function (theoptions) {
+        var generateMarkerCanvas = function (options) {
             var canvas = document.createElement("canvas");
             var ancho = 30,
                 alto = 40;
@@ -428,7 +428,7 @@
     };
 
 
-    MarkerFactory.parseColorString = function(somecolor) {
+    MarkerFactory.parseColorString = function (somecolor) {
         var parsedcolor = {};
 
         if (somecolor.indexOf('hsl') !== -1) {
@@ -454,10 +454,10 @@
         return parsedcolor;
     };
 
-    MarkerFactory.autoIcon = function(options) {
+    MarkerFactory.autoIcon = function (options) {
         var element = {};
 
-        if (typeof(options) === 'object') {
+        if (typeof (options) === 'object') {
             _.extend(element, options);
 
             _.defaults(element, {
