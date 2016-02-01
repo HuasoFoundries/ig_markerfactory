@@ -1,12 +1,12 @@
 {
-	"name": "ig_markerfactory",
-	"jspm": {
-		"format": "amd",
-		"directories": {
-			"lib": "src"
-		},
-		"dependencies": {
-			"underscore": "npm:underscore@^1.8.3"
-		}
-	}
+  "name": "ig_markerfactory",
+  "jspm": {
+    "format": "amd",
+    "directories": {
+      "lib": "src"
+    },
+    "dependencies": {
+      "underscore": "npm:lodash@^4.1.0"
+    }
+  }
 }
