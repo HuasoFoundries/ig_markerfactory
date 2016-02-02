@@ -7,7 +7,7 @@
       "lib": "src"
     },
     "dependencies": {
-      "underscore": "npm:lodash@^4.1.0"
+      "underscore": "npm:lodash@^3"
     }
   }
 }
