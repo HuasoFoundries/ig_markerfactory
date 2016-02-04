@@ -428,6 +428,75 @@
     };
 
 
+
+    var createTransparentMarkerIcon = function (options) {
+        var generateTransparentCanvas = function (options) {
+            var canvas = document.createElement("canvas");
+
+            canvas.width = 54;
+            canvas.height = 48;
+
+
+
+
+            var context = canvas.getContext("2d");
+
+
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
+                color0, color1;
+
+            if (options.index !== undefined && options.count > 0) {
+                color0 = getColor(options.index, options.count);
+                color1 = getColor1();
+            } else {
+                var deccolor = toDecColor(options.color);
+                color0 = deccolor.fillColor;
+                color1 = darken(deccolor).fillColor;
+            }
+
+            grad.addColorStop(0, color0);
+            grad.addColorStop(1, color1);
+
+            context.beginPath();
+            // Render Label
+            //context.font = "11pt Arial";
+
+            context.font = "40px '" + options.font + "'";
+            context.fillStyle = color1;
+
+            context.textBaseline = "top";
+
+            var textWidth = context.measureText(options.label);
+
+
+            // centre the text.
+            context.fillText(options.label,
+                1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
+                49 - canvas.height
+            );
+
+            canvas.fillColor = color0;
+
+            return canvas;
+
+        };
+        var markerCanvas = generateTransparentCanvas(options);
+        options.scale = options.scale || 1;
+        return {
+            url: markerCanvas.toDataURL(),
+            size: new google.maps.Size(54 * options.scale, 48 * options.scale),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(27 * options.scale, 48 * options.scale),
+            scaledSize: new google.maps.Size(54 * options.scale, 48 * options.scale),
+            fillColor: markerCanvas.fillColor
+        };
+    };
+
+
     MarkerFactory.parseColorString = function (somecolor) {
         var parsedcolor = {};
 
@@ -491,40 +560,52 @@
 
         if (element.font === 'fontawesome-webfont' ||
             element.font === 'fontello' ||
-            element.font === 'Material Icons') {
-
-            element.label = element.label.replace('e8ec', 'e3f3');
-            element.label = element.label.replace('e8f9', 'e3b7');
-            element.label = element.label.replace('e87d', 'e1db');
-            element.label = element.label.replace('e89a', 'e872');
-            element.label = element.label.replace('e8c4', 'e872');
-            element.label = element.label.replace('e82a', 'eb3f');
-            element.label = element.label.replace('e8fd', 'e553');
-            element.label = element.label.replace('e8ef', 'e53e');
-            element.label = element.label.replace('e8fc', 'e407');
-            element.label = element.label.replace('e861', 'e32a');
-            element.label = element.label.replace('e864', 'e84f');
-            element.label = element.label.replace('e8ee', 'e227');
-            element.label = element.label.replace('e8eb', 'e548');
-            element.label = element.label.replace('e8e9', 'e545');
-            element.label = element.label.replace('e862', 'e8cc');
-            element.label = element.label.replace('e8f3', 'e559');
-            element.label = element.label.replace('e8da', 'e55f');
-            element.label = element.label.replace('e8f5', 'e80c');
-            element.label = element.label.replace('e904', 'e04b');
-            element.label = element.label.replace('f10c', 'e836');
-            element.label = element.label.replace('e8be', 'e837');
-            element.label = element.label.replace('e879', 'e80b');
-            element.label = element.label.replace('e83b', 'e7ef');
-            element.label = element.label.replace('e806', 'e52f');
-            element.label = element.label.replace('e805', 'e534');
-            element.label = element.label.replace('f007', 'e7fd');
-            element.label = element.label.replace('e894', 'e8b4');
-            element.label = element.label.replace('e85c', 'e8b4');
+            element.font === 'Material Icons' ||
+            element.font === 'Material-Design-Icons') {
 
 
-            element.label = String.fromCharCode("0x" + element.label);
-            return createFatMarkerIcon(element);
+
+            if (MarkerFactory.transparent_background === true) {
+                // Estilo frontdev
+                element.label = String.fromCharCode("0x" + element.label);
+                return createTransparentMarkerIcon(element);
+
+            } else {
+                // Estilo develop enero 2016
+                element.label = element.label.replace('e8ec', 'e3f3');
+                element.label = element.label.replace('e8f9', 'e3b7');
+                element.label = element.label.replace('e87d', 'e1db');
+                element.label = element.label.replace('e89a', 'e872');
+                element.label = element.label.replace('e8c4', 'e872');
+                element.label = element.label.replace('e82a', 'eb3f');
+                element.label = element.label.replace('e8fd', 'e553');
+                element.label = element.label.replace('e8ef', 'e53e');
+                element.label = element.label.replace('e8fc', 'e407');
+                element.label = element.label.replace('e861', 'e32a');
+                element.label = element.label.replace('e864', 'e84f');
+                element.label = element.label.replace('e8ee', 'e227');
+                element.label = element.label.replace('e8eb', 'e548');
+                element.label = element.label.replace('e8e9', 'e545');
+                element.label = element.label.replace('e862', 'e8cc');
+                element.label = element.label.replace('e8f3', 'e559');
+                element.label = element.label.replace('e8da', 'e55f');
+                element.label = element.label.replace('e8f5', 'e80c');
+                element.label = element.label.replace('e904', 'e04b');
+                element.label = element.label.replace('f10c', 'e836');
+                element.label = element.label.replace('e8be', 'e837');
+                element.label = element.label.replace('e879', 'e80b');
+                element.label = element.label.replace('e83b', 'e7ef');
+                element.label = element.label.replace('e806', 'e52f');
+                element.label = element.label.replace('e805', 'e534');
+                element.label = element.label.replace('f007', 'e7fd');
+                element.label = element.label.replace('e894', 'e8b4');
+                element.label = element.label.replace('e85c', 'e8b4');
+
+                element.label = String.fromCharCode("0x" + element.label);
+                return createFatMarkerIcon(element);
+            }
+
+
         } else {
             return createMarkerIcon(element);
         }
