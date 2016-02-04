@@ -565,7 +565,7 @@
 
 
 
-            if (MarkerFactory.transparent_background === true) {
+            if (options.transparent_background === true) {
                 // Estilo frontdev
                 element.label = String.fromCharCode("0x" + element.label);
                 return createTransparentMarkerIcon(element);
