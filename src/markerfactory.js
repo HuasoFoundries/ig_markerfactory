@@ -62,6 +62,10 @@
         };
 
         hexstring = hexstring.replace('#', '');
+        if (hexstring.length === 3) {
+            hexstring = hexstring[0] + hexstring[0] + hexstring[1] + hexstring[1] + hexstring[2] + hexstring[2];
+        }
+
         hexcolor.r = parseInt(hexstring.substring(0, 2), 16);
         hexcolor.g = parseInt(hexstring.substring(2, 4), 16);
         hexcolor.b = parseInt(hexstring.substring(4, 6), 16);
@@ -236,10 +240,7 @@
 
             var context = canvas.getContext("2d");
 
-
-
             context.clearRect(0, 0, canvas.width, canvas.height);
-
 
             var grad = context.createLinearGradient(0, 0, 0, canvas.height),
                 color0, color1;
@@ -254,16 +255,11 @@
             }
 
 
-
             grad.addColorStop(0, color0);
             grad.addColorStop(1, color1);
 
             context.fillStyle = grad;
             context.strokeStyle = color1;
-
-
-
-
             context.beginPath();
 
             context.moveTo(anchorX, anchorY);
@@ -428,20 +424,13 @@
     };
 
 
-
-    var createTransparentMarkerIcon = function (options) {
+    var createTransparentMarkerIcon = function (theoptions) {
         var generateTransparentCanvas = function (options) {
             var canvas = document.createElement("canvas");
 
             canvas.width = 54;
             canvas.height = 48;
-
-
-
-
             var context = canvas.getContext("2d");
-
-
 
             context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -484,14 +473,14 @@
             return canvas;
 
         };
-        var markerCanvas = generateTransparentCanvas(options);
-        options.scale = options.scale || 1;
+        var markerCanvas = generateTransparentCanvas(theoptions);
+        theoptions.scale = theoptions.scale || 1;
         return {
             url: markerCanvas.toDataURL(),
-            size: new google.maps.Size(54 * options.scale, 48 * options.scale),
+            size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(27 * options.scale, 48 * options.scale),
-            scaledSize: new google.maps.Size(54 * options.scale, 48 * options.scale),
+            anchor: new google.maps.Point(27 * theoptions.scale, 48 * theoptions.scale),
+            scaledSize: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
             fillColor: markerCanvas.fillColor
         };
     };
