@@ -1,14 +1,14 @@
 {
   "name": "ig_markerfactory",
   "main": "markerfactory",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "jspm": {
     "format": "amd",
     "directories": {
       "lib": "src"
     },
     "dependencies": {
-      "underscore": "npm:lodash@^3"
+      "lodash": "npm:lodash@^3"
     }
   }
 }

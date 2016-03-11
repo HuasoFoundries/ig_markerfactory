@@ -8,7 +8,7 @@ System.config({
   },
 
   map: {
-    "underscore": "npm:lodash@3.10.1",
+    "lodash": "npm:lodash@3.10.1",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
