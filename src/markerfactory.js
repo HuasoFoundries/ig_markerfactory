@@ -56,7 +56,7 @@
         return darkercolor;
     };
 
-    var parseHex = function (hexstring) {
+    var parseHex = function (hexstring, opacity) {
         var hexcolor = {
             hex: hexstring
         };
@@ -65,38 +65,42 @@
         if (hexstring.length === 3) {
             hexstring = hexstring[0] + hexstring[0] + hexstring[1] + hexstring[1] + hexstring[2] + hexstring[2];
         }
+        opacity = opacity || 1;
 
         hexcolor.r = parseInt(hexstring.substring(0, 2), 16);
         hexcolor.g = parseInt(hexstring.substring(2, 4), 16);
         hexcolor.b = parseInt(hexstring.substring(4, 6), 16);
-        hexcolor.a = 1;
+        hexcolor.a = opacity;
         hexcolor.fillColor = 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
         hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
         hexcolor.rgb = hexcolor.fillColor;
         return hexcolor;
     };
 
-    var parseHSL = function (hslstring) {
+    var parseHSL = function (hslstring, opacity) {
         var hslcolor = {},
             hslparts = _.compact(hslstring.split(/hsla?\(|\,|\)|\%/));
+
+        hslparts[3] = opacity || hslparts[3] || 1;
         hslcolor.h = parseFloat(hslparts[0], 10);
         hslcolor.s = parseFloat(hslparts[1], 10);
         hslcolor.l = parseFloat(hslparts[2], 10);
-        hslcolor.a = parseFloat(hslparts[3] || 1, 10);
+        hslcolor.a = parseFloat(hslparts[3], 10);
         hslcolor.fillColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
         hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
         hslcolor.hsl = hslcolor.fillColor;
         return hslcolor;
     };
 
-    var parseRGB = function (rgbstring) {
+    var parseRGB = function (rgbstring, opacity) {
         var rgbcolor = {},
             rgbparts = _.compact(rgbstring.split(/rgba?\(|\,|\)/));
 
-        rgbcolor.r = 2 * parseInt(rgbparts[0] / 2, 10);
-        rgbcolor.g = 2 * parseInt(rgbparts[1] / 2, 10);
-        rgbcolor.b = 2 * parseInt(rgbparts[2] / 2, 10);
-        rgbcolor.a = parseFloat(rgbparts[3] || 1, 10);
+        rgbparts[3] = opacity || rgbparts[3] || 1;
+        rgbcolor.r = parseInt(rgbparts[0], 10) % 256;
+        rgbcolor.g = parseInt(rgbparts[1], 10) % 256;
+        rgbcolor.b = parseInt(rgbparts[2], 10) % 256;
+        rgbcolor.a = parseFloat(rgbparts[3], 10);
         rgbcolor.fillColor = 'rgba(' + rgbcolor.r + ',' + rgbcolor.g + ',' + rgbcolor.b + ',' + rgbcolor.a + ')';
         rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
         rgbcolor.rgb = rgbcolor.fillColor;
@@ -105,9 +109,10 @@
 
 
     var rgbToHSL = function (r, g, b, a) {
-        r /= 255;
-        g /= 255;
-        b /= 255;
+        r = (r % 256) / 255;
+        g = (g % 256) / 255;
+        b = (b % 256) / 255;
+        a = a || 1;
         var max = Math.max(r, g, b),
             min = Math.min(r, g, b);
         var h, s, l = (max + min) / 2;
@@ -137,15 +142,11 @@
         var hsl = {
             h: Math.round(360 * h),
             s: Math.round(100 * s),
-            l: Math.round(100 * l)
-
+            l: Math.round(100 * l),
+            a: Math.round(100 * a) / 100
         };
-        if (a && a !== 1) {
-            hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + a + ')';
-        } else {
-            hsl.fillColor = 'hsl(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%)';
-        }
 
+        hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + hsl.a + ')';
 
         return hsl;
     };
@@ -156,7 +157,7 @@
         h = parseFloat(h, 10) / 360;
         s = parseFloat(s, 10) / 100;
         l = parseFloat(l, 10) / 100;
-
+        a = a || 1;
         if (s === 0) {
             r = g = b = l; // achromatic
         } else {
@@ -197,11 +198,7 @@
             a: parseFloat(a, 10)
         };
 
-        if (rgb.a !== 1) {
-            rgb.fillColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + a + ')';
-        } else {
-            rgb.fillColor = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
-        }
+        rgb.fillColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + rgb.a + ')';
 
         return rgb;
 
@@ -500,29 +497,35 @@
     };
 
 
-    MarkerFactory.parseColorString = function (somecolor) {
-        var parsedcolor = {};
+    MarkerFactory.parseColorString = function (somecolor, opacity) {
+        var parsedcolor = {
+                original: somecolor
+            },
+            hsl, rgb;
 
         if (somecolor.indexOf('hsl') !== -1) {
-            parsedcolor.hsl = parseHSL(somecolor);
-            parsedcolor.rgb = hslToRGB(parsedcolor.hsl.h, parsedcolor.hsl.s, parsedcolor.hsl.l, parsedcolor.hsl.a);
+            hsl = parseHSL(somecolor, opacity);
+            rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a);
 
-            parsedcolor.fillColor = parsedcolor.hsl.fillColor;
-            parsedcolor.strokeColor = parsedcolor.hsl.strokeColor;
+            parsedcolor.fillColor = hsl.fillColor;
+            parsedcolor.strokeColor = hsl.strokeColor;
 
         } else {
             if (somecolor.indexOf('rgb') !== -1) {
-                parsedcolor.rgb = parseRGB(somecolor);
+                rgb = parseRGB(somecolor, opacity);
             } else {
-                parsedcolor.rgb = parseHex(somecolor);
+                rgb = parseHex(somecolor, opacity);
             }
-
-            parsedcolor.fillColor = parsedcolor.rgb.fillColor;
-            parsedcolor.strokeColor = parsedcolor.rgb.strokeColor;
+            hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
 
 
-            parsedcolor.hsl = rgbToHSL(parsedcolor.rgb.r, parsedcolor.rgb.g, parsedcolor.rgb.b, parsedcolor.rgb.a);
+            parsedcolor.fillColor = rgb.fillColor;
+            parsedcolor.strokeColor = rgb.strokeColor;
         }
+
+        parsedcolor.hsl = _.pick(hsl, ['h', 's', 'l', 'a']);
+        parsedcolor.rgb = _.pick(rgb, ['r', 'g', 'b', 'a']);
+        parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
         return parsedcolor;
     };
 
