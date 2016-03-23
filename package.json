@@ -1,7 +1,7 @@
 {
   "name": "ig_markerfactory",
   "main": "markerfactory",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "license": "MIT",
   "engines": {
     "node": "4.2.x"
