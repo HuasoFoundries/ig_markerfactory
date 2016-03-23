@@ -82,13 +82,13 @@
             hslparts = _.compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
         if (hslparts[3] === undefined) {
-            hslparts[3] = opacity || 1;
+            hslparts[3] = 1;
         }
 
         hslcolor.h = parseFloat(hslparts[0], 10);
         hslcolor.s = parseFloat(hslparts[1], 10);
         hslcolor.l = parseFloat(hslparts[2], 10);
-        hslcolor.a = parseFloat(hslparts[3], 10);
+        hslcolor.a = parseFloat(opacity * hslparts[3], 10);
 
         hslcolor.fillColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
         hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
@@ -100,17 +100,14 @@
         var rgbcolor = {},
             rgbparts = _.compact(rgbstring.split(/rgba?\(|\,|\)/));
 
-        rgbparts[3] = opacity || rgbparts[3] || 1;
-
         if (rgbparts[3] === undefined) {
-            rgbparts[3] = opacity || 1;
+            rgbparts[3] = 1;
         }
-
 
         rgbcolor.r = parseInt(rgbparts[0], 10) % 256;
         rgbcolor.g = parseInt(rgbparts[1], 10) % 256;
         rgbcolor.b = parseInt(rgbparts[2], 10) % 256;
-        rgbcolor.a = parseFloat(rgbparts[3], 10);
+        rgbcolor.a = parseFloat(opacity * rgbparts[3], 10);
         rgbcolor.fillColor = 'rgba(' + rgbcolor.r + ',' + rgbcolor.g + ',' + rgbcolor.b + ',' + rgbcolor.a + ')';
         rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
         rgbcolor.rgb = rgbcolor.fillColor;
@@ -516,6 +513,8 @@
                 original: somecolor
             },
             hsl, rgb;
+
+        opacity = opacity || 1;
 
         if (somecolor.indexOf('hsl') !== -1) {
             hsl = parseHSL(somecolor, opacity);
