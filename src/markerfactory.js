@@ -81,7 +81,10 @@
         var hslcolor = {},
             hslparts = _.compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
-        hslparts[3] = opacity || hslparts[3] || 1;
+        if (hslparts[3] === undefined) {
+            hslparts[3] = opacity || 1;
+        }
+
         hslcolor.h = parseFloat(hslparts[0], 10);
         hslcolor.s = parseFloat(hslparts[1], 10);
         hslcolor.l = parseFloat(hslparts[2], 10);
@@ -97,6 +100,12 @@
             rgbparts = _.compact(rgbstring.split(/rgba?\(|\,|\)/));
 
         rgbparts[3] = opacity || rgbparts[3] || 1;
+
+        if (rgbparts[3] === undefined) {
+            rgbparts[3] = opacity || 1;
+        }
+
+
         rgbcolor.r = parseInt(rgbparts[0], 10) % 256;
         rgbcolor.g = parseInt(rgbparts[1], 10) % 256;
         rgbcolor.b = parseInt(rgbparts[2], 10) % 256;
