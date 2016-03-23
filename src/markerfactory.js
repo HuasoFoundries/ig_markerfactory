@@ -89,6 +89,7 @@
         hslcolor.s = parseFloat(hslparts[1], 10);
         hslcolor.l = parseFloat(hslparts[2], 10);
         hslcolor.a = parseFloat(hslparts[3], 10);
+
         hslcolor.fillColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
         hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
         hslcolor.hsl = hslcolor.fillColor;
@@ -121,7 +122,9 @@
         r = (r % 256) / 255;
         g = (g % 256) / 255;
         b = (b % 256) / 255;
-        a = a || 1;
+        if (a === undefined) {
+            a = 1;
+        }
         var max = Math.max(r, g, b),
             min = Math.min(r, g, b);
         var h, s, l = (max + min) / 2;
@@ -166,7 +169,9 @@
         h = parseFloat(h, 10) / 360;
         s = parseFloat(s, 10) / 100;
         l = parseFloat(l, 10) / 100;
-        a = a || 1;
+        if (a === undefined) {
+            a = 1;
+        }
         if (s === 0) {
             r = g = b = l; // achromatic
         } else {
@@ -528,6 +533,7 @@
 
         parsedcolor.hsl = _.pick(hsl, ['h', 's', 'l', 'a']);
         parsedcolor.rgb = _.pick(rgb, ['r', 'g', 'b', 'a']);
+
         parsedcolor.fillColor = rgb.fillColor;
         parsedcolor.strokeColor = rgb.strokeColor;
         parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
