@@ -507,9 +507,6 @@
             hsl = parseHSL(somecolor, opacity);
             rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a);
 
-            parsedcolor.fillColor = hsl.fillColor;
-            parsedcolor.strokeColor = hsl.strokeColor;
-
         } else {
             if (somecolor.indexOf('rgb') !== -1) {
                 rgb = parseRGB(somecolor, opacity);
@@ -518,13 +515,12 @@
             }
             hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
 
-
-            parsedcolor.fillColor = rgb.fillColor;
-            parsedcolor.strokeColor = rgb.strokeColor;
         }
 
         parsedcolor.hsl = _.pick(hsl, ['h', 's', 'l', 'a']);
         parsedcolor.rgb = _.pick(rgb, ['r', 'g', 'b', 'a']);
+        parsedcolor.fillColor = rgb.fillColor;
+        parsedcolor.strokeColor = rgb.strokeColor;
         parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
         return parsedcolor;
     };
