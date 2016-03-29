@@ -1,6 +1,6 @@
 var assert = require('assert'),
 	_ = require('lodash'),
-	markerfactory = require('../src/markerfactory');
+	MarkerFactory = require('../src/markerfactory');
 
 var testColors = {
 		hex3: "#F39",
@@ -45,8 +45,8 @@ var testColors = {
 _.each(testColors, function (value, key) {
 	describe('Parsing of ' + key + ' color', function () {
 
-		var parsedObject = markerfactory.parseColorString(value),
-			parsedObjectWO = markerfactory.parseColorString(value, 0.5);
+		var parsedObject = MarkerFactory.parseColorString(value),
+			parsedObjectWO = MarkerFactory.parseColorString(value, 0.5);
 
 		it('should match RGBA result of parsed ' + key + ' color', function () {
 			assert.deepEqual(parsedObject.rgb, parsedColor.rgb);

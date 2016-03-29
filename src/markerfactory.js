@@ -65,7 +65,9 @@
         if (hexstring.length === 3) {
             hexstring = hexstring[0] + hexstring[0] + hexstring[1] + hexstring[1] + hexstring[2] + hexstring[2];
         }
-        opacity = opacity || 1;
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
+        }
 
         hexcolor.r = parseInt(hexstring.substring(0, 2), 16);
         hexcolor.g = parseInt(hexstring.substring(2, 4), 16);
@@ -83,6 +85,9 @@
 
         if (hslparts[3] === undefined) {
             hslparts[3] = 1;
+        }
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
         }
 
         hslcolor.h = parseFloat(hslparts[0], 10);
@@ -102,6 +107,10 @@
 
         if (rgbparts[3] === undefined) {
             rgbparts[3] = 1;
+        }
+
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
         }
 
         rgbcolor.r = parseInt(rgbparts[0], 10) % 256;
@@ -506,7 +515,7 @@
 
         return iconObj;
     };
-
+    MarkerFactory.toDecColor = toDecColor;
 
     MarkerFactory.parseColorString = function (somecolor, opacity) {
         var parsedcolor = {
