@@ -1,5 +1,9 @@
 # IG MarkerFactory
 
+[![Build Status](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/build.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/build-status/master)
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/?branch=master)
+
 Uses canvas to dynamically generate marker images suitable for use with google maps. It
 renders nice looking badges in the front by combining overlaying text on top of canvas
 rendered background. Those text can be SVG images such as [Font-Awesome](https://fortawesome.github.io/Font-Awesome/), Fontello, etc.

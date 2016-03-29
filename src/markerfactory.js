@@ -1,5 +1,3 @@
-/* global google:false  */
-
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD & RequireJS
