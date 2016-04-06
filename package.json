@@ -1,7 +1,7 @@
 {
   "name": "ig_markerfactory",
   "main": "markerfactory",
-  "version": "2.4.9",
+  "version": "2.5.0",
   "license": "MIT",
   "engines": {
     "node": "4.2.x"
@@ -12,13 +12,14 @@
       "lib": "src"
     },
     "dependencies": {
-      "lodash": "npm:lodash@^3"
+      "lodash": "github:lodash/lodash@~3"
     }
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
   "devDependencies": {
+    "jspm": "0.16.27",
     "lodash": "^3",
     "mocha": "^2.4"
   }
