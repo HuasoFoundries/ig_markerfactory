@@ -1,8 +1,6 @@
 # IG MarkerFactory
 
-[![Build Status](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/build.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/build-status/master)
-
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/build.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/build-status/master) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory)
 
 Uses canvas to dynamically generate marker images suitable for use with google maps. It
 renders nice looking badges in the front by combining overlaying text on top of canvas
