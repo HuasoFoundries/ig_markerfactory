@@ -1,6 +1,6 @@
 # IG MarkerFactory
 
-[![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory)
+[![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory) [![Codacy Badge](https://api.codacy.com/project/badge/grade/44d15485b93e43cf86356e56a8bfb7d1)](https://www.codacy.com/app/amenadiel/ig_markerfactory)
 
 Uses canvas to dynamically generate marker images suitable for use with google maps. It
 renders nice looking badges in the front by combining overlaying text on top of canvas
