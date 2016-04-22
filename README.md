@@ -1,10 +1,10 @@
 # IG MarkerFactory
 
-[![Build Status](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/build.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/build-status/master) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory)
+[![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory)
 
 Uses canvas to dynamically generate marker images suitable for use with google maps. It
 renders nice looking badges in the front by combining overlaying text on top of canvas
-rendered background. Those text can be SVG images such as [Font-Awesome](https://fortawesome.github.io/Font-Awesome/), Fontello, etc.
+rendered background. Those text can be SVG images such as [Font-Awesome](https://fontawesome.github.io/Font-Awesome/), [Fontello](http://fontello.com/), etc.
 
 ## Installation
 
@@ -14,18 +14,15 @@ Install it with jspm like so:
 jspm install github:huasofoundries/ig_markerfactory
 ```
 
-This will install also its only dependency (lodash@3). If you don't use jspm, you can
-as well clone this repo and copy `src/markerfactory.js` to your project. If you do that, 
-please remember to install also lodash. You can also use unsercore and add a mapping in
-your config to be able to require it with the 'lodash' alias.
-
+If you don't use jspm, you can as well clone this repo and copy 
+`dist/markerfactory.js` to your project. 
 
 ## Usage
 
 This is a simple example using AMD loading:
 
 ```js
-	define(['jquery', 'huasofoundries/ig_markerfactory'], function(jQuery, MarkerFactory) {
+	define(['huasofoundries/ig_markerfactory'], function(MarkerFactory) {
 
 		var myimage = MarkerFactory.autoIcon({
 			label: 'f1b9',

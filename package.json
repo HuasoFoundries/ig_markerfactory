@@ -1,26 +1,34 @@
 {
   "name": "ig_markerfactory",
-  "main": "markerfactory",
+  "main": "markerfactory.js",
   "version": "2.5.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HuasoFoundries/ig_markerfactory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HuasoFoundries/ig_markerfactory/issues"
+  },
+  "homepage": "https://github.com/HuasoFoundries/ig_markerfactory#readme",
   "engines": {
     "node": "4.2.x"
   },
   "jspm": {
     "format": "amd",
+    "main": "markerfactory.js",
     "directories": {
-      "lib": "src"
+      "lib": "dist"
     },
-    "dependencies": {
-      "lodash": "github:lodash/lodash@~3"
-    }
+    "dependencies": {},
+    "devDependencies": {}
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
   "devDependencies": {
-    "jspm": "0.16.27",
-    "lodash": "^3",
+    "jspm": "^0.17.0-beta.13",
+    "lodash": "^4",
     "mocha": "^2.4"
   }
 }
