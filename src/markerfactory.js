@@ -1,21 +1,38 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD & RequireJS
-        define(["lodash"], function (_) {
-            return factory(_);
+        define(function () {
+            return factory();
         });
     } else if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         // CommonJS
-        module.exports = factory(require('lodash'));
+        module.exports = factory();
     } else {
         // Browser
-        root.MarkerFactory = factory(root._);
+        root.MarkerFactory = factory();
     }
 
-}(this, function (_) {
-    'use strict';
+}(this, function () {
+
+
     var MarkerFactory = {};
-    MarkerFactory._ = _;
+
+    function compact(array) {
+        var index = -1,
+            length = array ? array.length : 0,
+            resIndex = 0,
+            result = [];
+
+        while (++index < length) {
+            var value = array[index];
+            if (value) {
+                result[resIndex++] = value;
+            }
+        }
+        return result;
+    }
+
+
 
     var defaults = {
         h: 1,
@@ -79,7 +96,7 @@
 
     var parseHSL = function (hslstring, opacity) {
         var hslcolor = {},
-            hslparts = _.compact(hslstring.split(/hsla?\(|\,|\)|\%/));
+            hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
         if (hslparts[3] === undefined) {
             hslparts[3] = 1;
@@ -101,7 +118,7 @@
 
     var parseRGB = function (rgbstring, opacity) {
         var rgbcolor = {},
-            rgbparts = _.compact(rgbstring.split(/rgba?\(|\,|\)/));
+            rgbparts = compact(rgbstring.split(/rgba?\(|\,|\)/));
 
         if (rgbparts[3] === undefined) {
             rgbparts[3] = 1;
@@ -328,7 +345,7 @@
             url: markerCanvas.toDataURL()
         };
         if (window.google && window.google.maps) {
-            _.extend(iconObj, {
+            Object.assign(iconObj, {
                 size: new google.maps.Size(42, 36),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(21, 36),
@@ -432,7 +449,7 @@
             url: markerCanvas.toDataURL()
         };
         if (window.google && window.google.maps) {
-            _.extend(iconObj, {
+            Object.assign(iconObj, {
                 size: new google.maps.Size(48, 40),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(24 * theoptions.scale, 40 * theoptions.scale),
@@ -503,7 +520,7 @@
             fillColor: markerCanvas.fillColor
         };
         if (window.google && window.google.maps) {
-            _.extend(iconObj, {
+            Object.assign(iconObj, {
                 size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(27 * theoptions.scale, 48 * theoptions.scale),
@@ -537,8 +554,18 @@
 
         }
 
-        parsedcolor.hsl = _.pick(hsl, ['h', 's', 'l', 'a']);
-        parsedcolor.rgb = _.pick(rgb, ['r', 'g', 'b', 'a']);
+        parsedcolor.hsl = {
+            h: hsl.h,
+            s: hsl.s,
+            l: hsl.l,
+            a: hsl.a
+        };
+        parsedcolor.rgb = {
+            r: rgb.r,
+            g: rgb.g,
+            b: rgb.b,
+            a: rgb.a
+        };
 
         parsedcolor.fillColor = rgb.fillColor;
         parsedcolor.strokeColor = rgb.strokeColor;
@@ -568,12 +595,12 @@
         }
 
 
-        _.defaults(options, {
-            label: 'A',
-            color: '#FF0000',
-            fontsize: 11,
-            font: 'Arial'
-        });
+
+        options.label = options.label || 'A';
+        options.color = options.color || '#FF0000';
+        options.fontsize = options.fontsize || 11;
+        options.font = options.font || 'Arial';
+
 
         options.hexcolor = getHexColor(options.color);
 
@@ -596,6 +623,8 @@
 
 
     };
+
+
 
     return MarkerFactory;
 }));

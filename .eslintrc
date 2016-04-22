@@ -11,11 +11,7 @@
     },
     "globals":{
         "google":true,
-        "Bloodhound":true,
-        "Handlebars":true,
-        "globalmap":false,
-        "globalvars":false,
-        "Intercom":false
+        "SystemJS":false
     },
     
 

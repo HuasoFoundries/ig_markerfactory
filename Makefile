@@ -5,9 +5,14 @@ version:
 	@echo $(VERSION)
 
 
-default: build
-.PHONY: build
+default: build 
+.PHONY: build test
 
+build:
+	jspm build src/markerfactory.js dist/markerfactory.js --minify
+
+test:
+	./node_modules/.bin/mocha
 
 update_version:
 	@echo "Current version is " ${VERSION}
@@ -22,4 +27,5 @@ tag_and_push:
 		git push --tags
 
 tag: update_version build tag_and_push		
+
 		
