@@ -10,6 +10,7 @@ default: build
 
 build:
 	jspm build src/markerfactory.js dist/markerfactory.js --minify
+	jspm build src/markerfactory.js dist/markerfactory.esm.js --format esm --skip-source-maps
 
 test:
 	./node_modules/.bin/mocha

@@ -1,7 +1,8 @@
 {
   "name": "ig_markerfactory",
   "main": "markerfactory.js",
-  "version": "2.6.1",
+  "jsnext:main": "markerfactory.esm.js",
+  "version": "2.6.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -15,8 +16,8 @@
     "node": "4.2.x"
   },
   "jspm": {
-    "format": "amd",
-    "main": "markerfactory.js",
+    "format": "esm",
+    "main": "markerfactory.esm.js",
     "directories": {
       "lib": "dist"
     },
