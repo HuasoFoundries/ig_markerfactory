@@ -1,2 +1,619 @@
-!function(a){function b(a,b,e){return 4===arguments.length?c.apply(this,arguments):void d(a,{declarative:!0,deps:b,declare:e})}function c(a,b,c,e){d(a,{declarative:!1,deps:b,executingRequire:c,execute:e})}function d(a,b){b.name=a,a in n||(n[a]=b),b.normalizedDeps=b.deps}function e(a,b){if(b[a.groupIndex]=b[a.groupIndex]||[],-1==o.call(b[a.groupIndex],a)){b[a.groupIndex].push(a);for(var c=0,d=a.normalizedDeps.length;d>c;c++){var f=a.normalizedDeps[c],g=n[f];if(g&&!g.evaluated){var h=a.groupIndex+(g.declarative!=a.declarative);if(void 0===g.groupIndex||g.groupIndex<h){if(void 0!==g.groupIndex&&(b[g.groupIndex].splice(o.call(b[g.groupIndex],g),1),0==b[g.groupIndex].length))throw new TypeError("Mixed dependency cycle detected");g.groupIndex=h}e(g,b)}}}}function f(a){var b=n[a];b.groupIndex=0;var c=[];e(b,c);for(var d=!!b.declarative==c.length%2,f=c.length-1;f>=0;f--){for(var g=c[f],i=0;i<g.length;i++){var k=g[i];d?h(k):j(k)}d=!d}}function g(a){return s[a]||(s[a]={name:a,dependencies:[],exports:{},importers:[]})}function h(b){if(!b.module){var c=b.module=g(b.name),d=b.module.exports,e=b.declare.call(a,function(a,b){if(c.locked=!0,"object"==typeof a)for(var e in a)d[e]=a[e];else d[a]=b;for(var f=0,g=c.importers.length;g>f;f++){var h=c.importers[f];if(!h.locked)for(var i=0;i<h.dependencies.length;++i)h.dependencies[i]===c&&h.setters[i](d)}return c.locked=!1,b},b.name);c.setters=e.setters,c.execute=e.execute;for(var f=0,i=b.normalizedDeps.length;i>f;f++){var j,k=b.normalizedDeps[f],l=n[k],o=s[k];o?j=o.exports:l&&!l.declarative?j=l.esModule:l?(h(l),o=l.module,j=o.exports):j=m(k),o&&o.importers?(o.importers.push(c),c.dependencies.push(o)):c.dependencies.push(null),c.setters[f]&&c.setters[f](j)}}}function i(a){var b,c=n[a];if(c)c.declarative?l(a,[]):c.evaluated||j(c),b=c.module.exports;else if(b=m(a),!b)throw new Error("Unable to load dependency "+a+".");return(!c||c.declarative)&&b&&b.__useDefault?b["default"]:b}function j(b){if(!b.module){var c={},d=b.module={exports:c,id:b.name};if(!b.executingRequire)for(var e=0,f=b.normalizedDeps.length;f>e;e++){var g=b.normalizedDeps[e],h=n[g];h&&j(h)}b.evaluated=!0;var l=b.execute.call(a,function(a){for(var c=0,d=b.deps.length;d>c;c++)if(b.deps[c]==a)return i(b.normalizedDeps[c]);throw new TypeError("Module "+a+" not declared as a dependency.")},c,d);l&&(d.exports=l),c=d.exports,c&&c.__esModule?b.esModule=c:b.esModule=k(c)}}function k(b){if(b===a)return b;var c={};if("object"==typeof b||"function"==typeof b)if(p){var d;for(var e in b)(d=Object.getOwnPropertyDescriptor(b,e))&&r(c,e,d)}else{var f=b&&b.hasOwnProperty;for(var e in b)(!f||b.hasOwnProperty(e))&&(c[e]=b[e])}return c["default"]=b,r(c,"__useDefault",{value:!0}),c}function l(b,c){var d=n[b];if(d&&!d.evaluated&&d.declarative){c.push(b);for(var e=0,f=d.normalizedDeps.length;f>e;e++){var g=d.normalizedDeps[e];-1==o.call(c,g)&&(n[g]?l(g,c):m(g))}d.evaluated||(d.evaluated=!0,d.module.execute.call(a))}}function m(a){if(u[a])return u[a];if("@node/"==a.substr(0,6))return t(a.substr(6));var b=n[a];if(!b)throw"Module "+a+" not present.";return f(a),l(a,[]),n[a]=void 0,b.declarative&&r(b.module.exports,"__esModule",{value:!0}),u[a]=b.declarative?b.module.exports:b.esModule}var n={},o=Array.prototype.indexOf||function(a){for(var b=0,c=this.length;c>b;b++)if(this[b]===a)return b;return-1},p=!0;try{Object.getOwnPropertyDescriptor({a:0},"a")}catch(q){p=!1}var r;!function(){try{Object.defineProperty({},"a",{})&&(r=Object.defineProperty)}catch(a){r=function(a,b,c){try{a[b]=c.value||c.get.call(a)}catch(d){}}}}();var s={},t="undefined"!=typeof System&&System._nodeRequire||"undefined"!=typeof require&&require.resolve&&"undefined"!=typeof process&&require,u={"@empty":{}};return function(a,d,e){return function(f){f(function(f){for(var g={_nodeRequire:t,register:b,registerDynamic:c,get:m,set:function(a,b){u[a]=b},newModule:function(a){return a}},h=0;h<d.length;h++)(function(a,b){b&&b.__esModule?u[a]=b:u[a]=k(b)})(d[h],arguments[h]);e(g);var i=m(a[0]);if(a.length>1)for(var h=1;h<a.length;h++)m(a[h]);return i.__useDefault?i["default"]:i})}}}("undefined"!=typeof self?self:global)(["1"],[],function(a){!function(b){function c(a,b){a=a.replace(h,"");var c=a.match(k),d=(c[1].split(",")[b]||"require").replace(l,""),e=m[d]||(m[d]=new RegExp(i+d+j,"g"));e.lastIndex=0;for(var f,g=[];f=e.exec(a);)g.push(f[2]||f[3]);return g}function d(a,b,c,e){if("object"==typeof a&&!(a instanceof Array))return d.apply(null,Array.prototype.splice.call(arguments,1,arguments.length-1));if("string"==typeof a&&"function"==typeof b&&(a=[a]),!(a instanceof Array)){if("string"==typeof a){var g=f.get(a);return g.__useDefault?g["default"]:g}throw new TypeError("Invalid require")}for(var h=[],i=0;i<a.length;i++)h.push(f["import"](a[i],e));Promise.all(h).then(function(a){b&&b.apply(null,a)},c)}function e(a,e,h){"string"!=typeof a&&(h=e,e=a,a=null),e instanceof Array||(h=e,e=["require","exports","module"].splice(0,h.length)),"function"!=typeof h&&(h=function(a){return function(){return a}}(h)),void 0===e[e.length-1]&&e.pop();var i,j,k;-1!=(i=g.call(e,"require"))&&(e.splice(i,1),a||(e=e.concat(c(h.toString(),i)))),-1!=(j=g.call(e,"exports"))&&e.splice(j,1),-1!=(k=g.call(e,"module"))&&e.splice(k,1);var l={name:a,deps:e,execute:function(a,c,g){for(var l=[],m=0;m<e.length;m++)l.push(a(e[m]));g.uri=g.id,g.config=function(){},-1!=k&&l.splice(k,0,g),-1!=j&&l.splice(j,0,c),-1!=i&&l.splice(i,0,function(b,c,e){return"string"==typeof b&&"function"!=typeof c?a(b):d.call(f,b,c,e,g.id)});var n=h.apply(-1==j?b:c,l);return"undefined"==typeof n&&g&&(n=g.exports),"undefined"!=typeof n?n:void 0}};if(a)n.anonDefine||n.isBundle?n.anonDefine&&n.anonDefine.name&&(n.anonDefine=null):n.anonDefine=l,n.isBundle=!0,f.registerDynamic(l.name,l.deps,!1,l.execute);else{if(n.anonDefine&&!n.anonDefine.name)throw new Error("Multiple anonymous defines in module "+a);n.anonDefine=l}}var f=a,g=Array.prototype.indexOf||function(a){for(var b=0,c=this.length;c>b;b++)if(this[b]===a)return b;return-1},h=/(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/gm,i="(?:^|[^$_a-zA-Z\\xA0-\\uFFFF.])",j="\\s*\\(\\s*(\"([^\"]+)\"|'([^']+)')\\s*\\)",k=/\(([^\)]*)\)/,l=/^\s+|\s+$/g,m={};e.amd={};var n={isBundle:!1,anonDefine:null};f.amdDefine=e,f.amdRequire=d}("undefined"!=typeof self?self:global),function(){var b=a.amdDefine;!function(a,c){"function"==typeof b&&b.amd?b("1",[],function(){return c()}):"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=c():a.MarkerFactory=c()}(this,function(){function a(a){for(var b=-1,c=a?a.length:0,d=0,e=[];++b<c;){var f=a[b];f&&(e[d++]=f)}return e}var b={},c={h:1,s:78,l:63,a:1},d=function(a,b){return c.h=Math.floor(360/b*a),"hsla("+c.h+","+c.s+"%,"+c.l+"%,"+c.a+")"},e=function(){return"hsla("+c.h+","+c.s+"%,"+(c.l-30)+"%,"+c.a+")"},f=function(a){return parseInt(a/2,10)},g=function(a){var b={};return-1!==a.fillColor.indexOf("rgb")?(b.r=f(a.r),b.g=f(a.g),b.b=f(a.b),b.fillColor="rgba("+b.r+","+b.g+","+b.b+",0.99)"):-1!==a.fillColor.indexOf("hsl")&&(b.h=a.h,b.s=a.s,b.l=a.l-30,b.fillColor="hsl("+b.h+","+b.s+"%,"+b.l+"%)"),b},h=function(a,b){var c={hex:a};return a=a.replace("#",""),3===a.length&&(a=a[0]+a[0]+a[1]+a[1]+a[2]+a[2]),isNaN(parseFloat(b,10))&&(b=1),c.r=parseInt(a.substring(0,2),16),c.g=parseInt(a.substring(2,4),16),c.b=parseInt(a.substring(4,6),16),c.a=b,c.fillColor="rgba("+c.r+","+c.g+","+c.b+","+c.a+")",c.strokeColor=["rgba("+f(c.r),f(c.g),f(c.b),c.a+")"].join(","),c.rgb=c.fillColor,c},i=function(b,c){var d={},e=a(b.split(/hsla?\(|\,|\)|\%/));return void 0===e[3]&&(e[3]=1),isNaN(parseFloat(c,10))&&(c=1),d.h=parseFloat(e[0],10),d.s=parseFloat(e[1],10),d.l=parseFloat(e[2],10),d.a=parseFloat(c*e[3],10),d.fillColor="hsla("+d.h+","+d.s+"%,"+d.l+"%,"+d.a+")",d.strokeColor="hsla("+d.h+","+d.s+"%,"+parseInt(d.l/2,10)+"%,"+d.a+")",d.hsl=d.fillColor,d},j=function(b,c){var d={},e=a(b.split(/rgba?\(|\,|\)/));return void 0===e[3]&&(e[3]=1),isNaN(parseFloat(c,10))&&(c=1),d.r=parseInt(e[0],10)%256,d.g=parseInt(e[1],10)%256,d.b=parseInt(e[2],10)%256,d.a=parseFloat(c*e[3],10),d.fillColor="rgba("+d.r+","+d.g+","+d.b+","+d.a+")",d.strokeColor="rgba("+d.r/2+","+d.g/2+","+d.b/2+","+d.a+")",d.rgb=d.fillColor,d},k=function(a,b,c,d){a=a%256/255,b=b%256/255,c=c%256/255,void 0===d&&(d=1);var e,f,g=Math.max(a,b,c),h=Math.min(a,b,c),i=(g+h)/2;if(g===h)e=f=0;else{var j=g-h;switch(f=i>.5?j/(2-g-h):j/(g+h),g){case a:e=(b-c)/j+(c>b?6:0);break;case b:e=(c-a)/j+2;break;case c:e=(a-b)/j+4;break;default:e=0}e/=6}var k={h:Math.round(360*e),s:Math.round(100*f),l:Math.round(100*i),a:Math.round(100*d)/100};return k.fillColor="hsla("+k.h+","+k.s+"%,"+k.l+"%,"+k.a+")",k},l=function(a,b,c,d){var e,f,g;if(a=parseFloat(a,10)/360,b=parseFloat(b,10)/100,c=parseFloat(c,10)/100,void 0===d&&(d=1),0===b)e=f=g=c;else{var h=function(a,b,c){return 0>c&&(c+=1),c>1&&(c-=1),1/6>c?a+6*(b-a)*c:.5>c?b:2/3>c?a+(b-a)*(2/3-c)*6:a},i=.5>c?c*(1+b):c+b-c*b,j=2*c-i;e=h(j,i,a+1/3),f=h(j,i,a),g=h(j,i,a-1/3)}void 0===d&&(d=1);var k={r:Math.round(255*e),g:Math.round(255*f),b:Math.round(255*g),a:parseFloat(d,10)};return k.fillColor="rgba("+k.r+","+k.g+","+k.b+","+k.a+")",k},m=function(a){var b={};return a?b=-1!==a.indexOf("rgb")?j(a):-1!==a.indexOf("hsl")?i(a):h(a):b.fillColor="rgba(100,250,50,0.99)",b},n=function(a){var b=function(a){var b=document.createElement("canvas");b.width=42,b.height=36;var c=b.width/2,f=b.height-1,h=(b.width-18)/2,i=1.1,j=11,k=b.getContext("2d");k.clearRect(0,0,b.width,b.height);var l,n,o=k.createLinearGradient(0,0,0,b.height);if(void 0!==a.index&&a.count>0)l=d(a.index,a.count),n=e();else{var p=m(a.color);l=p.fillColor,n=g(p).fillColor}o.addColorStop(0,l),o.addColorStop(1,n),k.fillStyle=o,k.strokeStyle=n,k.beginPath(),k.moveTo(c,f),k.arc(c,2+.5*f,h,i,Math.PI-i,!0),k.lineTo(c,f),k.fill(),k.stroke(),k.beginPath(),k.arc(c,2+.5*f,h-3,0,2*Math.PI,!1),k.fillStyle="white",k.fill(),k.beginPath();var q="'"+a.font+"'"||"fontello";k.font=j+"pt "+q,k.fillStyle=n,k.textBaseline="top";var r=k.measureText(a.label);return k.fillText(a.label,1+Math.floor(b.width/2-r.width/2),49-b.height),b};a.scale=a.scale||1;var c=b(a),f={url:c.toDataURL()};return window.google&&window.google.maps&&Object.assign(f,{size:new google.maps.Size(42,36),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(21,36),scaledSize:new google.maps.Size(42,36)}),f},o=function(a){var b=function(a){var b=document.createElement("canvas"),c=30,f=40;b.width=c+18,b.height=f;var h=b.width/2,i=b.height-2,j=c/2,k=.6,l="'"+a.font+"'"||"Arial",n=a.fontsize||11,o=b.getContext("2d");o.clearRect(0,0,b.width,b.height);var p,q,r=2*j,s=h+.95*r,t=i+.45*r,u=o.createLinearGradient(0,0,0,b.height);if(void 0!==a.index&&a.count>0)p=d(a.index,a.count),q=e();else{var v=m(a.color);p=v.fillColor,q=g(v).fillColor}u.addColorStop(0,p),u.addColorStop(1,q),o.fillStyle=u,o.strokeStyle="rgba(200,200,200,0.7)",o.beginPath(),o.arc(s-1,t,r,9*Math.PI/8,-6*Math.PI/8,!1),o.arc(h,(i-7)/2,j,k,Math.PI-k,!0),o.arc(2*h-s+1,t,r,-.95*Math.PI/3,-Math.PI/8,!1),o.fill(),o.stroke(),o.beginPath(),o.arc(h,.4*i,2*j/3,0,2*Math.PI,!1),o.fillStyle="white",o.fill(),o.beginPath(),o.font=n+"pt "+l,o.textBaseline="top";var w=o.measureText(a.label);return(w.width>c||String(a.label).length>3)&&(o.rect(h-2-w.width/2,i-30,h-2+w.width/2,i-23),o.fillStyle="#F7F0F0",o.fill(),o.stroke()),o.fillStyle="black",o.strokeStyle="black",o.fillText(a.label,1+Math.floor(b.width/2-w.width/2),8),b};a.scale=a.scale||.75;var c=b(a),f={url:c.toDataURL()};return window.google&&window.google.maps&&Object.assign(f,{size:new google.maps.Size(48,40),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(24*a.scale,40*a.scale),scaledSize:new google.maps.Size(48*a.scale,40*a.scale)}),f},p=function(a){var b=function(a){var b=document.createElement("canvas");b.width=54,b.height=48;var c=b.getContext("2d");c.clearRect(0,0,b.width,b.height);var f,h,i=c.createLinearGradient(0,0,0,b.height);if(void 0!==a.index&&a.count>0)f=d(a.index,a.count),h=e();else{var j=m(a.color);f=j.fillColor,h=g(j).fillColor}i.addColorStop(0,f),i.addColorStop(1,h),c.beginPath(),c.font="40px '"+a.font+"'",c.fillStyle=h,c.textBaseline="top";var k=c.measureText(a.label);return c.fillText(a.label,1+Math.floor(b.width/2-k.width/2),49-b.height),b.fillColor=f,b},c=b(a);a.scale=a.scale||1;var f={url:c.toDataURL(),fillColor:c.fillColor};return window.google&&window.google.maps&&Object.assign(f,{size:new google.maps.Size(54*a.scale,48*a.scale),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(27*a.scale,48*a.scale),scaledSize:new google.maps.Size(54*a.scale,48*a.scale)}),f};b.toDecColor=m,b.parseColorString=function(a,b){var c,d,e={original:a};return b=b||1,-1!==a.indexOf("hsl")?(c=i(a,b),d=l(c.h,c.s,c.l,c.a)):(d=-1!==a.indexOf("rgb")?j(a,b):h(a,b),c=k(d.r,d.g,d.b,d.a)),e.hsl={h:c.h,s:c.s,l:c.l,a:c.a},e.rgb={r:d.r,g:d.g,b:d.b,a:d.a},e.fillColor=d.fillColor,e.strokeColor=d.strokeColor,e.hex=["#",d.r.toString(16),d.g.toString(16),d.b.toString(16)].join(""),e};var q=function(a){var b=a;if(-1!==a.indexOf("rgb")){var c=a.split(/[\(,\)]/gi);b=[(1*c[1]).toString(16),(1*c[2]).toString(16),(1*c[3]).toString(16)].join("")}else-1!==a.indexOf("#")&&(b=a.replace(/#/g,""));return b};return b.autoIcon=function(a){return"object"!=typeof a?(console.warn("autoIcon expects an object as its only parameter"),null):(a.label=a.label||"A",a.color=a.color||"#FF0000",a.fontsize=a.fontsize||11,a.font=a.font||"Arial",a.hexcolor=q(a.color),"0x"===String(a.label).substring(0,2)?(a.label=String.fromCharCode(String(a.label)),a.transparent_background===!0?p(a):n(a)):o(a))},b})}()})(function(a){"function"==typeof define&&define.amd?define([],a):"object"==typeof module&&module.exports&&"function"==typeof require?module.exports=a():a()});
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.MarkerFactory = factory());
+}(this, function () { 'use strict';
+
+    var MarkerFactory = {};
+
+    function compact(array) {
+        var index = -1,
+            length = array ? array.length : 0,
+            resIndex = 0,
+            result = [];
+
+        while (++index < length) {
+            var value = array[index];
+            if (value) {
+                result[resIndex++] = value;
+            }
+        }
+        return result;
+    }
+
+
+
+    var defaults = {
+        h: 1,
+        s: 78, // constant saturation
+        l: 63, // constant luminance
+        a: 1
+    };
+
+    var getColor = function (val, range) {
+        defaults.h = Math.floor((360 / range) * val);
+        return "hsla(" + defaults.h + "," + defaults.s + "%," + defaults.l + "%," + defaults.a + ")";
+    };
+
+    var getColor1 = function () {
+        return "hsla(" + defaults.h + "," + defaults.s + "%," + (defaults.l - 30) + "%," + defaults.a + ")";
+    };
+
+    var parseHalf = function (foo) {
+        return parseInt(foo / 2, 10);
+    };
+
+    var darken = function (stringcolor) {
+        var darkercolor = {};
+        if (stringcolor.fillColor.indexOf('rgb') !== -1) {
+            darkercolor.r = parseHalf(stringcolor.r);
+            darkercolor.g = parseHalf(stringcolor.g);
+            darkercolor.b = parseHalf(stringcolor.b);
+            darkercolor.fillColor = 'rgba(' + darkercolor.r + ',' + darkercolor.g + ',' + darkercolor.b + ',0.99)';
+        } else if (stringcolor.fillColor.indexOf('hsl') !== -1) {
+            darkercolor.h = stringcolor.h;
+            darkercolor.s = stringcolor.s;
+            darkercolor.l = stringcolor.l - 30;
+            darkercolor.fillColor = 'hsl(' + darkercolor.h + ',' + darkercolor.s + '%,' + darkercolor.l + '%)';
+        }
+
+        return darkercolor;
+    };
+
+    var parseHex = function (hexstring, opacity) {
+        var hexcolor = {
+            hex: hexstring
+        };
+
+        hexstring = hexstring.replace('#', '');
+        if (hexstring.length === 3) {
+            hexstring = hexstring[0] + hexstring[0] + hexstring[1] + hexstring[1] + hexstring[2] + hexstring[2];
+        }
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
+        }
+
+        hexcolor.r = parseInt(hexstring.substring(0, 2), 16);
+        hexcolor.g = parseInt(hexstring.substring(2, 4), 16);
+        hexcolor.b = parseInt(hexstring.substring(4, 6), 16);
+        hexcolor.a = opacity;
+        hexcolor.fillColor = 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
+        hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
+        hexcolor.rgb = hexcolor.fillColor;
+        return hexcolor;
+    };
+
+    var parseHSL = function (hslstring, opacity) {
+        var hslcolor = {},
+            hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
+
+        if (hslparts[3] === undefined) {
+            hslparts[3] = 1;
+        }
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
+        }
+
+        hslcolor.h = parseFloat(hslparts[0], 10);
+        hslcolor.s = parseFloat(hslparts[1], 10);
+        hslcolor.l = parseFloat(hslparts[2], 10);
+        hslcolor.a = parseFloat(opacity * hslparts[3], 10);
+
+        hslcolor.fillColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
+        hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
+        hslcolor.hsl = hslcolor.fillColor;
+        return hslcolor;
+    };
+
+    var parseRGB = function (rgbstring, opacity) {
+        var rgbcolor = {},
+            rgbparts = compact(rgbstring.split(/rgba?\(|\,|\)/));
+
+        if (rgbparts[3] === undefined) {
+            rgbparts[3] = 1;
+        }
+
+        if (isNaN(parseFloat(opacity, 10))) {
+            opacity = 1;
+        }
+
+        rgbcolor.r = parseInt(rgbparts[0], 10) % 256;
+        rgbcolor.g = parseInt(rgbparts[1], 10) % 256;
+        rgbcolor.b = parseInt(rgbparts[2], 10) % 256;
+        rgbcolor.a = parseFloat(opacity * rgbparts[3], 10);
+        rgbcolor.fillColor = 'rgba(' + rgbcolor.r + ',' + rgbcolor.g + ',' + rgbcolor.b + ',' + rgbcolor.a + ')';
+        rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
+        rgbcolor.rgb = rgbcolor.fillColor;
+        return rgbcolor;
+    };
+
+
+    var rgbToHSL = function (r, g, b, a) {
+        r = (r % 256) / 255;
+        g = (g % 256) / 255;
+        b = (b % 256) / 255;
+        if (a === undefined) {
+            a = 1;
+        }
+        var max = Math.max(r, g, b),
+            min = Math.min(r, g, b);
+        var h, s, l = (max + min) / 2;
+
+        if (max === min) {
+            h = s = 0; // achromatic
+        } else {
+            var d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+            default:
+                h = 0;
+                break;
+            }
+
+            h /= 6;
+        }
+        var hsl = {
+            h: Math.round(360 * h),
+            s: Math.round(100 * s),
+            l: Math.round(100 * l),
+            a: Math.round(100 * a) / 100
+        };
+
+        hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + hsl.a + ')';
+
+        return hsl;
+    };
+
+    var hslToRGB = function (h, s, l, a) {
+        var r, g, b;
+
+        h = parseFloat(h, 10) / 360;
+        s = parseFloat(s, 10) / 100;
+        l = parseFloat(l, 10) / 100;
+        if (a === undefined) {
+            a = 1;
+        }
+        if (s === 0) {
+            r = g = b = l; // achromatic
+        } else {
+            var hue2rgb = function (p, q, t) {
+                if (t < 0) {
+                    t += 1;
+                }
+                if (t > 1) {
+                    t -= 1;
+                }
+                if (t < 1 / 6) {
+                    return p + (q - p) * 6 * t;
+                }
+                if (t < 1 / 2) {
+                    return q;
+                }
+                if (t < 2 / 3) {
+                    return p + (q - p) * (2 / 3 - t) * 6;
+                }
+                return p;
+            };
+
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        if (a === undefined) {
+            a = 1;
+        }
+
+        var rgb = {
+            r: Math.round(r * 255),
+            g: Math.round(g * 255),
+            b: Math.round(b * 255),
+            a: parseFloat(a, 10)
+        };
+
+        rgb.fillColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + rgb.a + ')';
+
+        return rgb;
+
+    };
+
+    var toDecColor = function (stringcolor) {
+        var parsedcolor = {};
+        if (!stringcolor) {
+            parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
+        } else if (stringcolor.indexOf('rgb') !== -1) {
+            parsedcolor = parseRGB(stringcolor);
+        } else if (stringcolor.indexOf('hsl') !== -1) {
+            parsedcolor = parseHSL(stringcolor);
+        } else {
+            parsedcolor = parseHex(stringcolor);
+        }
+
+        return parsedcolor;
+    };
+
+
+    var createFatMarkerIcon = function (theoptions) {
+
+        var generateFatCanvas = function (options) {
+            var canvas = document.createElement("canvas");
+
+            canvas.width = 42;
+            canvas.height = 36;
+
+            var anchorX = canvas.width / 2,
+                anchorY = canvas.height - 1,
+                radius = (canvas.width - 18) / 2,
+                angulo = 1.1;
+
+
+            var fontsize = 11;
+
+            var context = canvas.getContext("2d");
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
+                color0, color1;
+
+            if (options.index !== undefined && options.count > 0) {
+                color0 = getColor(options.index, options.count);
+                color1 = getColor1();
+            } else {
+                var deccolor = toDecColor(options.color);
+                color0 = deccolor.fillColor;
+                color1 = darken(deccolor).fillColor;
+            }
+
+
+            grad.addColorStop(0, color0);
+            grad.addColorStop(1, color1);
+
+            context.fillStyle = grad;
+            context.strokeStyle = color1;
+            context.beginPath();
+
+            context.moveTo(anchorX, anchorY);
+
+
+            // arco superior
+            context.arc(anchorX, 2 + (0.50 * anchorY), radius, angulo, Math.PI - angulo, true);
+
+            //arco derecho
+            context.lineTo(anchorX, anchorY);
+
+            context.fill();
+            context.stroke();
+
+
+            // Círculo blanco
+            context.beginPath();
+            context.arc(anchorX, 2 + (0.50 * anchorY), (radius - 3), 0, 2 * Math.PI, false);
+            context.fillStyle = 'white';
+            context.fill();
+
+
+            context.beginPath();
+            // Render Label
+            //context.font = "11pt Arial";
+            //
+            var font = "'" + options.font + "'" || 'fontello';
+
+            context.font = fontsize + "pt " + font;
+            context.fillStyle = color1;
+
+            context.textBaseline = "top";
+
+            var textWidth = context.measureText(options.label);
+
+
+            // centre the text.
+            context.fillText(options.label,
+                1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
+                49 - canvas.height
+            );
+
+            return canvas;
+
+        };
+        theoptions.scale = theoptions.scale || 1;
+        var markerCanvas = generateFatCanvas(theoptions);
+
+        var iconObj = {
+            url: markerCanvas.toDataURL()
+        };
+        if (window.google && window.google.maps) {
+            Object.assign(iconObj, {
+                size: new google.maps.Size(42, 36),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(21, 36),
+                scaledSize: new google.maps.Size(42, 36)
+            });
+        }
+        return iconObj;
+    };
+
+
+    var createTextMarker = function (theoptions) {
+
+        var generateCanvas = function (options) {
+            var canvas = document.createElement("canvas");
+            var ancho = 30,
+                alto = 40;
+            canvas.width = ancho + 18;
+            canvas.height = alto;
+            var x = canvas.width / 2,
+                y = canvas.height - 2,
+                radius = ancho / 2,
+                angulo = 0.6;
+
+            var font = "'" + options.font + "'" || 'Arial';
+            var fontsize = options.fontsize || 11;
+
+            var context = canvas.getContext("2d");
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            var radius0 = 2 * radius,
+                cx = x + 0.95 * radius0,
+                cy = y + 0.45 * radius0;
+
+            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
+                color0, color1;
+            if (options.index !== undefined && options.count > 0) {
+                color0 = getColor(options.index, options.count);
+                color1 = getColor1();
+            } else {
+                var deccolor = toDecColor(options.color);
+                color0 = deccolor.fillColor;
+                color1 = darken(deccolor).fillColor;
+            }
+
+
+            grad.addColorStop(0, color0);
+            grad.addColorStop(1, color1);
+
+            context.fillStyle = grad;
+            context.strokeStyle = 'rgba(200,200,200,0.7)';
+
+            context.beginPath();
+
+            //arco izquierdo
+            context.arc(cx - 1, cy, radius0, 9 * Math.PI / 8, -6 * Math.PI / 8, false);
+
+            // arco superior
+            context.arc(x, (y - 7) / 2, radius, angulo, Math.PI - angulo, true);
+
+            //arco derecho
+            context.arc(2 * x - cx + 1, cy, radius0, -0.95 * Math.PI / 3, -Math.PI / 8, false);
+            context.fill();
+            context.stroke();
+
+
+            context.beginPath();
+            context.arc(x, 0.40 * y, 2 * radius / 3, 0, 2 * Math.PI, false);
+            context.fillStyle = 'white';
+            context.fill();
+
+            context.beginPath();
+
+            // Render Label
+            //context.font = "11pt Arial";
+            context.font = fontsize + "pt " + font;
+            context.textBaseline = "top";
+
+            var textWidth = context.measureText(options.label);
+
+            if (textWidth.width > ancho || String(options.label).length > 3) {
+                context.rect(x - 2 - textWidth.width / 2, y - 30, x - 2 + textWidth.width / 2, y - 23);
+                context.fillStyle = '#F7F0F0';
+                context.fill();
+                context.stroke();
+            }
+
+
+            context.fillStyle = "black";
+            context.strokeStyle = "black";
+            // centre the text.
+            context.fillText(options.label, 1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 8);
+
+            return canvas;
+
+        };
+        theoptions.scale = theoptions.scale || 0.75;
+        var markerCanvas = generateCanvas(theoptions);
+
+        var iconObj = {
+            url: markerCanvas.toDataURL()
+        };
+        if (window.google && window.google.maps) {
+            Object.assign(iconObj, {
+                size: new google.maps.Size(48, 40),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(24 * theoptions.scale, 40 * theoptions.scale),
+                scaledSize: new google.maps.Size(48 * theoptions.scale, 40 * theoptions.scale)
+            });
+        }
+
+        return iconObj;
+    };
+
+
+    var createTransparentMarkerIcon = function (theoptions) {
+
+        var generateTransparentCanvas = function (options) {
+            var canvas = document.createElement("canvas");
+
+            canvas.width = 54;
+            canvas.height = 48;
+            var context = canvas.getContext("2d");
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
+                color0, color1;
+
+            if (options.index !== undefined && options.count > 0) {
+                color0 = getColor(options.index, options.count);
+                color1 = getColor1();
+            } else {
+                var deccolor = toDecColor(options.color);
+                color0 = deccolor.fillColor;
+                color1 = darken(deccolor).fillColor;
+            }
+
+            grad.addColorStop(0, color0);
+            grad.addColorStop(1, color1);
+
+            context.beginPath();
+            // Render Label
+            //context.font = "11pt Arial";
+
+            context.font = "40px '" + options.font + "'";
+            context.fillStyle = color1;
+
+            context.textBaseline = "top";
+
+            var textWidth = context.measureText(options.label);
+
+
+            // centre the text.
+            context.fillText(options.label,
+                1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
+                49 - canvas.height
+            );
+
+            canvas.fillColor = color0;
+
+            return canvas;
+
+        };
+        var markerCanvas = generateTransparentCanvas(theoptions);
+        theoptions.scale = theoptions.scale || 1;
+
+
+        var iconObj = {
+            url: markerCanvas.toDataURL(),
+            fillColor: markerCanvas.fillColor
+        };
+        if (window.google && window.google.maps) {
+            Object.assign(iconObj, {
+                size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(27 * theoptions.scale, 48 * theoptions.scale),
+                scaledSize: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale)
+            });
+        }
+
+        return iconObj;
+    };
+    MarkerFactory.toDecColor = toDecColor;
+
+    MarkerFactory.parseColorString = function (somecolor, opacity) {
+        var parsedcolor = {
+                original: somecolor
+            },
+            hsl, rgb;
+
+        opacity = opacity || 1;
+
+        if (somecolor.indexOf('hsl') !== -1) {
+            hsl = parseHSL(somecolor, opacity);
+            rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a);
+
+        } else {
+            if (somecolor.indexOf('rgb') !== -1) {
+                rgb = parseRGB(somecolor, opacity);
+            } else {
+                rgb = parseHex(somecolor, opacity);
+            }
+            hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
+
+        }
+
+        parsedcolor.hsl = {
+            h: hsl.h,
+            s: hsl.s,
+            l: hsl.l,
+            a: hsl.a
+        };
+        parsedcolor.rgb = {
+            r: rgb.r,
+            g: rgb.g,
+            b: rgb.b,
+            a: rgb.a
+        };
+
+        parsedcolor.fillColor = rgb.fillColor;
+        parsedcolor.strokeColor = rgb.strokeColor;
+        parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
+        return parsedcolor;
+    };
+
+    var getHexColor = function (color) {
+        var hexcolor = color;
+        if (color.indexOf('rgb') !== -1) {
+            var rgbArr = color.split(/[\(,\)]/ig);
+            hexcolor = [
+                (1 * rgbArr[1]).toString(16), (1 * rgbArr[2]).toString(16), (1 * rgbArr[3]).toString(16)
+            ].join('');
+        } else if (color.indexOf('#') !== -1) {
+            hexcolor = color.replace(/#/g, '');
+        }
+        return hexcolor;
+    };
+
+    MarkerFactory.autoIcon = function (options) {
+
+
+        if (typeof (options) !== 'object') {
+            console.warn('autoIcon expects an object as its only parameter');
+            return null;
+        }
+
+
+
+        options.label = options.label || 'A';
+        options.color = options.color || '#FF0000';
+        options.fontsize = options.fontsize || 11;
+        options.font = options.font || 'Arial';
+
+
+        options.hexcolor = getHexColor(options.color);
+
+        if (String(options.label).substring(0, 2) === '0x') {
+            // This is a charcode specified as an octal number, so I'll decode it
+            options.label = String.fromCharCode(String(options.label));
+
+            if (options.transparent_background === true) {
+                // Estilo frontdev
+                return createTransparentMarkerIcon(options);
+            } else {
+                return createFatMarkerIcon(options);
+            }
+
+
+        } else {
+            // This is text I should print literally
+            return createTextMarker(options);
+        }
+
+
+    };
+
+    return MarkerFactory;
+
+}));
 //# sourceMappingURL=markerfactory.js.map

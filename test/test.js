@@ -1,7 +1,7 @@
 var assert = require('assert'),
 	_ = require('lodash'),
 	MarkerFactory = require('../dist/markerfactory');
-
+console.dir(MarkerFactory);
 var testColors = {
 		hex3: "#F39",
 		hex6: "#FF3399",

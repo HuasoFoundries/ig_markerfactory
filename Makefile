@@ -9,8 +9,8 @@ default: build
 .PHONY: build test
 
 build:
-	jspm build src/markerfactory.js dist/markerfactory.js --minify
-	jspm build src/markerfactory.js dist/markerfactory.esm.js --format esm --skip-source-maps
+	jspm build src/markerfactory.js dist/markerfactory.js --format umd  --global-name MarkerFactory
+	jspm build src/markerfactory.js dist/markerfactory.esm.js --format esm --skip-source-maps --global-name MarkerFactory
 
 test:
 	./node_modules/.bin/mocha
