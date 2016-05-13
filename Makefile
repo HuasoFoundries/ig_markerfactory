@@ -26,6 +26,7 @@ tag_and_push:
 		git tag v$(v)
 		git push
 		git push --tags
+		npm publish
 
 tag: update_version build tag_and_push		
 
