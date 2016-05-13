@@ -2,7 +2,7 @@
   "name": "ig_markerfactory",
   "main": "markerfactory.js",
   "jsnext:main": "markerfactory.esm.js",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "license": "MIT",
   "repository": {
     "type": "git",
