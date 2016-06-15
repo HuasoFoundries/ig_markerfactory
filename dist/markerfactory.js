@@ -462,27 +462,22 @@
             context.clearRect(0, 0, canvas.width, canvas.height);
 
 
-            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
-                color0, color1;
+            var color0;
 
             if (options.index !== undefined && options.count > 0) {
                 color0 = getColor(options.index, options.count);
-                color1 = getColor1();
             } else {
                 var deccolor = toDecColor(options.color);
                 color0 = deccolor.fillColor;
-                color1 = darken(deccolor).fillColor;
             }
 
-            grad.addColorStop(0, color0);
-            grad.addColorStop(1, color1);
 
             context.beginPath();
             // Render Label
             //context.font = "11pt Arial";
 
             context.font = "40px '" + options.font + "'";
-            context.fillStyle = color1;
+            context.fillStyle = color0;
 
             context.textBaseline = "top";
 

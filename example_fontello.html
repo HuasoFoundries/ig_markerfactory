@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Page Needs
+ ================================================== -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Font Awesome, the iconic font and CSS framework">
+    <meta name="author" content="Dave Gandy">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Marker Factory Example</title>
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="examples/css/fontello.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="dist/markerfactory.js"></script>
+    <script>
+    var autoIcon = function(options) {
+
+        if (options.font === 'fontawesome-webfont' ||
+            options.font === 'fontello' ||
+            options.font === 'Material Icons' ||
+            options.font === 'FontAwesome') {
+
+            options.label = options.label || 'e8b4';
+
+            options.label = "0x" + options.label;
+            options.scale = options.scale || 1;
+        } else {
+            options.scale = options.scale || 0.75;
+        }
+
+        // En frontdev el icono debe aparecer solo, sin envoltorio
+        options.transparent_background = options.transparent_background || false;
+
+        //console.log('autoIcon no transparency', options);
+        return MarkerFactory.autoIcon(options);
+
+    };
+
+    jQuery(document).ready(function() {
+
+        var camera = autoIcon({
+                label: 'E810',
+                font: 'fontello',
+                color: '#CC0000',
+                fontsize: 20
+            }),
+            shopping = autoIcon({
+                label: 'E863',
+                font: 'fontello',
+                color: '#CC0000',
+                fontsize: 20
+            }),
+            plane = autoIcon({
+                label: 'E892',
+                font: 'fontello',
+                color: '#CC0000',
+                fontsize: 20
+            }),
+            taxi = autoIcon({
+                label: 'E88C',
+                font: 'fontello',
+                color: '#CC0000',
+                fontsize: 20
+            }),
+            camera_img = document.createElement("img"),
+            shopping_img = document.createElement("img"),
+            plane_img = document.createElement("img"),
+            taxi_img = document.createElement("img");
+
+        camera_img.setAttribute("src", camera.url);
+        shopping_img.setAttribute("src", shopping.url);
+        plane_img.setAttribute("src", plane.url);
+        taxi_img.setAttribute("src", taxi.url);
+
+
+        document.getElementById("camera").appendChild(camera_img);
+        document.getElementById("shopping").appendChild(shopping_img);
+        document.getElementById("plane").appendChild(plane_img);
+        document.getElementById("taxi").appendChild(taxi_img);
+
+
+    });
+    </script>
+</head>
+
+<body>
+    <div class=container>
+        <h3>Quick Example</h3>
+        <p class=lead>In this example we're using Font-Awesome 4.6. Below, you will see a few icon-like character, and the corresponding marker you can generate from them.</p>
+        <hr class=half-rule>
+        <div class=row>
+            <div class="col-sm-3" id="camera">
+                <h3>Camera</h3>
+                <i class="fa fa-camera-retro fa-lg"></i>
+                <p>Could turn to this:</p>
+            </div>
+            <div class="col-sm-3" id="shopping">
+                <h3>shopping</h3>
+                <i class="fa fa-shopping fa-lg" aria-hidden="true"></i>
+                <p>Could turn to this:</p>
+            </div>
+            <div class="col-sm-3" id="plane">
+                <h3>Plane</h3>
+                <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                <p>Could turn to this:</p>
+            </div>
+            <div class="col-sm-3" id="taxi">
+                <h3>Taxi</h3>
+                <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                <p>Could turn to this:</p>
+            </div>
+        </div>
+        <hr class=half-rule>
+    </div>
+</body>
