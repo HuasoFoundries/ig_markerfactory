@@ -507,7 +507,7 @@
             Object.assign(iconObj, {
                 size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
                 origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(27 * theoptions.scale, 48 * theoptions.scale),
+                anchor: new google.maps.Point(27 * theoptions.scale, 40 * theoptions.scale),
                 scaledSize: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale)
             });
         }
