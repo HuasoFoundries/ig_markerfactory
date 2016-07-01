@@ -37,17 +37,20 @@ var parseHalf = function (foo) {
     return parseInt(foo / 2, 10);
 };
 
-var darken = function (stringcolor) {
+var darken = function (stringcolor, factor) {
     var darkercolor = {};
+    if (!factor) {
+        factor = 1;
+    }
     if (stringcolor.fillColor.indexOf('rgb') !== -1) {
-        darkercolor.r = parseHalf(stringcolor.r);
-        darkercolor.g = parseHalf(stringcolor.g);
-        darkercolor.b = parseHalf(stringcolor.b);
+        darkercolor.r = factor * parseHalf(stringcolor.r);
+        darkercolor.g = factor * parseHalf(stringcolor.g);
+        darkercolor.b = factor * parseHalf(stringcolor.b);
         darkercolor.fillColor = 'rgba(' + darkercolor.r + ',' + darkercolor.g + ',' + darkercolor.b + ',0.99)';
     } else if (stringcolor.fillColor.indexOf('hsl') !== -1) {
         darkercolor.h = stringcolor.h;
         darkercolor.s = stringcolor.s;
-        darkercolor.l = stringcolor.l - 30;
+        darkercolor.l = factor * stringcolor.l - 30;
         darkercolor.fillColor = 'hsl(' + darkercolor.h + ',' + darkercolor.s + '%,' + darkercolor.l + '%)';
     }
 
@@ -455,34 +458,26 @@ var createTransparentMarkerIcon = function (theoptions) {
 
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-
-        var color0;
+        var color0, color1;
 
         if (options.index !== undefined && options.count > 0) {
             color0 = getColor(options.index, options.count);
+            color1 = getColor1();
         } else {
             var deccolor = toDecColor(options.color);
             color0 = deccolor.fillColor;
+            color1 = darken(deccolor, 0.8).fillColor;
         }
 
 
         context.beginPath();
-        // Render Label
-        //context.font = "11pt Arial";
-
         context.font = "40px '" + options.font + "'";
         context.fillStyle = color0;
-
+        context.strokeStyle = color1;
         context.textBaseline = "top";
-
         var textWidth = context.measureText(options.label);
-
-
-        // centre the text.
-        context.fillText(options.label,
-            1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
-            49 - canvas.height
-        );
+        context.fillText(options.label, 1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 49 - canvas.height);
+        context.strokeText(options.label, 2 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 50 - canvas.height);
 
         canvas.fillColor = color0;
 
