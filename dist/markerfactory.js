@@ -472,9 +472,8 @@
             } else {
                 var deccolor = toDecColor(options.color);
                 color0 = deccolor.fillColor;
-                color1 = darken(deccolor, 0.8).fillColor;
+                color1 = darken(deccolor).fillColor;
             }
-
 
             context.beginPath();
             context.font = "40px '" + options.font + "'";
@@ -483,6 +482,12 @@
             context.textBaseline = "top";
             var textWidth = context.measureText(options.label);
             context.fillText(options.label, 1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 49 - canvas.height);
+            if (options.shadow) {
+                context.shadowOffsetX = -4;
+                context.shadowOffsetY = 3;
+                context.shadowBlur = 2;
+                context.shadowColor = color1;
+            }
             context.strokeText(options.label, 2 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 50 - canvas.height);
 
             canvas.fillColor = color0;
@@ -493,11 +498,14 @@
         var markerCanvas = generateTransparentCanvas(theoptions);
         theoptions.scale = theoptions.scale || 1;
 
-
         var iconObj = {
+            canvas: markerCanvas,
             url: markerCanvas.toDataURL(),
             fillColor: markerCanvas.fillColor
         };
+
+        Object.assign(iconObj, theoptions);
+
         if (window.google && window.google.maps) {
             Object.assign(iconObj, {
                 size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
