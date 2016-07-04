@@ -526,6 +526,7 @@
             return canvas;
 
         };
+
         var markerCanvas = generateTransparentCanvas(theoptions);
         theoptions.scale = theoptions.scale || 1;
 
