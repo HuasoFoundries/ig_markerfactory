@@ -312,11 +312,11 @@ var createFatMarkerIcon = function (theoptions) {
 
         context.textBaseline = "top";
 
-        var textWidth = context.measureText(options.label);
+        var textWidth = context.measureText(options.unicodelabel);
 
 
         // centre the text.
-        context.fillText(options.label,
+        context.fillText(options.unicodelabel,
             1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
             49 - canvas.height
         );
@@ -625,8 +625,8 @@ MarkerFactory.autoIcon = function (options) {
 
     if (String(options.label).substring(0, 2) === '0x') {
         // This is a charcode specified as an octal number, so I'll decode it
-        options.label = String.fromCharCode(String(options.label));
-
+        options.unicodelabel = String.fromCharCode(String(options.label));
+        options.label = options.label.slice(2);
         if (options.transparent_background === true) {
             // Estilo frontdev
             return createTransparentMarkerIcon(options);
