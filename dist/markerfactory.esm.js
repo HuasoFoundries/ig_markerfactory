@@ -481,7 +481,6 @@ var createTransparentMarkerIcon = function (theoptions) {
             var grad = context.createLinearGradient(text_x, 0, canvas.width, canvas.height);
 
             grad.addColorStop(0, '#FFFFFF');
-            grad.addColorStop(0.5, '#FFFFFF');
             grad.addColorStop(1, color0);
 
             //console.debug('applying shadow');
@@ -497,7 +496,7 @@ var createTransparentMarkerIcon = function (theoptions) {
             context.fillStyle = grad;
             context.fillText(options.unicodelabel, text_x + 4, 6);
 
-            context.strokeStyle = color1;
+            context.strokeStyle = '#FFFFFF';
             context.strokeText(options.unicodelabel, text_x + 4, 6);
 
         } else {
@@ -540,7 +539,7 @@ var createTransparentMarkerIcon = function (theoptions) {
         Object.assign(iconObj, {
             size: new google.maps.Size(54 * scale, 48 * scale),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(27 * scale, 39 * scale),
+            anchor: new google.maps.Point(27 * scale, 24 * scale),
             scaledSize: new google.maps.Size(54 * scale, 48 * scale)
         });
     }
