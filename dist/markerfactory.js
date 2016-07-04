@@ -456,7 +456,7 @@
     var createTransparentMarkerIcon = function (theoptions) {
 
         var generateTransparentCanvas = function (options) {
-            var canvas = document.createElement("canvas");
+            var canvas = options.canvas || document.createElement("canvas");
 
             canvas.width = 54;
             canvas.height = 48;
@@ -476,19 +476,50 @@
             }
 
             context.beginPath();
+
             context.font = "40px '" + options.font + "'";
-            context.fillStyle = color0;
-            context.strokeStyle = color1;
+
             context.textBaseline = "top";
-            var textWidth = context.measureText(options.label);
-            context.fillText(options.label, 1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 49 - canvas.height);
+            var textWidth = context.measureText(options.unicodelabel),
+                text_x = Math.floor((canvas.width / 2) - (textWidth.width / 2));
+
             if (options.shadow) {
-                context.shadowOffsetX = -4;
-                context.shadowOffsetY = 3;
-                context.shadowBlur = 2;
-                context.shadowColor = color1;
+                var grad = context.createLinearGradient(text_x, 0, canvas.width, canvas.height);
+
+                grad.addColorStop(0, '#FFFFFF');
+                grad.addColorStop(0.5, '#FFFFFF');
+                grad.addColorStop(1, color0);
+
+                //console.debug('applying shadow');
+                context.shadowOffsetX = -2;
+                context.shadowOffsetY = -2;
+                context.shadowBlur = 0;
+
+                context.fillStyle = '#FFFFFF';
+                context.shadowColor = '#666666';
+
+                context.fillText(options.unicodelabel, text_x - 4, 0);
+                context.fillText(options.unicodelabel, text_x, 3);
+                context.fillStyle = grad;
+                context.fillText(options.unicodelabel, text_x + 4, 6);
+
+                context.strokeStyle = color1;
+                context.strokeText(options.unicodelabel, text_x + 4, 6);
+
+            } else {
+
+                context.shadowOffsetX = 2;
+                context.shadowOffsetY = 2;
+                context.shadowBlur = 0;
+                context.shadowColor = '#FFFFFF';
+
+                context.fillStyle = color0;
+                context.fillText(options.unicodelabel, text_x + 1, 0);
+
+                context.strokeStyle = color1;
+                context.strokeText(options.unicodelabel, text_x + 1, 0);
+
             }
-            context.strokeText(options.label, 2 + Math.floor((canvas.width / 2) - (textWidth.width / 2)), 50 - canvas.height);
 
             canvas.fillColor = color0;
 
@@ -498,6 +529,10 @@
         var markerCanvas = generateTransparentCanvas(theoptions);
         theoptions.scale = theoptions.scale || 1;
 
+        var scale = theoptions.scale;
+        if (theoptions.shadow) {
+            scale = 0.9 * scale;
+        }
         var iconObj = {
             canvas: markerCanvas,
             url: markerCanvas.toDataURL(),
@@ -508,15 +543,17 @@
 
         if (window.google && window.google.maps) {
             Object.assign(iconObj, {
-                size: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale),
+                size: new google.maps.Size(54 * scale, 48 * scale),
                 origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(27 * theoptions.scale, 40 * theoptions.scale),
-                scaledSize: new google.maps.Size(54 * theoptions.scale, 48 * theoptions.scale)
+                anchor: new google.maps.Point(27 * scale, 39 * scale),
+                scaledSize: new google.maps.Size(54 * scale, 48 * scale)
             });
         }
+        //console.debug('createTransparentMarkerIcon', iconObj);
 
         return iconObj;
     };
+
     MarkerFactory.toDecColor = toDecColor;
 
     MarkerFactory.parseColorString = function (somecolor, opacity) {
