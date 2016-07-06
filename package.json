@@ -3,7 +3,7 @@
   "main": "markerfactory.js",
   "jsnext:main": "markerfactory.esm.js",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "license": "MIT",
   "repository": {
     "type": "git",
