@@ -383,7 +383,7 @@ var createFatMarkerIcon = function (theoptions) {
         // arco superior
         context.arc(anchorX, 2 + (0.50 * anchorY), radius, angulo, Math.PI - angulo, true);
 
-        //arco derecho
+        //punta inferior
         context.lineTo(anchorX, anchorY);
 
         context.fill();
@@ -398,7 +398,7 @@ var createFatMarkerIcon = function (theoptions) {
 
         context.beginPath();
 
-        context.font = 'normal normal normal ' + fontsize + 'pt ' + font;
+        context.font = 'normal normal normal ' + fontsize + 'px ' + font;
         console.log('context font', context.font);
         context.fillStyle = color1;
         context.textBaseline = "top";
@@ -406,7 +406,7 @@ var createFatMarkerIcon = function (theoptions) {
 
 
         // centre the text.
-        context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 7);
+        context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
 
 
         return canvas;
@@ -431,21 +431,19 @@ var createFatMarkerIcon = function (theoptions) {
 };
 
 
-
-
-
 var createTransparentMarkerIcon = function (theoptions) {
 
     var generateTransparentCanvas = function (options) {
-        var canvas = options.canvas || document.createElement("canvas");
+        var canvas = options.canvas || document.createElement("canvas"),
+            context = canvas.getContext("2d"),
+            font = options.font || 'fontello',
+            fontsize = options.fontsize || 40,
+            color0, color1;
 
         canvas.width = 54;
         canvas.height = 48;
-        var context = canvas.getContext("2d");
-
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        var color0, color1;
 
         if (options.index !== undefined && options.count > 0) {
             color0 = getColor(options.index, options.count);
@@ -458,7 +456,7 @@ var createTransparentMarkerIcon = function (theoptions) {
 
         context.beginPath();
 
-        context.font = "40px '" + options.font + "'";
+        context.font = 'normal normal normal ' + fontsize + 'px ' + font;
 
         context.textBaseline = "top";
         var textWidth = context.measureText(options.unicodelabel),

@@ -1,4 +1,4 @@
-define(['jquery', 'lodash', 'markerfactory'], function (jQuery, _, MarkerFactory) {
+define(['jquery', 'lodash', 'ig_markerfactory'], function (jQuery, _, MarkerFactory) {
 
 	console.debug('jQuery is', jQuery, 'MarkerFactory is', MarkerFactory);
 

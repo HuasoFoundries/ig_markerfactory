@@ -1,5 +1,5 @@
 {
-  "name": "markerfactory",
+  "name": "ig_markerfactory",
   "main": "markerfactory.js",
   "jsnext:main": "markerfactory.esm.js",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
@@ -7,12 +7,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HuasoFoundries/markerfactory.git"
+    "url": "git+https://github.com/HuasoFoundries/ig_markerfactory.git"
   },
   "bugs": {
-    "url": "https://github.com/HuasoFoundries/markerfactory/issues"
+    "url": "https://github.com/HuasoFoundries/ig_markerfactory/issues"
   },
-  "homepage": "https://github.com/HuasoFoundries/markerfactory#readme",
+  "homepage": "https://github.com/HuasoFoundries/ig_markerfactory#readme",
   "engines": {
     "node": "4.2.x"
   },

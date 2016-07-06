@@ -1,7 +1,7 @@
 SystemJS.config({
   transpiler: false,
   packages: {
-    "markerfactory": {
+    "ig_markerfactory": {
       "main": "markerfactory.js"
     }
   }

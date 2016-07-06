@@ -31,15 +31,9 @@ Because some libraries, like google maps API, expect its Markers to have an vali
 
 ```
 
-But the problem remains. You'll need to host every icon and color combination thay might be.
+But still, you need an image. You'll need to host every icon and color combination thay might be.
 
-
-
-
-
-
-
-, which in turn must be an image. Moreover, google.maps.Marker would accept setting its or at leat a string representing  to be defined through images instead of fonts and classnames, and it's a pain to host every marker color combination. Besides, this library allows to create images that combine a graphic background with letters or numbers. 
+With MarkerFactory, you generate those icons on the fly.
 
 
 
@@ -48,11 +42,20 @@ But the problem remains. You'll need to host every icon and color combination th
 Install it with jspm like so:
 
 ```js
-jspm install github:huasofoundries/markerfactory
+jspm install npm:ig_markerfactory
+```
+
+
+Or, if for some reason NPM is down:
+
+```js
+jspm install github:huasofoundries/ig_markerfactory
 ```
 
 If you don't use jspm, you can as well clone this repo and copy 
 `dist/markerfactory.js` to your project. 
+
+
 
 ## Usage
 

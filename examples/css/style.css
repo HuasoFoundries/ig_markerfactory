@@ -15,3 +15,7 @@
 	float: left;
 	padding: 19px 6px 1px 6px;
 }
+
+.col-md-2 p {
+	padding: 15px 0 1px 0;
+}
