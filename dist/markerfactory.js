@@ -1,8 +1,9 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global.MarkerFactory = factory());
-}(this, function () { 'use strict';
+        typeof define === 'function' && define.amd ? define(factory) :
+        (global.MarkerFactory = factory());
+}(this, function () {
+    'use strict';
 
     var MarkerFactory = {};
 
@@ -20,8 +21,6 @@
         }
         return result;
     }
-
-
 
     var defaults = {
         h: 1,
@@ -247,107 +246,6 @@
     };
 
 
-    var createFatMarkerIcon = function (theoptions) {
-
-        var generateFatCanvas = function (options) {
-            var canvas = document.createElement("canvas");
-
-            canvas.width = 42;
-            canvas.height = 36;
-
-            var anchorX = canvas.width / 2,
-                anchorY = canvas.height - 1,
-                radius = (canvas.width - 18) / 2,
-                angulo = 1.1;
-
-
-            var fontsize = 11;
-
-            var context = canvas.getContext("2d");
-
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
-            var grad = context.createLinearGradient(0, 0, 0, canvas.height),
-                color0, color1;
-
-            if (options.index !== undefined && options.count > 0) {
-                color0 = getColor(options.index, options.count);
-                color1 = getColor1();
-            } else {
-                var deccolor = toDecColor(options.color);
-                color0 = deccolor.fillColor;
-                color1 = darken(deccolor).fillColor;
-            }
-
-
-            grad.addColorStop(0, color0);
-            grad.addColorStop(1, color1);
-
-            context.fillStyle = grad;
-            context.strokeStyle = color1;
-            context.beginPath();
-
-            context.moveTo(anchorX, anchorY);
-
-
-            // arco superior
-            context.arc(anchorX, 2 + (0.50 * anchorY), radius, angulo, Math.PI - angulo, true);
-
-            //arco derecho
-            context.lineTo(anchorX, anchorY);
-
-            context.fill();
-            context.stroke();
-
-
-            // Círculo blanco
-            context.beginPath();
-            context.arc(anchorX, 2 + (0.50 * anchorY), (radius - 3), 0, 2 * Math.PI, false);
-            context.fillStyle = 'white';
-            context.fill();
-
-
-            context.beginPath();
-            // Render Label
-            //context.font = "11pt Arial";
-            //
-            var font = "'" + options.font + "'" || 'fontello';
-
-            context.font = fontsize + "pt " + font;
-            context.fillStyle = color1;
-
-            context.textBaseline = "top";
-
-            var textWidth = context.measureText(options.unicodelabel);
-
-
-            // centre the text.
-            context.fillText(options.unicodelabel,
-                1 + Math.floor((canvas.width / 2) - (textWidth.width / 2)),
-                49 - canvas.height
-            );
-
-            return canvas;
-
-        };
-        theoptions.scale = theoptions.scale || 1;
-        var markerCanvas = generateFatCanvas(theoptions);
-
-        var iconObj = {
-            url: markerCanvas.toDataURL()
-        };
-        if (window.google && window.google.maps) {
-            Object.assign(iconObj, {
-                size: new google.maps.Size(42, 36),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(21, 36),
-                scaledSize: new google.maps.Size(42, 36)
-            });
-        }
-        return iconObj;
-    };
-
-
     var createTextMarker = function (theoptions) {
 
         var generateCanvas = function (options) {
@@ -452,19 +350,110 @@
         return iconObj;
     };
 
+    var createFatMarkerIcon = function (theoptions) {
+
+        var generateFatCanvas = function (options) {
+            var canvas = options.canvas || document.createElement("canvas"),
+                anchorX = 27,
+                anchorY = 53,
+                radius = (anchorX - 9),
+                angulo = 1.1,
+                font = options.font || 'fontello',
+                fontsize = options.fontsize || 14,
+                context = canvas.getContext("2d"),
+                grad = context.createLinearGradient(0, 0, 0, anchorY),
+                color0, color1;
+
+            canvas.width = anchorX * 2;
+            canvas.height = anchorY + 1;
+
+            if (options.index !== undefined && options.count > 0) {
+                color0 = getColor(options.index, options.count);
+                color1 = getColor1();
+            } else {
+                var deccolor = toDecColor(options.color);
+                color0 = deccolor.fillColor;
+                color1 = darken(deccolor).fillColor;
+            }
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            grad.addColorStop(0, color0);
+            grad.addColorStop(1, color1);
+
+            context.fillStyle = grad;
+            context.strokeStyle = color1;
+            context.beginPath();
+
+            context.moveTo(anchorX, anchorY);
+
+            // arco superior
+            context.arc(anchorX, 2 + (0.50 * anchorY), radius, angulo, Math.PI - angulo, true);
+
+            //punta inferior
+            context.lineTo(anchorX, anchorY);
+
+            context.fill();
+            context.stroke();
+
+            // Círculo blanco
+            context.beginPath();
+            context.arc(anchorX, 2 + (0.50 * anchorY), (radius - 3), 0, 2 * Math.PI, false);
+            context.fillStyle = 'white';
+            context.fill();
+
+
+            context.beginPath();
+
+            context.font = 'normal normal normal ' + fontsize + 'px ' + font;
+            console.log('context font', context.font);
+            context.fillStyle = color1;
+            context.textBaseline = "top";
+            var textWidth = context.measureText(options.unicodelabel);
+
+
+            // centre the text.
+            context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
+
+
+            return canvas;
+
+        };
+        var scale = theoptions.scale || 1,
+            markerCanvas = generateFatCanvas(theoptions);
+
+        var iconObj = {
+            url: markerCanvas.toDataURL(),
+            scale: scale
+        };
+        if (window.google && window.google.maps) {
+            Object.assign(iconObj, {
+                size: new google.maps.Size(54, 48),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(21 * scale, 36 * scale),
+                scaledSize: new google.maps.Size(42 * scale, 36 * scale)
+            });
+        }
+        return iconObj;
+    };
+
+
+
+
 
     var createTransparentMarkerIcon = function (theoptions) {
 
         var generateTransparentCanvas = function (options) {
-            var canvas = options.canvas || document.createElement("canvas");
+            var canvas = options.canvas || document.createElement("canvas"),
+                context = canvas.getContext("2d"),
+                font = options.font || 'fontello',
+                fontsize = options.fontsize || 40,
+                color0, color1;
 
             canvas.width = 54;
             canvas.height = 48;
-            var context = canvas.getContext("2d");
-
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            var color0, color1;
 
             if (options.index !== undefined && options.count > 0) {
                 color0 = getColor(options.index, options.count);
@@ -477,7 +466,7 @@
 
             context.beginPath();
 
-            context.font = "40px '" + options.font + "'";
+            context.font = 'normal normal normal ' + fontsize + 'px ' + font;
 
             context.textBaseline = "top";
             var textWidth = context.measureText(options.unicodelabel),
@@ -620,7 +609,7 @@
 
 
 
-        options.label = options.label || 'A';
+        options.label = String(options.label || 'A');
         options.color = options.color || '#FF0000';
         options.fontsize = options.fontsize || 11;
         options.font = options.font || 'Arial';
@@ -628,10 +617,11 @@
 
         options.hexcolor = getHexColor(options.color);
 
-        if (String(options.label).substring(0, 2) === '0x') {
-            // This is a charcode specified as an octal number, so I'll decode it
-            options.unicodelabel = String.fromCharCode(String(options.label));
-            options.label = options.label.slice(2);
+        if (options.label.length === 4 || options.label.substring(0, 2) === '0x') {
+
+            options.label = options.label.slice(-4);
+            options.unicodelabel = String.fromCharCode('0x' + options.label);
+
             if (options.transparent_background === true) {
                 // Estilo frontdev
                 return createTransparentMarkerIcon(options);

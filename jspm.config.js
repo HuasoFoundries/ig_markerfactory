@@ -1,8 +1,8 @@
 SystemJS.config({
   transpiler: false,
   packages: {
-    "ig_markerfactory": {
-      "main": "ig_markerfactory.js"
+    "markerfactory": {
+      "main": "markerfactory.js"
     }
   }
 });
@@ -12,5 +12,10 @@ SystemJS.config({
     "npm:@*/*.json",
     "npm:*.json",
     "github:*/*.json"
-  ]
+  ],
+  map: {
+    "jquery": "npm:jquery@3.0.0",
+    "lodash": "npm:lodash@4.13.1"
+  },
+  packages: {}
 });

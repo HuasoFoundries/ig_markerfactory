@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head version="">
+    <title>Marker Factory Example</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="examples/css/fontello.css" rel="stylesheet">
+    <link href="examples/css/font-awesome.css" rel="stylesheet">
+    <link href="examples/css/style.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/bluebird/3.4/bluebird.js"></script>
+    <script src="/jspm_packages/system.js"></script>
+    <script>
+    window.define = System.amdDefine;
+    window.require = System.amdRequire;
+    window.globalvars = {
+        transparent_background: true
+    };
+    console.timerInfo = function() {
+        return function() {};
+    };
+    </script>
+    <script src="/jspm.browser.js"></script>
+    <script src="/jspm.config.js"></script>
+    <script>
+    console.log('config loaded');
+
+    System.import('/examples/run_demos.js');
+    console.log('Loading test entry point...');
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <hr class="half-rule">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-3 ">
+                    <h3>Camera</h3>
+                </div>
+                <div class="col-md-3">
+                    <h3>shopping</h3>
+                </div>
+                <div class="col-md-3">
+                    <h3>Plane</h3>
+                </div>
+                <div class="col-md-3">
+                    <h3>Taxi</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="fontello">
+            <div class="col-md-2">
+                <p><b>Fontello</b> font-family</p>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-3 camera">
+                    <i class="fontello-camera"></i>
+                </div>
+                <div class="col-md-3 retail">
+                    <i class="fontello-grocery-store" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-3 plane">
+                    <i class="fontello-airport" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-3 taxi">
+                    <i class="fontello-taxi" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <hr class=half-rule>
+        <div class="row" id="fontawesome">
+            <div class="col-md-2">
+                <p><b>FontAwesome</b> font-family</p>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-3 camera">
+                    <i class="fa fa-camera fa-lg"></i>
+                </div>
+                <div class="col-md-3 retail">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-3 plane">
+                    <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-3 taxi">
+                    <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <hr class=half-rule>
+        <div class="row" id="materialicons">
+            <div class="col-md-2">
+                <p><b>Material Icons</b> font-family</p>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-3 camera">
+                    <i class="material-icons">camera_alt</i>
+                </div>
+                <div class="col-md-3 retail">
+                    <i class="material-icons">shopping_cart</i>
+                </div>
+                <div class="col-md-3 plane">
+                    <i class="material-icons">airplanemode_active</i>
+                </div>
+                <div class="col-md-3 taxi">
+                    <i class="material-icons">directions_car</i>
+                </div>
+            </div>
+        </div>
+        <hr class=half-rule>
+    </div>
+</body>

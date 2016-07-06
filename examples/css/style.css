@@ -1,0 +1,17 @@
+#fontello.row .col-md-3 i {
+	font-size: 25px;
+	float: left;
+	padding: 9px 6px 1px 6px;
+}
+
+#fontawesome.row .col-md-3 i {
+	font-size: 25px;
+	float: left;
+	padding: 19px 6px 1px 6px;
+}
+
+#materialicons.row .col-md-3 i {
+	font-size: 30px;
+	float: left;
+	padding: 19px 6px 1px 6px;
+}
