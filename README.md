@@ -36,6 +36,9 @@ But still, you need an image. You'll need to host every icon and color combinati
 With MarkerFactory, you generate those icons on the fly.
 
 
+![screenshot from 2016-07-06 12-00-51](https://cloud.githubusercontent.com/assets/238439/16625228/7ac42b58-4371-11e6-9b44-6bdde4098958.png)
+
+
 
 ## Installation
 
