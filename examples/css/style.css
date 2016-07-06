@@ -1,21 +1,21 @@
-#fontello.row .col-md-3 i {
+#fontello.row .col-md-2 i {
 	font-size: 25px;
 	float: left;
 	padding: 9px 6px 1px 6px;
 }
 
-#fontawesome.row .col-md-3 i {
+#fontawesome.row .col-md-2 i {
 	font-size: 25px;
 	float: left;
 	padding: 19px 6px 1px 6px;
 }
 
-#materialicons.row .col-md-3 i {
+#materialicons.row .col-md-2 i {
 	font-size: 30px;
 	float: left;
 	padding: 19px 6px 1px 6px;
 }
 
-.col-md-2 p {
+.col-md-3 p {
 	padding: 15px 0 1px 0;
 }
