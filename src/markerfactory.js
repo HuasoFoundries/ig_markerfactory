@@ -431,19 +431,25 @@ var createFatMarkerIcon = function (theoptions) {
 };
 
 
+
+
 var createTransparentMarkerIcon = function (theoptions) {
 
     var generateTransparentCanvas = function (options) {
         var canvas = options.canvas || document.createElement("canvas"),
             context = canvas.getContext("2d"),
             font = options.font || 'fontello',
-            fontsize = options.fontsize || 40,
+            fontsize = options.fontsize || 30,
             color0, color1;
 
         canvas.width = 54;
         canvas.height = 48;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
+        /*context.rect(1, 1, canvas.width - 2, canvas.height - 2);
+        context.lineWidth = 1;
+        context.strokeStyle = 'black';
+        context.stroke();*/
 
         if (options.index !== undefined && options.count > 0) {
             color0 = getColor(options.index, options.count);
@@ -490,10 +496,13 @@ var createTransparentMarkerIcon = function (theoptions) {
             context.shadowOffsetY = 2;
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
-
             context.fillStyle = color0;
             context.fillText(options.unicodelabel, text_x + 1, 0);
 
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 1;
+            context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
             context.strokeText(options.unicodelabel, text_x + 1, 0);
 
@@ -505,8 +514,10 @@ var createTransparentMarkerIcon = function (theoptions) {
 
     };
 
-    var markerCanvas = generateTransparentCanvas(theoptions);
     theoptions.scale = theoptions.scale || 1;
+    theoptions.fontsize = theoptions.fontsize || 30;
+
+    var markerCanvas = generateTransparentCanvas(theoptions);
 
     var scale = theoptions.scale;
     if (theoptions.shadow) {
@@ -532,6 +543,7 @@ var createTransparentMarkerIcon = function (theoptions) {
 
     return iconObj;
 };
+
 
 MarkerFactory.toDecColor = toDecColor;
 
