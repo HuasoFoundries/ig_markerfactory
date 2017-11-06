@@ -1,8 +1,16 @@
 {
   "name": "ig_markerfactory",
-  "version": "2.9.8",
-  "jsnext:main": "markerfactory.esm.js",
+  "version": "2.9.9",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
+  "keywords": [
+    "google maps",
+    "markers",
+    "icon",
+    "canvas",
+    "svg fonts",
+    "font-awesome",
+    "material icons"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
