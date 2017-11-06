@@ -11,7 +11,8 @@
     <script src="//cdn.jsdelivr.net/bluebird/3.4/bluebird.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/jspm_packages/system.js"></script>
+    <script src="examples/icons.js"></script>
+    <script src="jspm_packages/system.js"></script>
     <script>
     window.define = System.amdDefine;
     window.require = System.amdRequire;
@@ -22,70 +23,137 @@
         return function () {};
     };
     </script>
-    <script src="/jspm.config.js"></script>
+    <script src="jspm.config.js"></script>
     <script>
     console.log('config loaded');
 
-    System.import('/examples/example.esm.js');
+    System.import('examples/example.esm.js');
     console.log('Loading test entry point...');
     </script>
 </head>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="col-md-2 col-md-offset-4 ">
+        <table class="table table-striped">
+            <tr class="row">
+                <td class="">
+                    <h3>Font Family</h3>
+                </td>
+                <td class="">
                     <h3>Camera</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>shopping</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>Plane</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>Taxi</h3>
-                </div>
-                <div class="row" id="fontello">
-                    <div class="col-md-3 col-md-offset-1">
-                        <p><b>Fontello</b> font-family</p>
-                    </div>
-                    <div class="col-md-2 camera">
-                        <i class="fontello-camera"></i>
-                    </div>
-                    <div class="col-md-2 retail">
-                        <i class="fontello-grocery-store" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 plane">
-                        <i class="fontello-airport" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 taxi">
-                        <i class="fontello-taxi" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="row">
-                    <hr>
-                </div>
-                <div class="row" id="fontello_transparent">
-                    <div class="col-md-3 col-md-offset-1">
-                        <p><b>Fontello</b> font-family
-                            <br>transparent icons</p>
-                    </div>
-                    <div class="col-md-2 camera">
-                        <i class="fontello-camera"></i>
-                    </div>
-                    <div class="col-md-2 retail">
-                        <i class="fontello-grocery-store" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 plane">
-                        <i class="fontello-airport" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 taxi">
-                        <i class="fontello-taxi" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+            <tr class="row marker" id="fontello">
+                <td class=" ">
+                    <p><b>Fontello</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fontello-camera"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fontello-grocery-store" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fontello-airport" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fontello-taxi" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="fontello">
+                <td class=" ">
+                    <p><b>Fontello</b> (transparent icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fontello-camera"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fontello-grocery-store" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fontello-airport" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fontello-taxi" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row marker" id="fontawesome">
+                <td class=" ">
+                    <p><b>FontAwesome</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fa fa-camera fa-lg"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="fontawesome">
+                <td class=" ">
+                    <p><b>FontAwesome</b> (transparent icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fa fa-camera fa-lg"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row marker" id="materialicons">
+                <td class=" ">
+                    <p><b>Material Icons</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="material-icons">camera_alt</i>
+                </td>
+                <td class=" retail">
+                    <i class="material-icons">shopping_cart</i>
+                </td>
+                <td class=" plane">
+                    <i class="material-icons">airplanemode_active</i>
+                </td>
+                <td class=" taxi">
+                    <i class="material-icons">directions_car</i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="materialicons">
+                <td class=" ">
+                    <p><b>Material Icons</b> (transparent icons)</p>
+                </td>
+                <td class=" camera ft22">
+                    <i class="material-icons">camera_alt</i>
+                </td>
+                <td class=" retail ft22">
+                    <i class="material-icons">shopping_cart</i>
+                </td>
+                <td class=" plane ft22">
+                    <i class="material-icons">airplanemode_active</i>
+                </td>
+                <td class=" taxi ft22">
+                    <i class="material-icons">directions_car</i>
+                </td>
+            </tr>
+        </table>
     </div>
 </body>

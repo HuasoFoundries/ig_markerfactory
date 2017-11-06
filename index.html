@@ -10,80 +10,133 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ig_markerfactory/dist/markerfactory.min.js"></script>
+    <script src="dist/markerfactory.min.js"></script>
+    <script src="examples/icons.js"></script>
 </head>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="col-md-2 col-md-offset-4 ">
+        <table class="table table-striped">
+            <tr class="row">
+                <td class="">
+                    <h3>Font Family</h3>
+                </td>
+                <td class="">
                     <h3>Camera</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>shopping</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>Plane</h3>
-                </div>
-                <div class="col-md-2">
+                </td>
+                <td class="">
                     <h3>Taxi</h3>
-                </div>
-                <div class="row" id="fontello">
-                    <div class="col-md-3 col-md-offset-1">
-                        <p><b>Fontello</b> font-family</p>
-                    </div>
-                    <div class="col-md-2 camera">
-                        <i class="fontello-camera"></i>
-                    </div>
-                    <div class="col-md-2 retail">
-                        <i class="fontello-grocery-store" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 plane">
-                        <i class="fontello-airport" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 taxi">
-                        <i class="fontello-taxi" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="row" id="fontawesome">
-                    <hr class=half-rule>
-                    <div class="col-md-3 col-md-offset-1">
-                        <p><b>FontAwesome</b> font-family</p>
-                    </div>
-                    <div class="col-md-2 camera">
-                        <i class="fa fa-camera fa-lg"></i>
-                    </div>
-                    <div class="col-md-2 retail">
-                        <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 plane">
-                        <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div class="col-md-2 taxi">
-                        <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="row" id="materialicons">
-                    <hr class=half-rule>
-                    <div class="col-md-3 col-md-offset-1">
-                        <p><b>Material Icons</b> font-family</p>
-                    </div>
-                    <div class="col-md-2 camera">
-                        <i class="material-icons">camera_alt</i>
-                    </div>
-                    <div class="col-md-2 retail">
-                        <i class="material-icons">shopping_cart</i>
-                    </div>
-                    <div class="col-md-2 plane">
-                        <i class="material-icons">airplanemode_active</i>
-                    </div>
-                    <div class="col-md-2 taxi">
-                        <i class="material-icons">directions_car</i>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+            <tr class="row marker" id="fontello">
+                <td class=" ">
+                    <p><b>Fontello</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fontello-camera"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fontello-grocery-store" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fontello-airport" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fontello-taxi" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="fontello">
+                <td class=" ">
+                    <p><b>Fontello</b> (transparent icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fontello-camera"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fontello-grocery-store" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fontello-airport" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fontello-taxi" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row marker" id="fontawesome">
+                <td class=" ">
+                    <p><b>FontAwesome</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fa fa-camera fa-lg"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="fontawesome">
+                <td class=" ">
+                    <p><b>FontAwesome</b> (transparent icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="fa fa-camera fa-lg"></i>
+                </td>
+                <td class=" retail">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" plane">
+                    <i class="fa fa-plane fa-lg" aria-hidden="true"></i>
+                </td>
+                <td class=" taxi">
+                    <i class="fa fa-taxi fa-lg" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr class="row marker" id="materialicons">
+                <td class=" ">
+                    <p><b>Material Icons</b> (marker icons)</p>
+                </td>
+                <td class=" camera">
+                    <i class="material-icons">camera_alt</i>
+                </td>
+                <td class=" retail">
+                    <i class="material-icons">shopping_cart</i>
+                </td>
+                <td class=" plane">
+                    <i class="material-icons">airplanemode_active</i>
+                </td>
+                <td class=" taxi">
+                    <i class="material-icons">directions_car</i>
+                </td>
+            </tr>
+            <tr class="row transparent" id="materialicons">
+                <td class=" ">
+                    <p><b>Material Icons</b> (transparent icons)</p>
+                </td>
+                <td class=" camera ft22">
+                    <i class="material-icons">camera_alt</i>
+                </td>
+                <td class=" retail ft22">
+                    <i class="material-icons">shopping_cart</i>
+                </td>
+                <td class=" plane ft22">
+                    <i class="material-icons">airplanemode_active</i>
+                </td>
+                <td class=" taxi ft22">
+                    <i class="material-icons">directions_car</i>
+                </td>
+            </tr>
+        </table>
     </div>
     <script src="examples/example.js"></script>
 </body>

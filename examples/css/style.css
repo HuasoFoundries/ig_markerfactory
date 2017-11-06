@@ -1,22 +1,17 @@
-#fontello.row .col-md-2 i {
+#fontello i {
 	font-size: 25px;
 	float: left;
 	padding: 9px 6px 1px 6px;
 }
 
-#fontello_transparent.row .col-md-2 i {
-	font-size: 25px;
-	float: left;
-	padding: 9px 6px 1px 6px;
-}
 
-#fontawesome.row .col-md-2 i {
+#fontawesome i {
 	font-size: 25px;
 	float: left;
 	padding: 19px 6px 1px 6px;
 }
 
-#materialicons.row .col-md-2 i {
+#materialicons i {
 	font-size: 30px;
 	float: left;
 	padding: 19px 6px 1px 6px;

@@ -1,6 +1,4 @@
-/* global _:true, jQuery:true */
-
-
+/* global _:true, jQuery:true, icons_fontello:true,icons_fontawesome:true,icons_material:true */
 
 jQuery(document).ready(function () {
 
@@ -8,117 +6,60 @@ jQuery(document).ready(function () {
 
 
 
-		var icons_fontello = {
-				camera: MarkerFactory.autoIcon({
-					label: 'e810',
-					font: 'fontello',
-					color: '#CC0000',
-					fontsize: 20,
-					transparent_background: false,
-					scale: 0.8
-				}),
-				retail: MarkerFactory.autoIcon({
-					label: 'e896',
-					font: 'fontello',
-					color: '#33CCCC',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				plane: MarkerFactory.autoIcon({
-					label: 'e892',
-					font: 'fontello',
-					color: '#CC00FF',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				taxi: MarkerFactory.autoIcon({
-					label: 'e88c',
-					font: 'fontello',
-					color: '#33CC33',
-					fontsize: 20,
-					scale: 0.8
-				})
-			},
-			icons_fontawesome = {
-				camera: MarkerFactory.autoIcon({
-					label: 'f030',
-					font: 'FontAwesome',
-					color: '#CC0000',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				retail: MarkerFactory.autoIcon({
-					label: 'f07a',
-					font: 'FontAwesome',
-					color: '#33CCCC',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				plane: MarkerFactory.autoIcon({
-					label: 'f072',
-					font: 'FontAwesome',
-					color: '#CC00FF',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				taxi: MarkerFactory.autoIcon({
-					label: 'f1ba',
-					font: 'FontAwesome',
-					color: '#33CC33',
-					fontsize: 20,
-					scale: 0.8
-				})
-			},
-			icons_material = {
-				camera: MarkerFactory.autoIcon({
-					label: 'E3B0',
-					font: 'Material Icons',
-					color: '#CC0000',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				retail: MarkerFactory.autoIcon({
-					label: 'E8CC',
-					font: 'Material Icons',
-					color: '#33CCCC',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				plane: MarkerFactory.autoIcon({
-					label: 'E195',
-					font: 'Material Icons',
-					color: '#CC00FF',
-					fontsize: 20,
-					scale: 0.8
-				}),
-				taxi: MarkerFactory.autoIcon({
-					label: 'e531',
-					font: 'Material Icons',
-					color: '#33CC33',
-					fontsize: 20,
-					scale: 0.8
-				})
-			};
-
-
-		_.each(icons_fontello, function (icon, name) {
+		_.each(icons_fontello, function (obj, name) {
 			var theimage = jQuery('<img>');
+			var icon = MarkerFactory.autoIcon(obj);
 			theimage.attr('src', icon.url);
-			jQuery('#fontello').find('.' + name).append(theimage);
+			console.log(name, icon, obj);
+			jQuery('#fontello.transparent').find('.' + name).append(theimage);
 		});
 
-		_.each(icons_fontawesome, function (icon, name) {
+		_.each(icons_fontawesome, function (obj, name) {
 			var theimage = jQuery('<img>');
+			var icon = MarkerFactory.autoIcon(obj);
 			theimage.attr('src', icon.url);
-			jQuery('#fontawesome').find('.' + name).append(theimage);
+			console.log(name, icon, obj);
+			jQuery('#fontawesome.transparent').find('.' + name).append(theimage);
 		});
 
-		_.each(icons_material, function (icon, name) {
+		_.each(icons_material, function (obj, name) {
 			var theimage = jQuery('<img>');
+			var icon = MarkerFactory.autoIcon(obj);
 			theimage.attr('src', icon.url);
-			jQuery('#materialicons').find('.' + name).append(theimage);
+			console.log(name, icon, obj);
+			jQuery('#materialicons.transparent').find('.' + name).append(theimage);
 		});
 
+
+		_.each(icons_fontello, function (obj, name) {
+			var theimage = jQuery('<img>');
+			obj.fontsize = 20;
+			obj.transparent_background = false;
+			var icon = MarkerFactory.autoIcon(obj);
+			theimage.attr('src', icon.url);
+			console.log(name, icon, obj);
+			jQuery('#fontello.marker').find('.' + name).append(theimage);
+		});
+
+		_.each(icons_fontawesome, function (obj, name) {
+			var theimage = jQuery('<img>');
+			obj.fontsize = 20;
+			obj.transparent_background = false;
+			var icon = MarkerFactory.autoIcon(obj);
+			theimage.attr('src', icon.url);
+			console.log(name, icon, obj);
+			jQuery('#fontawesome.marker').find('.' + name).append(theimage);
+		});
+
+		_.each(icons_material, function (obj, name) {
+			obj.transparent_background = false;
+			obj.fontsize = 26;
+			var theimage = jQuery('<img>');
+			var icon = MarkerFactory.autoIcon(obj);
+			console.log(name, icon, obj);
+			theimage.attr('src', icon.url);
+			jQuery('#materialicons.marker').find('.' + name).append(theimage);
+		});
 
 
 	}, 1000);
