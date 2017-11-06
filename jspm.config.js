@@ -1,5 +1,5 @@
 SystemJS.config({
-  transpiler: false,
+  transpiler: 'plugin-babel',
   packages: {
     "ig_markerfactory": {
       "main": "markerfactory.js"
@@ -15,7 +15,8 @@ SystemJS.config({
   ],
   map: {
     "jquery": "npm:jquery@3.0.0",
-    "lodash": "npm:lodash@4.13.1"
+    "lodash": "npm:lodash@4.13.1",
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.19"
   },
   packages: {}
 });

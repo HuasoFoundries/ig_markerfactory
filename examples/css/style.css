@@ -4,6 +4,12 @@
 	padding: 9px 6px 1px 6px;
 }
 
+#fontello_transparent.row .col-md-2 i {
+	font-size: 25px;
+	float: left;
+	padding: 9px 6px 1px 6px;
+}
+
 #fontawesome.row .col-md-2 i {
 	font-size: 25px;
 	float: left;

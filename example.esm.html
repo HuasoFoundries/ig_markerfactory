@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head version="">
+    <title>Marker Factory Example</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="examples/css/fontello.css" rel="stylesheet">
+    <link href="examples/css/font-awesome.css" rel="stylesheet">
+    <link href="examples/css/style.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/bluebird/3.4/bluebird.js"></script>
+    <script src="/jspm_packages/system.js"></script>
+    <script>
+    window.define = System.amdDefine;
+    window.require = System.amdRequire;
+    window.globalvars = {
+        transparent_background: true
+    };
+    console.timerInfo = function() {
+        return function() {};
+    };
+    </script>
+    <script src="/jspm.browser.js"></script>
+    <script src="/jspm.config.js"></script>
+    <script>
+    console.log('config loaded');
+
+    System.import('/examples/example.esm.js');
+    console.log('Loading test entry point...');
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="col-md-2 col-md-offset-4 ">
+                    <h3>Camera</h3>
+                </div>
+                <div class="col-md-2">
+                    <h3>shopping</h3>
+                </div>
+                <div class="col-md-2">
+                    <h3>Plane</h3>
+                </div>
+                <div class="col-md-2">
+                    <h3>Taxi</h3>
+                </div>
+                <div class="row" id="fontello">
+                    <div class="col-md-3 col-md-offset-1">
+                        <p><b>Fontello</b> font-family</p>
+                    </div>
+                    <div class="col-md-2 camera">
+                        <i class="fontello-camera"></i>
+                    </div>
+                    <div class="col-md-2 retail">
+                        <i class="fontello-grocery-store" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-md-2 plane">
+                        <i class="fontello-airport" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-md-2 taxi">
+                        <i class="fontello-taxi" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <hr>
+                </div>
+                <div class="row" id="fontello_transparent">
+                    <div class="col-md-3 col-md-offset-1">
+                        <p><b>Fontello</b> font-family
+                            <br>transparent icons</p>
+                    </div>
+                    <div class="col-md-2 camera">
+                        <i class="fontello-camera"></i>
+                    </div>
+                    <div class="col-md-2 retail">
+                        <i class="fontello-grocery-store" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-md-2 plane">
+                        <i class="fontello-airport" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-md-2 taxi">
+                        <i class="fontello-taxi" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
