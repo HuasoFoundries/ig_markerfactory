@@ -1,5 +1,6 @@
 {
-  "npm:jquery@3.0.0": {},
-  "npm:lodash@4.13.1": {},
-  "npm:systemjs-plugin-babel@0.0.19": {}
+  "npm:systemjs-plugin-babel@0.0.25": {
+    "deps": {},
+    "peerDeps": {}
+  }
 }

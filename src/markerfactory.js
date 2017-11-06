@@ -352,7 +352,7 @@ var createFatMarkerIcon = function (theoptions) {
             radius = (anchorX - 9),
             angulo = 1.1,
             font = options.font || 'fontello',
-            fontsize = options.fontsize || 14,
+            fontsize = options.fontsize || 20,
             context = canvas.getContext("2d"),
             grad = context.createLinearGradient(0, 0, 0, anchorY),
             color0, color1;
@@ -497,14 +497,14 @@ var createTransparentMarkerIcon = function (theoptions) {
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 0);
+            context.fillText(options.unicodelabel, text_x + 1, 6);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 0);
+            context.strokeText(options.unicodelabel, text_x + 1, 6);
 
         }
 
@@ -613,26 +613,32 @@ MarkerFactory.autoIcon = function (options) {
 
     options.label = String(options.label || 'A');
     options.color = options.color || '#FF0000';
-    options.fontsize = options.fontsize || 11;
-    options.font = options.font || 'Arial';
+
 
 
     options.hexcolor = getHexColor(options.color);
 
     if (options.label.length === 4 || options.label.substring(0, 2) === '0x') {
 
+
+
         options.label = options.label.slice(-4);
         options.unicodelabel = String.fromCharCode('0x' + options.label);
+        options.font = options.font || 'fontello';
 
         if (options.transparent_background === true) {
+
             // Estilo frontdev
             return createTransparentMarkerIcon(options);
         } else {
+
             return createFatMarkerIcon(options);
         }
 
 
     } else {
+        options.fontsize = options.fontsize || 11;
+        options.font = options.font || 'Arial';
         // This is text I should print literally
         return createTextMarker(options);
     }
@@ -640,7 +646,7 @@ MarkerFactory.autoIcon = function (options) {
 
 };
 
-
-
-
+export {
+    MarkerFactory
+};
 export default MarkerFactory;

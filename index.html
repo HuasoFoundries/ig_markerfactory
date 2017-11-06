@@ -8,26 +8,9 @@
     <link href="examples/css/font-awesome.css" rel="stylesheet">
     <link href="examples/css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="//cdn.jsdelivr.net/bluebird/3.4/bluebird.js"></script>
-    <script src="/jspm_packages/system.js"></script>
-    <script>
-    window.define = System.amdDefine;
-    window.require = System.amdRequire;
-    window.globalvars = {
-        transparent_background: true
-    };
-    console.timerInfo = function() {
-        return function() {};
-    };
-    </script>
-    <script src="/jspm.browser.js"></script>
-    <script src="/jspm.config.js"></script>
-    <script>
-    console.log('config loaded');
-
-    System.import('/examples/example.js');
-    console.log('Loading test entry point...');
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ig_markerfactory/dist/markerfactory.min.js"></script>
 </head>
 
 <body>
@@ -102,4 +85,5 @@
             </div>
         </div>
     </div>
+    <script src="/examples/example.js"></script>
 </body>

@@ -1,8 +1,30 @@
 SystemJS.config({
-  transpiler: 'plugin-babel',
+  browserConfig: {
+    "paths": {
+      "npm:": "/jspm_packages/npm/",
+      "ig_markerfactory/": "/dist/"
+    }
+  },
+  nodeConfig: {
+    "paths": {
+      "npm:": "jspm_packages/npm/",
+      "ig_markerfactory/": "dist/"
+    }
+  },
+  devConfig: {
+    "map": {
+      "plugin-babel": "npm:systemjs-plugin-babel@0.0.25"
+    }
+  },
+  transpiler: "plugin-babel",
   packages: {
     "ig_markerfactory": {
-      "main": "markerfactory.js"
+      "main": "markerfactory.js",
+      "meta": {
+        "*.js": {
+          "loader": "plugin-babel"
+        }
+      }
     }
   }
 });
@@ -10,13 +32,8 @@ SystemJS.config({
 SystemJS.config({
   packageConfigPaths: [
     "npm:@*/*.json",
-    "npm:*.json",
-    "github:*/*.json"
+    "npm:*.json"
   ],
-  map: {
-    "jquery": "npm:jquery@3.0.0",
-    "lodash": "npm:lodash@4.13.1",
-    "plugin-babel": "npm:systemjs-plugin-babel@0.0.19"
-  },
+  map: {},
   packages: {}
 });

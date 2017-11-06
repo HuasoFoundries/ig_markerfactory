@@ -1,6 +1,6 @@
 # Google Maps MarkerFactory
 
-This is a zero dependencies library that uses a canvas element to generate valid [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker) Icons from graphic-fonts, such as [Font-Awesome](https://fontawesome.github.io/Font-Awesome/) and  [Fontello](http://fontello.com/).
+This is a zero dependencies library that uses a canvas element to generate valid [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker) Icons from graphic-fonts, such as [Font-Awesome](https://fontawesome.github.io/Font-Awesome/), [Material-Icons](https://material.io/icons/) or [Fontello](http://fontello.com/).
 
 
 [![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) 

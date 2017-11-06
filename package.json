@@ -3,7 +3,7 @@
   "main": "markerfactory.js",
   "jsnext:main": "markerfactory.esm.js",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,26 +16,19 @@
   "engines": {
     "node": "4.2.x"
   },
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "jspm": {
     "format": "esm",
-    "main": "markerfactory.esm.js",
+    "main": "markerfactory.js",
     "directories": {
       "lib": "dist"
     },
-    "dependencies": {
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25"
-    },
+    "dependencies": {},
     "devDependencies": {
-      "jquery": "npm:jquery@^3.0.0",
-      "lodash": "npm:lodash@^4.13.1"
-    },
-    "overrides": {
-      "npm:lodash@4.13.1": {
-        "map": {
-          "buffer": "@empty",
-          "process": "@empty"
-        }
-      }
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25"
     }
   },
   "scripts": {
@@ -44,9 +37,11 @@
   "devDependencies": {
     "babel-eslint": "^6.1.0",
     "eslint": "^3.0.1",
-    "jspm": "^0.17.0-beta.13",
+    "jspm": "^0.17.0-beta.47",
     "lodash": "^4",
     "mocha": "^2.4",
+    "rollup": "^0.50.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "serve": "^1.4.0"
   }
 }

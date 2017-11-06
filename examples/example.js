@@ -1,8 +1,12 @@
-define(['jquery', 'lodash', 'ig_markerfactory'], function (jQuery, _, MarkerFactory) {
+/* global _:true, jQuery:true */
 
-	console.debug('jQuery is', jQuery, 'MarkerFactory is', MarkerFactory);
 
-	jQuery(document).ready(function () {
+
+jQuery(document).ready(function () {
+
+	_.delay(function () {
+
+
 
 		var icons_fontello = {
 				camera: MarkerFactory.autoIcon({
@@ -10,6 +14,7 @@ define(['jquery', 'lodash', 'ig_markerfactory'], function (jQuery, _, MarkerFact
 					font: 'fontello',
 					color: '#CC0000',
 					fontsize: 20,
+					transparent_background: false,
 					scale: 0.8
 				}),
 				retail: MarkerFactory.autoIcon({
@@ -116,8 +121,5 @@ define(['jquery', 'lodash', 'ig_markerfactory'], function (jQuery, _, MarkerFact
 
 
 
-
-	});
-
-
+	}, 1000);
 });

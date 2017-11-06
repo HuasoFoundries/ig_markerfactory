@@ -122,6 +122,7 @@ var parseRGB = function (rgbstring, opacity) {
     return rgbcolor;
 };
 
+
 var rgbToHSL = function (r, g, b, a) {
     r = (r % 256) / 255;
     g = (g % 256) / 255;
@@ -237,18 +238,6 @@ var toDecColor = function (stringcolor) {
     return parsedcolor;
 };
 
-var IconObject = function (canvas, markerOpts) {
-    this.url = canvas.toDataURL();
-    this.markerOpts = markerOpts;
-    Object.assign(this, markerOpts);
-    return this;
-};
-IconObject.prototype.toJSON = function () {
-    return {
-        url: null,
-        markerOpts: this.markerOpts
-    };
-};
 
 var createTextMarker = function (theoptions) {
 
@@ -285,6 +274,7 @@ var createTextMarker = function (theoptions) {
             color1 = darken(deccolor).fillColor;
         }
 
+
         grad.addColorStop(0, color0);
         grad.addColorStop(1, color1);
 
@@ -303,6 +293,7 @@ var createTextMarker = function (theoptions) {
         context.arc(2 * x - cx + 1, cy, radius0, -0.95 * Math.PI / 3, -Math.PI / 8, false);
         context.fill();
         context.stroke();
+
 
         context.beginPath();
         context.arc(x, 0.40 * y, 2 * radius / 3, 0, 2 * Math.PI, false);
@@ -325,6 +316,7 @@ var createTextMarker = function (theoptions) {
             context.stroke();
         }
 
+
         context.fillStyle = "black";
         context.strokeStyle = "black";
         // centre the text.
@@ -334,20 +326,19 @@ var createTextMarker = function (theoptions) {
 
     };
     theoptions.scale = theoptions.scale || 0.75;
-    var markerCanvas = generateCanvas(theoptions),
-        markerOpts = {};
+    var markerCanvas = generateCanvas(theoptions);
 
-    Object.assign(markerOpts, theoptions);
-
+    var iconObj = {
+        url: markerCanvas.toDataURL()
+    };
     if (window.google && window.google.maps) {
-        Object.assign(markerOpts, {
+        Object.assign(iconObj, {
             size: new google.maps.Size(48, 40),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(24 * theoptions.scale, 40 * theoptions.scale),
             scaledSize: new google.maps.Size(48 * theoptions.scale, 40 * theoptions.scale)
         });
     }
-    var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
 };
@@ -361,7 +352,7 @@ var createFatMarkerIcon = function (theoptions) {
             radius = (anchorX - 9),
             angulo = 1.1,
             font = options.font || 'fontello',
-            fontsize = options.fontsize || 14,
+            fontsize = options.fontsize || 20,
             context = canvas.getContext("2d"),
             grad = context.createLinearGradient(0, 0, 0, anchorY),
             color0, color1;
@@ -404,6 +395,7 @@ var createFatMarkerIcon = function (theoptions) {
         context.fillStyle = 'white';
         context.fill();
 
+
         context.beginPath();
 
         context.font = 'normal normal normal ' + fontsize + 'px ' + font;
@@ -412,29 +404,34 @@ var createFatMarkerIcon = function (theoptions) {
         context.textBaseline = "top";
         var textWidth = context.measureText(options.unicodelabel);
 
+
         // centre the text.
         context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
+
 
         return canvas;
 
     };
     var scale = theoptions.scale || 1,
-        markerCanvas = generateFatCanvas(theoptions),
-        markerOpts = {};
-    Object.assign(markerOpts, theoptions);
+        markerCanvas = generateFatCanvas(theoptions);
 
+    var iconObj = {
+        url: markerCanvas.toDataURL(),
+        scale: scale
+    };
     if (window.google && window.google.maps) {
-        Object.assign(markerOpts, {
+        Object.assign(iconObj, {
             size: new google.maps.Size(54, 48),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(21 * scale, 36 * scale),
-            scaledSize: new google.maps.Size(42 * scale, 36 * scale),
-            scale: scale
+            scaledSize: new google.maps.Size(42 * scale, 36 * scale)
         });
     }
-    var iconObj = new IconObject(markerCanvas, markerOpts);
     return iconObj;
 };
+
+
+
 
 var createTransparentMarkerIcon = function (theoptions) {
 
@@ -500,14 +497,14 @@ var createTransparentMarkerIcon = function (theoptions) {
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 0);
+            context.fillText(options.unicodelabel, text_x + 1, 6);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 0);
+            context.strokeText(options.unicodelabel, text_x + 1, 6);
 
         }
 
@@ -520,32 +517,37 @@ var createTransparentMarkerIcon = function (theoptions) {
     theoptions.scale = theoptions.scale || 1;
     theoptions.fontsize = theoptions.fontsize || 30;
 
-    var markerCanvas = generateTransparentCanvas(theoptions),
-        markerOpts = {};
+    var markerCanvas = generateTransparentCanvas(theoptions);
 
     var scale = theoptions.scale;
     if (theoptions.shadow) {
         scale = 0.9 * scale;
     }
+    var iconObj = {
+        canvas: markerCanvas,
+        url: markerCanvas.toDataURL(),
+        fillColor: markerCanvas.fillColor
+    };
 
-    Object.assign(markerOpts, theoptions);
+    Object.assign(iconObj, theoptions);
 
     if (window.google && window.google.maps) {
-        Object.assign(markerOpts, {
+        Object.assign(iconObj, {
             size: new google.maps.Size(54 * scale, 48 * scale),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(27 * scale, 24 * scale),
             scaledSize: new google.maps.Size(54 * scale, 48 * scale)
         });
     }
-    var iconObj = new IconObject(markerCanvas, markerOpts);
+    //console.debug('createTransparentMarkerIcon', iconObj);
 
     return iconObj;
 };
 
+
 MarkerFactory.toDecColor = toDecColor;
 
-function parseColorString(somecolor, opacity) {
+MarkerFactory.parseColorString = function (somecolor, opacity) {
     var parsedcolor = {
             original: somecolor
         },
@@ -599,45 +601,50 @@ var getHexColor = function (color) {
     return hexcolor;
 };
 
-var ButtonFactory = {
-    parseColorString: parseColorString,
-    autoIcon: function (options) {
-        options.font = options.font || 'Arial';
-        options.color = options.color || '#FF0000';
-        options.hexcolor = getHexColor(options.color);
+MarkerFactory.autoIcon = function (options) {
 
-        // En frontdev el icono debe aparecer solo, sin envoltorio
-        if (options.transparent_background === undefined) {
-            options.transparent_background = true;
-        }
-        if (options.font === 'fontawesome-webfont' ||
-            options.font === 'fontello' ||
-            options.font === 'Material Icons' ||
-            options.font === 'Material-Design-Icons') {
 
-            // Fontello obligatorio
-            options.font = 'fontello';
-
-            options.label = (options.label || 'e836').slice(-4);
-
-            options.unicodelabel = String.fromCharCode('0x' + options.label);
-            options.scale = options.scale || 1;
-            if (options.transparent_background) {
-                return createTransparentMarkerIcon(options);
-            } else {
-                return createFatMarkerIcon(options);
-            }
-
-        } else {
-            options.scale = options.scale || 0.75;
-            options.label = String(options.label || 'A');
-            // This is text I should print literally
-            return createTextMarker(options);
-        }
-
+    if (typeof (options) !== 'object') {
+        console.warn('autoIcon expects an object as its only parameter');
+        return null;
     }
+
+
+
+    options.label = String(options.label || 'A');
+    options.color = options.color || '#FF0000';
+
+
+
+    options.hexcolor = getHexColor(options.color);
+
+    if (options.label.length === 4 || options.label.substring(0, 2) === '0x') {
+
+
+
+        options.label = options.label.slice(-4);
+        options.unicodelabel = String.fromCharCode('0x' + options.label);
+        options.font = options.font || 'fontello';
+
+        if (options.transparent_background === true) {
+
+            // Estilo frontdev
+            return createTransparentMarkerIcon(options);
+        } else {
+
+            return createFatMarkerIcon(options);
+        }
+
+
+    } else {
+        options.fontsize = options.fontsize || 11;
+        options.font = options.font || 'Arial';
+        // This is text I should print literally
+        return createTextMarker(options);
+    }
+
+
 };
-export {
-    ButtonFactory
-};
-export default ButtonFactory;
+
+export { MarkerFactory };
+export default MarkerFactory;

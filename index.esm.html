@@ -9,6 +9,8 @@
     <link href="examples/css/style.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdn.jsdelivr.net/bluebird/3.4/bluebird.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="/jspm_packages/system.js"></script>
     <script>
     window.define = System.amdDefine;
@@ -16,11 +18,10 @@
     window.globalvars = {
         transparent_background: true
     };
-    console.timerInfo = function() {
-        return function() {};
+    console.timerInfo = function () {
+        return function () {};
     };
     </script>
-    <script src="/jspm.browser.js"></script>
     <script src="/jspm.config.js"></script>
     <script>
     console.log('config loaded');

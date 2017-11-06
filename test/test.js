@@ -1,7 +1,11 @@
 var assert = require('assert'),
 	_ = require('lodash'),
 	MarkerFactory = require('../dist/markerfactory');
+
+MarkerFactory = MarkerFactory.default ? MarkerFactory.default : MarkerFactory;
+
 console.dir(MarkerFactory);
+
 var testColors = {
 		hex3: "#F39",
 		hex6: "#FF3399",
@@ -40,6 +44,8 @@ var testColors = {
 		},
 		hex: '#ff3399'
 	};
+
+
 
 
 _.each(testColors, function (value, key) {

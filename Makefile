@@ -9,16 +9,18 @@ default: build
 .PHONY: build test
 
 build:
-	jspm build src/markerfactory.js dist/markerfactory.js --format umd  --global-name MarkerFactory
-	jspm build src/markerfactory.js dist/markerfactory.esm.js --format esm --skip-source-maps --global-name MarkerFactory
+	@$$(npm bin)/rollup -c
+	@MINIFY=true $$(npm bin)/rollup -c
+	@sed -i s/"global.MarkerFactory"/"global"/g dist/markerfactory.js
+	@sed -i s/"global.MarkerFactory"/"global"/g dist/markerfactory.min.js
 
 test:
-	./node_modules/.bin/mocha
+	$$(npm bin)/mocha
 
 update_version:
 	@echo "Current version is " ${VERSION}
 	@echo "Next version is " $(v)
-	sed -i s/'"$(VERSION)"'/'"$(v)"'/ package.json
+	@sed -i s/'"version": "$(VERSION)"'/'"version": "$(v)"'/ package.json
 
 tag_and_push:
 		git add --all
