@@ -733,7 +733,8 @@ function compact(array) {
 
 
         parsedcolor.fillColor = rgb.fillColor;
-        parsedcolor.darkerColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + rgb.a + ')';
+        parsedcolor.rgba = rgb.fillColor;
+        parsedcolor.hsla = hsl.fillColor;
         parsedcolor.strokeColor = rgb.strokeColor;
         parsedcolor.hex = ['#', padHex(rgb.r.toString(16)), padHex(rgb.g.toString(16)), padHex(rgb.b.toString(16))].join('');
         return parsedcolor;
