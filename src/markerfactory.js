@@ -673,7 +673,9 @@
 
 
  var MarkerFactory = {
-
+    createTransparentMarkerIcon: createTransparentMarkerIcon,
+    createFatMarkerIcon: createFatMarkerIcon,
+    createTextMarker: createTextMarker,
     /**
      * Receives a color string rgb(a), hsl(a) or hex, returns its components
      * in rgba and hsla, with optional transparency
