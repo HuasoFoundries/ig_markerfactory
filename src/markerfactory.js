@@ -13,6 +13,14 @@
     return result;
  }
 
+ function padHex(str_in) {
+    if (('' + str_in).length === 1) {
+        return '0' + String(str_in);
+    } else {
+        return String(str_in);
+    }
+ };
+
  var defaults = {
     h: 1,
     s: 78, // constant saturation
@@ -657,67 +665,79 @@
     return iconObj;
  };
 
- function parseColorString(somecolor, opacity) {
-    var parsedcolor = {
-            original: somecolor
-        },
-        hsl, rgb;
 
-    opacity = opacity || 1;
 
-    if (somecolor.indexOf('hsl') !== -1) {
-        hsl = parseHSL(somecolor, opacity);
-        rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a);
-
-    } else {
-        if (somecolor.indexOf('rgb') !== -1) {
-            rgb = parseRGB(somecolor, opacity);
-        } else {
-            rgb = parseHex(somecolor, opacity);
-        }
-        hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
-
-    }
-
-    parsedcolor.hsl = {
-        h: hsl.h,
-        s: hsl.s,
-        l: hsl.l,
-        a: hsl.a
-    };
-    parsedcolor.rgb = {
-        r: rgb.r,
-        g: rgb.g,
-        b: rgb.b,
-        a: rgb.a
-    };
-
-    parsedcolor.fillColor = rgb.fillColor;
-    parsedcolor.strokeColor = rgb.strokeColor;
-    parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
-    return parsedcolor;
- };
-
- var getHexColor = function (color) {
-    var hexcolor = color;
-    if (color.indexOf('rgb') !== -1) {
-        var rgbArr = color.split(/[\(,\)]/ig);
-        hexcolor = [
-            (1 * rgbArr[1]).toString(16), (1 * rgbArr[2]).toString(16), (1 * rgbArr[3]).toString(16)
-        ].join('');
-    } else if (color.indexOf('#') !== -1) {
-        hexcolor = color.replace(/#/g, '');
-    }
-    return hexcolor;
- };
 
  var MarkerFactory = {
-    parseColorString: parseColorString,
-    getHexColor: getHexColor,
-    createTransparentMarkerIcon: createTransparentMarkerIcon,
-    createFatMarkerIcon: createFatMarkerIcon,
-    createTextMarker: createTextMarker,
-    createClusterIcon: createClusterIcon,
+
+    /**
+     * Receives a color string rgb(a), hsl(a) or hex, returns its components
+     * in rgba and hsla, with optional transparency
+     * plus a darkened version (default is half of each RGB component) and a 
+     *
+     * @param {string} somecolor          - A color string in  rgb(a), hsl(a) or hex format
+     * @param {Number} [opacity=1]        - Opacity to apply to the color
+     * @param {Number} [darkenfactor=1] - How much darker should the resulting color be
+     * 
+     * @return     {Object}  input color parsed and modified as requested
+     */
+    parseColorString: function (somecolor, opacity, darkenfactor) {
+        var parsedcolor = {
+                original: somecolor
+            },
+            hsl, rgb;
+
+        darkenfactor = darkenfactor || 1;
+        opacity = opacity || 1;
+
+        if (somecolor.indexOf('hsl') !== -1) {
+            hsl = parseHSL(somecolor, opacity);
+            rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a);
+
+        } else {
+            if (somecolor.indexOf('rgb') !== -1) {
+                rgb = parseRGB(somecolor, opacity);
+            } else {
+                rgb = parseHex(somecolor, opacity);
+            }
+
+
+        }
+
+        rgb.r = rgb.r * darkenfactor;
+        rgb.g = rgb.g * darkenfactor;
+        rgb.b = rgb.b * darkenfactor;
+
+        hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
+
+
+        parsedcolor.hsl = {
+            h: hsl.h,
+            s: hsl.s,
+            l: hsl.l,
+            a: hsl.a
+        };
+        parsedcolor.rgb = {
+            r: rgb.r,
+            g: rgb.g,
+            b: rgb.b,
+            a: rgb.a
+        };
+
+
+
+        parsedcolor.fillColor = rgb.fillColor;
+        parsedcolor.darkerColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + rgb.a + ')';
+        parsedcolor.strokeColor = rgb.strokeColor;
+        parsedcolor.hex = ['#', padHex(rgb.r.toString(16)), padHex(rgb.g.toString(16)), padHex(rgb.b.toString(16))].join('');
+        return parsedcolor;
+    },
+    /**
+     * Generates an google maps marker (or an image as dataurl from the given options)
+     *
+     * @param      {Object}  options  The options
+     * @return     {Object}  { description_of_the_return_value }
+     */
     autoIcon: function (options) {
 
         if (typeof (options) !== 'object') {
@@ -727,7 +747,6 @@
 
         options.label = String(options.label || 'A');
         options.color = options.color || '#FF0000';
-        options.hexcolor = MarkerFactory.getHexColor(options.color);
 
         // unless explicitly set to false, the icon doesn't have a marker-like wrapper
         if (options.transparent_background === undefined) {
@@ -744,20 +763,20 @@
 
             if (options.transparent_background) {
                 console.log('createTransparentMarkerIcon', options.font);
-                return MarkerFactory.createTransparentMarkerIcon(options);
+                return createTransparentMarkerIcon(options);
             } else {
                 console.log('createFatMarkerIcon', options.font);
-                return MarkerFactory.createFatMarkerIcon(options);
+                return createFatMarkerIcon(options);
             }
         } else if (options.shadow) {
-            return MarkerFactory.createClusterIcon(options);
+            return createClusterIcon(options);
         } else {
             options.scale = options.scale || 0.75;
             options.label = String(options.label || 'A');
             options.fontsize = options.fontsize || 11;
             options.font = options.font || 'Arial';
             // This is text I should print literally
-            return MarkerFactory.createTextMarker(options);
+            return createTextMarker(options);
         }
 
     }
