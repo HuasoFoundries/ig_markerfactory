@@ -30,6 +30,6 @@ tag_and_push:
 		git push --tags
 		npm publish
 
-tag: update_version build tag_and_push		
+tag: build test update_version tag_and_push		
 
 		

@@ -22,12 +22,14 @@ var testColors = {
 			b: 0,
 			a: 1
 		},
+		rgba: 'rgba(204,68,0,1)',
 		hsl: {
 			h: 20,
 			s: 100,
 			l: 40,
 			a: 1
 		},
+		hsla: 'hsla(20,100%,40%,1)',
 		hex: '#cc4400'
 	},
 	parsedColorWO = {
@@ -37,12 +39,14 @@ var testColors = {
 			b: 0,
 			a: 0.5
 		},
+		rgba: 'rgba(204,68,0,0.5)',
 		hsl: {
 			h: 20,
 			s: 100,
 			l: 40,
 			a: 0.5
 		},
+		hsla: 'hsla(20,100%,40%,0.5)',
 		hex: '#cc4400'
 	},
 	parsedColorDarker = {
@@ -52,12 +56,14 @@ var testColors = {
 			b: 0,
 			a: 0.5
 		},
+		rgba: 'rgba(51,17,0,0.5)',
 		hsl: {
 			h: 20,
 			s: 100,
 			l: 10,
 			a: 0.5
 		},
+		hsla: 'hsla(20,100%,10%,0.5)',
 		hex: '#cc4400'
 	};
 
@@ -70,32 +76,62 @@ _.each(testColors, function (value, key) {
 			parsedObjectWO = MarkerFactory.parseColorString(value, 0.5),
 			parsedObjectDarker = MarkerFactory.parseColorString(value, 0.5, 0.25);
 
-		it('should match RGBA result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
-		});
-
-		it('should match HSLA result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
-		});
 
 		it('should match HEX result of parsed ' + key + ' color', function () {
 			assert.equal(parsedObject.hex, parsedColor.hex);
 		});
 
-		it('should match RGBA result of parsed ' + key + ' color with 50% opacity', function () {
+
+		it('should match RGBA Object result of parsed ' + key + ' color', function () {
+			assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
+		});
+
+		it('should match HSLA Object result of parsed ' + key + ' color', function () {
+			assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
+		});
+
+		it('should match RGBA Object result of parsed ' + key + ' color with 50% opacity', function () {
 			assert.deepEqual(parsedObjectWO.rgb, parsedColorWO.rgb);
 		});
 
-		it('should match HSLA result of parsed ' + key + ' color with 50% opacity', function () {
+		it('should match HSLA Object result of parsed ' + key + ' color with 50% opacity', function () {
 			assert.deepEqual(parsedObjectWO.hsl, parsedColorWO.hsl);
 		});
 
-		it('should match RGBA result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
+		it('should match RGBA Object result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
 			assert.deepEqual(parsedObjectDarker.rgb, parsedColorDarker.rgb);
 		});
 
-		it('should match HSLA result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
+		it('should match HSLA Object result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
 			assert.deepEqual(parsedObjectDarker.hsl, parsedColorDarker.hsl);
+		});
+
+
+
+
+
+		it('should match RGBA string result of parsed ' + key + ' color', function () {
+			assert.deepEqual(parsedObject.rgba, parsedColor.rgba);
+		});
+
+		it('should match HSLA string result of parsed ' + key + ' color', function () {
+			assert.deepEqual(parsedObject.hsla, parsedColor.hsla);
+		});
+
+		it('should match RGBA string result of parsed ' + key + ' color with 50% opacity', function () {
+			assert.deepEqual(parsedObjectWO.rgba, parsedColorWO.rgba);
+		});
+
+		it('should match HSLA string result of parsed ' + key + ' color with 50% opacity', function () {
+			assert.deepEqual(parsedObjectWO.hsla, parsedColorWO.hsla);
+		});
+
+		it('should match RGBA string result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
+			assert.deepEqual(parsedObjectDarker.rgba, parsedColorDarker.rgba);
+		});
+
+		it('should match HSLA string  result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
+			assert.deepEqual(parsedObjectDarker.hsla, parsedColorDarker.hsla);
 		});
 
 	});
