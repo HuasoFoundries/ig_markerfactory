@@ -767,10 +767,10 @@
 
             if (options.transparent_background) {
                 console.log('createTransparentMarkerIcon', options.font);
-                return createTransparentMarkerIcon(options);
+                return MarkerFactory.createTransparentMarkerIcon(options);
             } else {
                 console.log('createFatMarkerIcon', options.font);
-                return createFatMarkerIcon(options);
+                return MarkerFactory.createFatMarkerIcon(options);
             }
         } else if (options.shadow) {
             return createClusterIcon(options);
@@ -780,7 +780,7 @@
             options.fontsize = options.fontsize || 11;
             options.font = options.font || 'Arial';
             // This is text I should print literally
-            return createTextMarker(options);
+            return MarkerFactory.createTextMarker(options);
         }
 
     }
