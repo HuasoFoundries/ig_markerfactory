@@ -5,7 +5,7 @@ tools:
 
 
 filter:
-    excluded_paths: ['test/*','node_modules/*','jspm_packages/*']
+    excluded_paths: ['dist/*','examples/*','test/*','node_modules/*','jspm_packages/*']
 
 checks:
     javascript:
@@ -54,7 +54,6 @@ checks:
         eqeqeq: true
         func_names: true
         no_alert: true
-        no_new_require: true
         no_nested_ternary: true
         no_negated_in_lhs: true
         no_native_reassign: true
@@ -86,7 +85,7 @@ checks:
 
 build:
     environment:
-      node: 'v4.2.2'
+      node: 'v8.9.4'
 
     tests:
         override:
