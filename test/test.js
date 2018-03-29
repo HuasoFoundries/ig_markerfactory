@@ -1,11 +1,34 @@
 var assert = require('assert'),
 	_ = require('lodash'),
+	/*canvas = require('canvas-prebuilt'),
+	jsdom = require("jsdom"),
+	dom = new jsdom.JSDOM(`<!DOCTYPE html><p>Hello world</p>`),
+	window = dom.window,
+	document = dom.window.document,*/
 	MarkerFactory = require('../dist/markerfactory');
 
 MarkerFactory = MarkerFactory.default ? MarkerFactory.default : MarkerFactory;
 
-console.dir(MarkerFactory);
-
+var iconObjs = {
+	'one': {
+		label: '1',
+		color: '#CC0000',
+		fontsize: 25,
+		scale: 0.8
+	},
+	'two': {
+		label: '2',
+		color: '#0C0',
+		fontsize: 25,
+		scale: 0.8
+	},
+	'three': {
+		label: '3',
+		color: '#00C',
+		fontsize: 32,
+		scale: 0.8
+	}
+};
 var testColors = {
 		hex3: "#C40",
 		hex6: "#CC4400",
@@ -67,7 +90,17 @@ var testColors = {
 		hex: '#cc4400'
 	};
 
+/*
+_.each(iconObjs, function (obj, name) {
+	describe('It should create a marker with the number ' + name, function () {
 
+		var icon = MarkerFactory.autoIcon(obj, window);
+		it('should generate the same dataurl as expected for icon with number ' + name, function () {
+			assert.equal(icon.url, obj.url);
+		});
+	});
+});
+*/
 
 _.each(testColors, function (value, key) {
 	describe('Parsing of ' + key + ' color', function () {
