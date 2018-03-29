@@ -43,7 +43,7 @@ checks:
         no_process_env: true
         no_plusplus: true
         no_path_concat: true
-        block_scoped_var: true
+        block_scoped_var: false
         camelcase: true
         consistent_return: true
         consistent_this: true
