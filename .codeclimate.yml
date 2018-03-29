@@ -11,5 +11,5 @@ engines:
 ratings:
   paths:
   - "src/*.js"
-exclude_paths: ["test","example","node_modules","jspm_packages"]
+exclude_paths: ["test","examples","dist","node_modules","jspm_packages"]
   
