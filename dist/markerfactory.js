@@ -445,7 +445,6 @@ function compact(array) {
         context.beginPath();
 
         context.font = 'normal normal normal ' + fontsize + 'px ' + font;
-        console.log('context font', context.font);
         context.fillStyle = '#333';
         context.textBaseline = "top";
         var textWidth = context.measureText(options.label);
@@ -772,10 +771,8 @@ function compact(array) {
             options.scale = options.scale || 1;
 
             if (options.transparent_background) {
-                console.log('createTransparentMarkerIcon', options.font);
                 return MarkerFactory.createTransparentMarkerIcon(options);
             } else {
-                console.log('createFatMarkerIcon', options.font);
                 return MarkerFactory.createFatMarkerIcon(options);
             }
         } else if (options.shadow) {

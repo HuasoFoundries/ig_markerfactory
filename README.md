@@ -68,9 +68,21 @@ Include this package in your HTML file directly with a script tag  using [unpkg]
 ```
 
 
-Install it with jspm like so:
+### Install with npm
 
-```js
+Install it with npm like so:
+
+```sh
+npm install ig_markerfactory
+```
+
+
+
+### Install with [JSPM](https://github.com/jspm/jspm-cli)
+
+Or include it in your [JSPM](https://github.com/jspm/jspm-cli)/[SystemJS](https://github.com/systemjs/systemjs) project doing:
+
+```sh
 jspm install npm:ig_markerfactory
 ```
 
@@ -81,6 +93,8 @@ jspm install npm:ig_markerfactory
 ## Usage
 
 This is a simple example using AMD loading. It assumes you're using a font that's already present in the DOM. 
+
+### AMD Style
 
 ```js
 define(['ig_markerfactory'], function(MarkerFactory) {
@@ -96,6 +110,45 @@ define(['ig_markerfactory'], function(MarkerFactory) {
 });
 
 ```
+
+### CommonJS Style
+
+Require the library it with CommonJS format.
+
+```js
+var MarkerFactory = require('ig_markerfactory');
+var myIcon = MarkerFactory.autoIcon({
+		label: 'f1b9',
+		font: 'FontAwesome',
+		color: '#CC0000',
+		fontsize: 20
+	});
+
+console.log(myIcon);
+
+```
+
+
+### ES6 Style
+
+If you're using an ES6 module bundler/transpiler (and you should!) import the ES6 version doing:
+
+
+```js
+import MarkerFactory from 'ig_markerfactory/dist/markerfactory.es6';
+
+const myIcon = MarkerFactory.autoIcon({
+		label: 'f1b9',
+		font: 'FontAwesome',
+		color: '#CC0000',
+		fontsize: 20
+	});
+
+console.log(myIcon);
+```
+
+
+
 
 You will see that `myIcon` object is a valid [google.maps.Icon](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Icon) object,
 but of course you might want the image for other purposes so you can just use `myIcon.url` which is a [data URI](https://developer.mozilla.org/en-US/docs/Web/HTTP/data_URIs)

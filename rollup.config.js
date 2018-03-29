@@ -1,7 +1,12 @@
 import uglify from 'rollup-plugin-uglify';
+import strip from 'rollup-plugin-strip';
 
 var input = "./src/markerfactory.js",
-  plugins = [],
+  plugins = [strip({
+    debugger: true,
+    functions: ['console.log', 'assert.*', 'debug', 'alert'],
+    sourceMap: !!process.env.MINIFY
+  })],
   output = [{
     file: "dist/markerfactory.js",
     format: "umd",
