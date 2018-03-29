@@ -28,13 +28,27 @@
     a: 1
  };
 
+ function hslaString(hslcolor) {
+    return 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
+ }
+
+ function rgbaString(hexcolor) {
+    return 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
+ }
+
  function getColor(val, range) {
     defaults.h = Math.floor((360 / range) * val);
-    return "hsla(" + defaults.h + "," + defaults.s + "%," + defaults.l + "%," + defaults.a + ")";
+    return hslaString(defaults);
  }
 
  function getColor1() {
-    return "hsla(" + defaults.h + "," + defaults.s + "%," + (defaults.l - 30) + "%," + defaults.a + ")";
+    var defaults1 = {
+        h: 1,
+        s: 78, // constant saturation
+        l: 33, // constant luminance
+        a: 1
+    };
+    return hslaString(defaults1);
  }
 
  function parseHalf(foo) {
@@ -52,7 +66,8 @@
         darkercolor.r = factor * parseHalf(stringcolor.r);
         darkercolor.g = factor * parseHalf(stringcolor.g);
         darkercolor.b = factor * parseHalf(stringcolor.b);
-        darkercolor.fillColor = 'rgba(' + darkercolor.r + ',' + darkercolor.g + ',' + darkercolor.b + ',0.99)';
+        darkercolor.a = 0.99;
+        darkercolor.fillColor = rgbaString(darkercolor);
     } else if (stringcolor.fillColor.indexOf('hsl') !== -1) {
         darkercolor.h = stringcolor.h;
         darkercolor.s = stringcolor.s;
@@ -94,14 +109,17 @@
     hexcolor.g = parseInt(darkenfactor * (parseInt(hexstring.substring(2, 4), 16)), 10);
     hexcolor.b = parseInt(darkenfactor * (parseInt(hexstring.substring(4, 6), 16)), 10);
     hexcolor.a = opacity;
-    hexcolor.fillColor = 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
+    hexcolor.fillColor = rgbaString(hexcolor);
     hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
     hexcolor.rgb = hexcolor.fillColor;
     return hexcolor;
  }
 
+
+
  function parseHSL(hslstring, opacity) {
     var hslcolor = {},
+        hslcolor_stroke = {},
         hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
     if (hslparts[3] === undefined) {
@@ -111,13 +129,15 @@
         opacity = 1;
     }
 
-    hslcolor.h = parseFloat(hslparts[0], 10);
-    hslcolor.s = parseFloat(hslparts[1], 10);
+    hslcolor.h = hslcolor_stroke.h = parseFloat(hslparts[0], 10);
+    hslcolor.s = hslcolor_stroke.s = parseFloat(hslparts[1], 10);
     hslcolor.l = parseFloat(hslparts[2], 10);
-    hslcolor.a = parseFloat(opacity * hslparts[3], 10);
+    hslcolor.a = hslcolor_stroke.a = parseFloat(opacity * hslparts[3], 10);
+    hslcolor_stroke.l = parseInt(hslcolor.l / 2, 10);
 
-    hslcolor.fillColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
-    hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
+
+    hslcolor.fillColor = hslaString(hslcolor);
+    hslcolor.strokeColor = hslaString(hslcolor_stroke);
     hslcolor.hsl = hslcolor.fillColor;
     return hslcolor;
  };
@@ -140,7 +160,7 @@
     rgbcolor.g = parseInt(darkenfactor * (parseInt(rgbparts[1], 10) % 256), 10);
     rgbcolor.b = parseInt(darkenfactor * (parseInt(rgbparts[2], 10) % 256), 10);
     rgbcolor.a = parseFloat(opacity * rgbparts[3], 10);
-    rgbcolor.fillColor = 'rgba(' + rgbcolor.r + ',' + rgbcolor.g + ',' + rgbcolor.b + ',' + rgbcolor.a + ')';
+    rgbcolor.fillColor = rgbaString(rgbcolor);
     rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
     rgbcolor.rgb = rgbcolor.fillColor;
     return rgbcolor;
@@ -186,9 +206,28 @@
         a: Math.round(100 * a) / 100
     };
 
-    hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + hsl.a + ')';
+    hsl.fillColor = hslaString(hsl);
 
     return hsl;
+ }
+
+ function hue2rgb(p, q, t) {
+    if (t < 0) {
+        t += 1;
+    }
+    if (t > 1) {
+        t -= 1;
+    }
+    if (t < 1 / 6) {
+        return p + (q - p) * 6 * t;
+    }
+    if (t < 1 / 2) {
+        return q;
+    }
+    if (t < 2 / 3) {
+        return p + (q - p) * (2 / 3 - t) * 6;
+    }
+    return p;
  }
 
  function hslToRGB(h, s, l, a, darkenfactor) {
@@ -204,24 +243,7 @@
     if (s === 0) {
         r = g = b = l; // achromatic
     } else {
-        var hue2rgb = function (p, q, t) {
-            if (t < 0) {
-                t += 1;
-            }
-            if (t > 1) {
-                t -= 1;
-            }
-            if (t < 1 / 6) {
-                return p + (q - p) * 6 * t;
-            }
-            if (t < 1 / 2) {
-                return q;
-            }
-            if (t < 2 / 3) {
-                return p + (q - p) * (2 / 3 - t) * 6;
-            }
-            return p;
-        };
+
 
         var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         var p = 2 * l - q;
@@ -241,7 +263,7 @@
         a: parseFloat(a, 10)
     };
 
-    rgb.fillColor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + rgb.a + ')';
+    rgb.fillColor = rgbaString(rgb);
 
     return rgb;
 
