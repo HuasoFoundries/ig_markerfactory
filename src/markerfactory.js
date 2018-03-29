@@ -19,7 +19,7 @@
     } else {
         return String(str_in);
     }
- };
+ }
 
  var defaults = {
     h: 1,
@@ -28,20 +28,22 @@
     a: 1
  };
 
- var getColor = function (val, range) {
+ function getColor(val, range) {
     defaults.h = Math.floor((360 / range) * val);
     return "hsla(" + defaults.h + "," + defaults.s + "%," + defaults.l + "%," + defaults.a + ")";
- };
+ }
 
- var getColor1 = function () {
+ function getColor1() {
     return "hsla(" + defaults.h + "," + defaults.s + "%," + (defaults.l - 30) + "%," + defaults.a + ")";
- };
+ }
 
- var parseHalf = function (foo) {
+ function parseHalf(foo) {
     return parseInt(foo / 2, 10);
- };
+ }
 
- var darken = function (stringcolor, factor) {
+
+
+ function darken(stringcolor, factor) {
     var darkercolor = {};
     if (!factor) {
         factor = 1;
@@ -59,9 +61,22 @@
     }
 
     return darkercolor;
- };
+ }
 
- var parseHex = function (hexstring, opacity, darkenfactor) {
+ function getColors(options) {
+    var color0, color1;
+    if (options.index !== undefined && options.count > 0) {
+        color0 = getColor(options.index, options.count);
+        color1 = getColor1();
+    } else {
+        var deccolor = toDecColor(options.color);
+        color0 = deccolor.fillColor;
+        color1 = darken(deccolor).fillColor;
+    }
+    return [color0, color1];
+ }
+
+ function parseHex(hexstring, opacity, darkenfactor) {
     var hexcolor = {
         hex: hexstring
     };
@@ -83,9 +98,9 @@
     hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
     hexcolor.rgb = hexcolor.fillColor;
     return hexcolor;
- };
+ }
 
- var parseHSL = function (hslstring, opacity) {
+ function parseHSL(hslstring, opacity) {
     var hslcolor = {},
         hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
@@ -107,7 +122,7 @@
     return hslcolor;
  };
 
- var parseRGB = function (rgbstring, opacity, darkenfactor) {
+ function parseRGB(rgbstring, opacity, darkenfactor) {
     var rgbcolor = {},
         rgbparts = compact(rgbstring.split(/rgba?\(|\,|\)/));
 
@@ -129,9 +144,9 @@
     rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
     rgbcolor.rgb = rgbcolor.fillColor;
     return rgbcolor;
- };
+ }
 
- var rgbToHSL = function (r, g, b, a) {
+ function rgbToHSL(r, g, b, a) {
     r = (r % 256) / 255;
     g = (g % 256) / 255;
     b = (b % 256) / 255;
@@ -174,9 +189,9 @@
     hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + hsl.a + ')';
 
     return hsl;
- };
+ }
 
- var hslToRGB = function (h, s, l, a, darkenfactor) {
+ function hslToRGB(h, s, l, a, darkenfactor) {
     var r, g, b;
 
     darkenfactor = darkenfactor || 1;
@@ -232,7 +247,7 @@
 
  };
 
- var toDecColor = function (stringcolor) {
+ function toDecColor(stringcolor) {
     var parsedcolor = {};
     if (!stringcolor) {
         parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
@@ -286,15 +301,9 @@
             cy = y + 0.45 * radius0;
 
         var grad = context.createLinearGradient(0, 0, 0, canvas.height),
-            color0, color1;
-        if (options.index !== undefined && options.count > 0) {
-            color0 = getColor(options.index, options.count);
-            color1 = getColor1();
-        } else {
-            var deccolor = toDecColor(options.color);
-            color0 = deccolor.fillColor;
-            color1 = darken(deccolor).fillColor;
-        }
+            colors = getColors(options),
+            color0 = colors[0],
+            color1 = colors[1];
 
         grad.addColorStop(0, color0);
         grad.addColorStop(1, color1);
@@ -365,6 +374,8 @@
     return iconObj;
  };
 
+
+
  var createClusterIcon = function (theoptions) {
 
     var generateClusterCanvas = function (options) {
@@ -376,20 +387,15 @@
             font = options.font || 'fontello',
             fontsize = options.fontsize || 14,
             context = canvas.getContext("2d"),
-            grad = context.createLinearGradient(0, 0, 0, anchorY),
-            color0, color1;
+            grad = context.createLinearGradient(0, 0, 0, anchorY);
 
         canvas.width = anchorX * 2;
         canvas.height = anchorY + 1;
 
-        if (options.index !== undefined && options.count > 0) {
-            color0 = getColor(options.index, options.count);
-            color1 = getColor1();
-        } else {
-            var deccolor = toDecColor(options.color);
-            color0 = deccolor.fillColor;
-            color1 = darken(deccolor).fillColor;
-        }
+        var colors = getColors(options),
+            color0 = colors[0],
+            color1 = colors[1];
+
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.moveTo(anchorX, anchorY);
@@ -482,20 +488,14 @@
             font = options.font || 'fontello',
             fontsize = options.fontsize || 14,
             context = canvas.getContext("2d"),
-            grad = context.createLinearGradient(0, 0, 0, anchorY),
-            color0, color1;
+            grad = context.createLinearGradient(0, 0, 0, anchorY);
 
         canvas.width = anchorX * 2;
         canvas.height = anchorY + 1;
 
-        if (options.index !== undefined && options.count > 0) {
-            color0 = getColor(options.index, options.count);
-            color1 = getColor1();
-        } else {
-            var deccolor = toDecColor(options.color);
-            color0 = deccolor.fillColor;
-            color1 = darken(deccolor).fillColor;
-        }
+        var colors = getColors(options),
+            color0 = colors[0],
+            color1 = colors[1];
 
         context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -564,8 +564,7 @@
         var canvas = options.canvas || document.createElement("canvas"),
             context = canvas.getContext("2d"),
             font = options.font || 'fontello',
-            fontsize = options.fontsize || 26,
-            color0, color1;
+            fontsize = options.fontsize || 26;
 
         canvas.width = 54;
         canvas.height = 48;
@@ -576,15 +575,9 @@
         context.strokeStyle = 'black';
         context.stroke();*/
 
-        if (options.index !== undefined && options.count > 0) {
-            color0 = getColor(options.index, options.count);
-            color1 = getColor1();
-        } else {
-            var deccolor = toDecColor(options.color);
-            color0 = deccolor.fillColor;
-            color1 = darken(deccolor).fillColor;
-        }
-
+        var colors = getColors(options),
+            color0 = colors[0],
+            color1 = colors[1];
         context.beginPath();
 
         if (options.shadow) {
