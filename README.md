@@ -3,10 +3,8 @@
 This is a zero dependencies library that uses a canvas element to generate valid [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker) Icons from graphic-fonts, such as [Font-Awesome](https://fontawesome.github.io/Font-Awesome/), [Material-Icons](https://material.io/icons/) or [Fontello](http://fontello.com/).
 
 
-[![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) 
-[![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory) 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/44d15485b93e43cf86356e56a8bfb7d1)](https://www.codacy.com/app/amenadiel/ig_markerfactory)
-[![npm](https://img.shields.io/npm/dm/ig_markerfactory.svg?style=plastic)](https://www.npmjs.com/package/ig_markerfactory)
+[![Build Status](https://travis-ci.org/HuasoFoundries/ig_markerfactory.svg)](https://travis-ci.org/HuasoFoundries/ig_markerfactory) [![Code Climate](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory/badges/gpa.svg)](https://codeclimate.com/github/HuasoFoundries/ig_markerfactory) [![Codacy Badge](https://api.codacy.com/project/badge/grade/44d15485b93e43cf86356e56a8bfb7d1)](https://www.codacy.com/app/amenadiel/ig_markerfactory) [![npm](https://img.shields.io/npm/dm/ig_markerfactory.svg?style=plastic)](https://www.npmjs.com/package/ig_markerfactory) [![Build Status](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/build.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/HuasoFoundries/ig_markerfactory/?branch=master)
+
 
 ## Why? 
 
