@@ -8,9 +8,12 @@
         "jquery":true,
         "amd":true
 
+
     },
     "globals":{
         "google":true,
+        "describe":true,
+        "it":true,
         "SystemJS":false
     },
     
