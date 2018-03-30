@@ -48,12 +48,14 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",
-    "eslint": "^4.10.0",
+    "eslint": "^4.19.1",
     "lodash": "^4",
     "mocha": "^2.4",
     "rollup": "^0.50.0",
     "rollup-plugin-strip": "^1.1.1",
-    "rollup-plugin-uglify": "^2.0.1",
-    "serve": "^1.4.0"
+    "rollup-plugin-uglify": "^2.0.1"
+  },
+  "dependencies": {
+    "serve": "^6.5.3"
   }
 }
