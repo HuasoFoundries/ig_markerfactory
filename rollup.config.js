@@ -21,7 +21,7 @@ let input = "./src/markerfactory.js",
     name: 'MarkerFactory'
   }, {
     file: "dist/markerfactory.es6.js",
-    format: "es",
+    format: "es"
   }];
 
 if (process.env.MINIFY) {
