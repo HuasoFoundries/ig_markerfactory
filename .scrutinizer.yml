@@ -86,3 +86,8 @@ checks:
 build:
     environment:
       node: 'v8.9.4'
+
+    tests:
+        override:
+            - npm test
+            - eslint-run "src/*"
