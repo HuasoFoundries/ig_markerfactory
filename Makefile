@@ -23,6 +23,10 @@ update_eslint:
 run:
 	@$$(npm bin)/serve .
 
+lint:
+	@$$(npm bin)/eslint src --fix
+
+
 build:
 	@$$(npm bin)/rollup -c
 	@MINIFY=true $$(npm bin)/rollup -c
@@ -45,6 +49,6 @@ tag_and_push:
 		git push --tags
 		npm publish
 
-tag: build test update_version tag_and_push		
+tag: lint build test update_version tag_and_push		
 
 		

@@ -1,3 +1,4 @@
+/** global: google, r, g, b */
 function compact(array) {
     let index = -1,
         length = array ? array.length : 0,
@@ -192,11 +193,12 @@ function getColors(options) {
 }
 
 
-function rgbToHSL(r, g, b, a) {
-    r = (r % 256) / 255;
-    g = (g % 256) / 255;
-    b = (b % 256) / 255;
-    if (a === undefined) {
+function rgbToHSL(in_r, in_g, in_b, in_a) {
+    let r = (in_r % 256) / 255,
+        g = (in_g % 256) / 255,
+        b = (in_b % 256) / 255,
+        a = in_a;
+    if (in_a === undefined) {
         a = 1;
     }
     let max = Math.max(r, g, b),
@@ -302,7 +304,8 @@ function IconObject(canvas, markerOpts) {
     this.markerOpts = markerOpts;
     Object.assign(this, markerOpts);
     return this;
-};
+}
+
 IconObject.prototype.toJSON = function () {
     return {
         url: null,
@@ -416,19 +419,13 @@ function createClusterIcon(theoptions) {
             anchorX = 27,
             anchorY = 53,
             radius = (anchorX - 9),
-            angulo = 1.1,
+            color1,
             font = options.font || 'fontello',
             fontsize = options.fontsize || 14,
-            context = canvas.getContext("2d"),
-            grad = context.createLinearGradient(0, 0, 0, anchorY);
+            context = canvas.getContext("2d");
 
         canvas.width = anchorX * 2;
         canvas.height = anchorY + 1;
-
-        let colors = getColors(options),
-            color0 = colors[0],
-            color1 = colors[1];
-
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.moveTo(anchorX, anchorY);
@@ -680,9 +677,7 @@ function createTransparentMarkerIcon(theoptions) {
         markerOpts = {};
 
     let scale = theoptions.scale;
-    /*if (theoptions.shadow) {
-        scale = 0.9 * scale;
-    }*/
+
     theoptions.type = 'transparent';
 
     Object.assign(markerOpts, theoptions);
@@ -698,7 +693,7 @@ function createTransparentMarkerIcon(theoptions) {
     let iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
-};
+}
 
 
 const MarkerFactory = {
@@ -710,9 +705,9 @@ const MarkerFactory = {
      * in rgba and hsla, with optional transparency
      * plus a darkened version (default is half of each RGB component) and a
      *
-     * @param {string} somecolor          - A color string in  rgb(a), hsl(a) or hex format
-     * @param {Number} [opacity=1]        - Opacity to apply to the color
-     * @param {Number} [darkenfactor=1] - How much darker should the resulting color be
+     * @param {string} somecolor    - A color string in  rgb(a), hsl(a) or hex format
+     * @param {Number} opacity      - Opacity to apply to the color. Optional, default 1
+     * @param {Number} darkenfactor - How much darker should the resulting color be. Optional, default 1
      *
      * @return     {Object}  input color parsed and modified as requested
      */

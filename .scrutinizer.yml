@@ -80,13 +80,9 @@ checks:
         guard_for_in: true
         comma_style:
             style: 'At the end of the line'
-        no_debugger: true
+        no_debugger: false
         no_delete_var: true
 
 build:
     environment:
       node: 'v8.9.4'
-
-    tests:
-        override:
-            - './node_modules/.bin/mocha'

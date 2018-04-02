@@ -2,7 +2,7 @@ import uglify from 'rollup-plugin-uglify';
 import strip from 'rollup-plugin-strip';
 import replace from 'rollup-plugin-replace';
 
-var input = "./src/markerfactory.js",
+let input = "./src/markerfactory.js",
   plugins = [
     strip({
       debugger: true,
