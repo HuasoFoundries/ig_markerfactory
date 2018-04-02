@@ -44,7 +44,7 @@
     }
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "karma start"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",
