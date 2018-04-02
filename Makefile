@@ -20,7 +20,8 @@ update_eslint:
 	npm remove --save-dev eslint babel-eslint ;\
 	npm install --save-dev eslint babel-eslint
 
-	
+run:
+	@$$(npm bin)/serve .
 
 build:
 	@$$(npm bin)/rollup -c
@@ -29,7 +30,7 @@ build:
 	@sed -i s/"global.MarkerFactory"/"global"/g dist/markerfactory.min.js
 
 test:
-	$$(npm bin)/mocha
+	$$(npm bin)/karma start
 
 update_version:
 	@echo "Current version is " ${VERSION}

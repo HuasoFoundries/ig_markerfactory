@@ -1,6 +1,6 @@
 {
   "name": "ig_markerfactory",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
   "keywords": [
     "google maps",
@@ -49,9 +49,15 @@
   "devDependencies": {
     "babel-eslint": "^8.0.2",
     "eslint": "^4.19.1",
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-phantomjs-launcher": "^1.0.4",
     "lodash": "^4",
-    "mocha": "^2.4",
+    "phantomjs-prebuilt": "^2.1.16",
     "rollup": "^0.50.0",
+    "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify": "^2.0.1"
   },

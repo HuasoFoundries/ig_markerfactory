@@ -1,12 +1,19 @@
 import uglify from 'rollup-plugin-uglify';
 import strip from 'rollup-plugin-strip';
+import replace from 'rollup-plugin-replace';
 
 var input = "./src/markerfactory.js",
-  plugins = [strip({
-    debugger: true,
-    functions: ['console.log', 'assert.*', 'debug', 'alert'],
-    sourceMap: !!process.env.MINIFY
-  })],
+  plugins = [
+    strip({
+      debugger: true,
+      functions: ['console.log', 'assert.*', 'debug', 'alert'],
+      sourceMap: !!process.env.MINIFY
+    }),
+    replace({
+      const: 'var',
+      let: 'var'
+    })
+  ],
   output = [{
     file: "dist/markerfactory.js",
     format: "umd",

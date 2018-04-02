@@ -35,6 +35,7 @@
         "indent_with_tabs": true
     },
     "js": {
+        "allowed_file_extensions": ["js"],
         "indent_size": 4,
         "indent_char": " ",
         "indent_level": 0,

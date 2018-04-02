@@ -11,37 +11,43 @@ function compact(array) {
         }
     }
     return result;
- }
+}
 
- function padHex(str_in) {
+function padHex(str_in) {
     if (('' + str_in).length === 1) {
         return '0' + String(str_in);
     } else {
         return String(str_in);
     }
- }
+}
 
- var defaults = {
+var defaults = {
     h: 1,
     s: 78, // constant saturation
     l: 63, // constant luminance
     a: 1
- };
+};
 
- function hslaString(hslcolor) {
-    return 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
- }
+function hslaString(hslcolor) {
+    if (hslcolor.a) {
+        return 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
+    }
+    return 'hsl(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%)';
+}
 
- function rgbaString(hexcolor) {
-    return 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
- }
+function rgbaString(hexcolor) {
+    if (hexcolor.a) {
+        return 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
+    }
+    return 'rgb(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ')';
+}
 
- function getColor(val, range) {
+function getColor(val, range) {
     defaults.h = Math.floor((360 / range) * val);
     return hslaString(defaults);
- }
+}
 
- function getColor1() {
+function getColor1() {
     var defaults1 = {
         h: 1,
         s: 78, // constant saturation
@@ -49,15 +55,14 @@ function compact(array) {
         a: 1
     };
     return hslaString(defaults1);
- }
+}
 
- function parseHalf(foo) {
+function parseHalf(foo) {
     return parseInt(foo / 2, 10);
- }
+}
 
 
-
- function darken(stringcolor, factor) {
+function darken(stringcolor, factor) {
     var darkercolor = {};
     if (!factor) {
         factor = 1;
@@ -72,26 +77,14 @@ function compact(array) {
         darkercolor.h = stringcolor.h;
         darkercolor.s = stringcolor.s;
         darkercolor.l = factor * stringcolor.l - 30;
-        darkercolor.fillColor = 'hsl(' + darkercolor.h + ',' + darkercolor.s + '%,' + darkercolor.l + '%)';
+        darkercolor.fillColor = hslaString(darkercolor);
     }
 
     return darkercolor;
- }
+}
 
- function getColors(options) {
-    var color0, color1;
-    if (options.index !== undefined && options.count > 0) {
-        color0 = getColor(options.index, options.count);
-        color1 = getColor1();
-    } else {
-        var deccolor = toDecColor(options.color);
-        color0 = deccolor.fillColor;
-        color1 = darken(deccolor).fillColor;
-    }
-    return [color0, color1];
- }
 
- function parseHex(hexstring, opacity, darkenfactor) {
+function parseHex(hexstring, opacity, darkenfactor) {
     var hexcolor = {
         hex: hexstring
     };
@@ -110,17 +103,20 @@ function compact(array) {
     hexcolor.b = parseInt(darkenfactor * (parseInt(hexstring.substring(4, 6), 16)), 10);
     hexcolor.a = opacity;
     hexcolor.fillColor = rgbaString(hexcolor);
-    hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
+    hexcolor.strokeColor = [
+        'rgba(' + parseHalf(hexcolor.r),
+        parseHalf(hexcolor.g),
+        parseHalf(hexcolor.b), hexcolor.a + ')'
+    ].join(',');
     hexcolor.rgb = hexcolor.fillColor;
     return hexcolor;
- }
+}
 
 
-
- function parseHSL(hslstring, opacity) {
+function parseHSL(hslstring, opacity) {
     var hslcolor = {},
         hslcolor_stroke = {},
-        hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
+        hslparts = compact(hslstring.split(/hsla?\(|,|\)|%/));
 
     if (hslparts[3] === undefined) {
         hslparts[3] = 1;
@@ -140,11 +136,11 @@ function compact(array) {
     hslcolor.strokeColor = hslaString(hslcolor_stroke);
     hslcolor.hsl = hslcolor.fillColor;
     return hslcolor;
- }
+}
 
- function parseRGB(rgbstring, opacity, darkenfactor) {
+function parseRGB(rgbstring, opacity, darkenfactor) {
     var rgbcolor = {},
-        rgbparts = compact(rgbstring.split(/rgba?\(|\,|\)/));
+        rgbparts = compact(rgbstring.split(/rgba?\(|,|\)/));
 
     darkenfactor = darkenfactor || 1;
 
@@ -164,9 +160,39 @@ function compact(array) {
     rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
     rgbcolor.rgb = rgbcolor.fillColor;
     return rgbcolor;
- }
+}
 
- function rgbToHSL(r, g, b, a) {
+function toDecColor(stringcolor) {
+    var parsedcolor = {};
+    if (!stringcolor) {
+        parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
+    } else if (stringcolor.indexOf('rgb') !== -1) {
+        parsedcolor = parseRGB(stringcolor);
+    } else if (stringcolor.indexOf('hsl') !== -1) {
+        parsedcolor = parseHSL(stringcolor);
+    } else {
+        parsedcolor = parseHex(stringcolor);
+    }
+
+    return parsedcolor;
+}
+
+
+function getColors(options) {
+    var color0, color1;
+    if (options.index !== undefined && options.count > 0) {
+        color0 = getColor(options.index, options.count);
+        color1 = getColor1();
+    } else {
+        var deccolor = toDecColor(options.color);
+        color0 = deccolor.fillColor;
+        color1 = darken(deccolor).fillColor;
+    }
+    return [color0, color1];
+}
+
+
+function rgbToHSL(r, g, b, a) {
     r = (r % 256) / 255;
     g = (g % 256) / 255;
     b = (b % 256) / 255;
@@ -209,9 +235,9 @@ function compact(array) {
     hsl.fillColor = hslaString(hsl);
 
     return hsl;
- }
+}
 
- function hue2rgb(p, q, t) {
+function hue2rgb(p, q, t) {
     if (t < 0) {
         t += 1;
     }
@@ -228,9 +254,9 @@ function compact(array) {
         return p + (q - p) * (2 / 3 - t) * 6;
     }
     return p;
- }
+}
 
- function hslToRGB(h, s, l, a, darkenfactor) {
+function hslToRGB(h, s, l, a, darkenfactor) {
     var r, g, b;
 
     darkenfactor = darkenfactor || 1;
@@ -267,38 +293,24 @@ function compact(array) {
 
     return rgb;
 
- }
+}
 
- function toDecColor(stringcolor) {
-    var parsedcolor = {};
-    if (!stringcolor) {
-        parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
-    } else if (stringcolor.indexOf('rgb') !== -1) {
-        parsedcolor = parseRGB(stringcolor);
-    } else if (stringcolor.indexOf('hsl') !== -1) {
-        parsedcolor = parseHSL(stringcolor);
-    } else {
-        parsedcolor = parseHex(stringcolor);
-    }
 
-    return parsedcolor;
- }
-
- var IconObject = function (canvas, markerOpts) {
+function IconObject(canvas, markerOpts) {
     this.url = canvas.toDataURL();
     this.fillColor = canvas.fillColor;
     this.markerOpts = markerOpts;
     Object.assign(this, markerOpts);
     return this;
- };
- IconObject.prototype.toJSON = function () {
+}
+IconObject.prototype.toJSON = function () {
     return {
         url: null,
         markerOpts: this.markerOpts
     };
- };
+};
 
- var createTextMarker = function (theoptions) {
+function createTextMarker(theoptions) {
 
     var generateCanvas = function (options) {
         var canvas = document.createElement("canvas");
@@ -394,11 +406,10 @@ function compact(array) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
- };
+}
 
 
-
- var createClusterIcon = function (theoptions) {
+function createClusterIcon(theoptions) {
 
     var generateClusterCanvas = function (options) {
         var canvas = options.canvas || document.createElement("canvas"),
@@ -422,7 +433,7 @@ function compact(array) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.moveTo(anchorX, anchorY);
 
-        var labelvalue = parseInt(options.label);
+        var labelvalue = parseInt(options.label, 10);
         if (labelvalue < 10) {
             color1 = 'orange';
             fontsize = 14;
@@ -469,10 +480,15 @@ function compact(array) {
         context.font = 'normal normal normal ' + fontsize + 'px ' + font;
         context.fillStyle = '#333';
         context.textBaseline = "top";
-        var textWidth = context.measureText(options.label);
+
+
+        var textWidth = context.measureText(options.label),
+            text_x = options.label,
+            label_x = Math.floor((canvas.width / 2) - (textWidth.width / 2)),
+            label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
 
         // centre the text.
-        context.fillText(options.label, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
+        context.fillText(text_x, label_x, label_y);
 
         return canvas;
 
@@ -496,9 +512,9 @@ function compact(array) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
- };
+}
 
- var createFatMarkerIcon = function (theoptions) {
+function createFatMarkerIcon(theoptions) {
 
     var generateFatCanvas = function (options) {
         var canvas = options.canvas || document.createElement("canvas"),
@@ -550,14 +566,18 @@ function compact(array) {
         //console.log('context font', context.font);
         context.fillStyle = color1;
         context.textBaseline = "top";
-        var textWidth = context.measureText(options.unicodelabel);
+
+        var textWidth = context.measureText(options.unicodelabel),
+            text_x = options.unicodelabel,
+            label_x = Math.floor((canvas.width / 2) - (textWidth.width / 2)),
+            label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
 
         // centre the text.
-        context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
+        context.fillText(text_x, label_x, label_y);
         canvas.fillColor = color0;
         return canvas;
-
     };
+
     var scale = theoptions.scale || 1,
         markerCanvas = generateFatCanvas(theoptions),
         markerOpts = {};
@@ -577,12 +597,13 @@ function compact(array) {
     }
     var iconObj = new IconObject(markerCanvas, markerOpts);
     return iconObj;
- };
+}
 
- var createTransparentMarkerIcon = function (theoptions) {
+function createTransparentMarkerIcon(theoptions) {
 
     var generateTransparentCanvas = function (options) {
-        var canvas = options.canvas || document.createElement("canvas"),
+        var text_x,
+            canvas = options.canvas || document.createElement("canvas"),
             context = canvas.getContext("2d"),
             font = options.font || 'fontello',
             fontsize = options.fontsize || 26;
@@ -590,11 +611,6 @@ function compact(array) {
         canvas.width = 54;
         canvas.height = 48;
         context.clearRect(0, 0, canvas.width, canvas.height);
-
-        /*context.rect(1, 1, canvas.width - 2, canvas.height - 2);
-        context.lineWidth = 1;
-        context.strokeStyle = 'black';
-        context.stroke();*/
 
         var colors = getColors(options),
             color0 = colors[0],
@@ -606,8 +622,8 @@ function compact(array) {
             context.font = 'normal normal normal ' + fontsize + 'px ' + font;
 
             context.textBaseline = "top";
-            var textWidth = context.measureText(options.unicodelabel),
-                text_x = Math.floor((canvas.width / 2) - (textWidth.width / 2));
+            var textWidth = context.measureText(options.unicodelabel);
+            text_x = Math.floor((canvas.width / 2) - (textWidth.width / 2));
 
             context.shadowOffsetX = -2;
             context.shadowOffsetY = -2;
@@ -629,8 +645,8 @@ function compact(array) {
             context.font = 'normal normal normal ' + (fontsize - 3) + 'px ' + font;
 
             context.textBaseline = "top";
-            var textmetric = context.measureText(options.unicodelabel),
-                text_x = Math.floor((canvas.width / 2) - (textmetric.width / 2));
+            var textmetric = context.measureText(options.unicodelabel);
+            text_x = Math.floor((canvas.width / 2) - (textmetric.width / 2));
 
             //console.debug('textmetric', textmetric);
 
@@ -681,24 +697,22 @@ function compact(array) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
- };
+}
 
 
-
-
- var MarkerFactory = {
+var MarkerFactory = {
     createTransparentMarkerIcon: createTransparentMarkerIcon,
     createFatMarkerIcon: createFatMarkerIcon,
     createTextMarker: createTextMarker,
     /**
      * Receives a color string rgb(a), hsl(a) or hex, returns its components
      * in rgba and hsla, with optional transparency
-     * plus a darkened version (default is half of each RGB component) and a 
+     * plus a darkened version (default is half of each RGB component) and a
      *
      * @param {string} somecolor          - A color string in  rgb(a), hsl(a) or hex format
      * @param {Number} [opacity=1]        - Opacity to apply to the color
      * @param {Number} [darkenfactor=1] - How much darker should the resulting color be
-     * 
+     *
      * @return     {Object}  input color parsed and modified as requested
      */
     parseColorString: function (somecolor, opacity, darkenfactor) {
@@ -714,14 +728,10 @@ function compact(array) {
             hsl = parseHSL(somecolor, opacity);
             rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a, darkenfactor);
 
+        } else if (somecolor.indexOf('rgb') !== -1) {
+            rgb = parseRGB(somecolor, opacity, darkenfactor);
         } else {
-            if (somecolor.indexOf('rgb') !== -1) {
-                rgb = parseRGB(somecolor, opacity, darkenfactor);
-            } else {
-                rgb = parseHex(somecolor, opacity, darkenfactor);
-            }
-
-
+            rgb = parseHex(somecolor, opacity, darkenfactor);
         }
 
 
@@ -740,7 +750,6 @@ function compact(array) {
             b: rgb.b,
             a: rgb.a
         };
-
 
 
         parsedcolor.fillColor = rgb.fillColor;
@@ -796,7 +805,7 @@ function compact(array) {
         }
 
     }
- };
+};
 
 export { MarkerFactory };
 export default MarkerFactory;

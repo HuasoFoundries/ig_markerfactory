@@ -40,7 +40,7 @@ checks:
         no_redeclare: true
         no_reserved_keys: true
         no_process_exit: true
-        no_process_env: true
+        no_process_env: false
         no_plusplus: true
         no_path_concat: true
         block_scoped_var: false

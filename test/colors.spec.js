@@ -1,34 +1,3 @@
-var assert = require('assert'),
-	_ = require('lodash'),
-	/*canvas = require('canvas-prebuilt'),
-	jsdom = require("jsdom"),
-	dom = new jsdom.JSDOM(`<!DOCTYPE html><p>Hello world</p>`),
-	window = dom.window,
-	document = dom.window.document,*/
-	MarkerFactory = require('../dist/markerfactory');
-
-MarkerFactory = MarkerFactory.default ? MarkerFactory.default : MarkerFactory;
-
-var iconObjs = {
-	'one': {
-		label: '1',
-		color: '#CC0000',
-		fontsize: 25,
-		scale: 0.8
-	},
-	'two': {
-		label: '2',
-		color: '#0C0',
-		fontsize: 25,
-		scale: 0.8
-	},
-	'three': {
-		label: '3',
-		color: '#00C',
-		fontsize: 32,
-		scale: 0.8
-	}
-};
 var testColors = {
 		hex3: "#C40",
 		hex6: "#CC4400",
@@ -90,17 +59,8 @@ var testColors = {
 		hex: '#cc4400'
 	};
 
-/*
-_.each(iconObjs, function (obj, name) {
-	describe('It should create a marker with the number ' + name, function () {
 
-		var icon = MarkerFactory.autoIcon(obj, window);
-		it('should generate the same dataurl as expected for icon with number ' + name, function () {
-			assert.equal(icon.url, obj.url);
-		});
-	});
-});
-*/
+
 
 _.each(testColors, function (value, key) {
 	describe('Parsing of ' + key + ' color', function () {
@@ -111,32 +71,32 @@ _.each(testColors, function (value, key) {
 
 
 		it('should match HEX result of parsed ' + key + ' color', function () {
-			assert.equal(parsedObject.hex, parsedColor.hex);
+			expect(parsedObject.hex).toEqual(parsedColor.hex);
 		});
 
 
 		it('should match RGBA Object result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
+			expect(parsedObject.rgb).toEqual(parsedColor.rgb);
 		});
 
 		it('should match HSLA Object result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
+			expect(parsedObject.hsl).toEqual(parsedColor.hsl);
 		});
 
 		it('should match RGBA Object result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.rgb, parsedColorWO.rgb);
+			expect(parsedObjectWO.rgb).toEqual(parsedColorWO.rgb);
 		});
 
 		it('should match HSLA Object result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.hsl, parsedColorWO.hsl);
+			expect(parsedObjectWO.hsl).toEqual(parsedColorWO.hsl);
 		});
 
 		it('should match RGBA Object result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
-			assert.deepEqual(parsedObjectDarker.rgb, parsedColorDarker.rgb);
+			expect(parsedObjectDarker.rgb).toEqual(parsedColorDarker.rgb);
 		});
 
 		it('should match HSLA Object result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
-			assert.deepEqual(parsedObjectDarker.hsl, parsedColorDarker.hsl);
+			expect(parsedObjectDarker.hsl).toEqual(parsedColorDarker.hsl);
 		});
 
 
@@ -144,27 +104,27 @@ _.each(testColors, function (value, key) {
 
 
 		it('should match RGBA string result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.rgba, parsedColor.rgba);
+			expect(parsedObject.rgba).toEqual(parsedColor.rgba);
 		});
 
 		it('should match HSLA string result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.hsla, parsedColor.hsla);
+			expect(parsedObject.hsla).toEqual(parsedColor.hsla);
 		});
 
 		it('should match RGBA string result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.rgba, parsedColorWO.rgba);
+			expect(parsedObjectWO.rgba).toEqual(parsedColorWO.rgba);
 		});
 
 		it('should match HSLA string result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.hsla, parsedColorWO.hsla);
+			expect(parsedObjectWO.hsla).toEqual(parsedColorWO.hsla);
 		});
 
 		it('should match RGBA string result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
-			assert.deepEqual(parsedObjectDarker.rgba, parsedColorDarker.rgba);
+			expect(parsedObjectDarker.rgba).toEqual(parsedColorDarker.rgba);
 		});
 
 		it('should match HSLA string  result of parsed ' + key + ' color with 50% opacity and darkened to 25%', function () {
-			assert.deepEqual(parsedObjectDarker.hsla, parsedColorDarker.hsla);
+			expect(parsedObjectDarker.hsla).toEqual(parsedColorDarker.hsla);
 		});
 
 	});
