@@ -1,3 +1,4 @@
+/** global: google, r, g, b */
 function compact(array) {
     var index = -1,
         length = array ? array.length : 0,
@@ -192,43 +193,44 @@ function getColors(options) {
 }
 
 
-function rgbToHSL(r, g, b, a) {
-    r = (r % 256) / 255;
-    g = (g % 256) / 255;
-    b = (b % 256) / 255;
-    if (a === undefined) {
-        a = 1;
-    }
-    var max = Math.max(r, g, b),
-        min = Math.min(r, g, b);
-    var h, s, l = (max + min) / 2;
+function rgbToHSL(in_r, in_g, in_b, in_a) {
 
-    if (max === min) {
+    var h,
+        r = (in_r % 256) / 255,
+        g = (in_g % 256) / 255,
+        b = (in_b % 256) / 255,
+        a = in_a === undefined ? 1 : in_a,
+        max = Math.max(r, g, b),
+        min = Math.min(r, g, b),
+        sum = (max + min),
+        diff = (max - min),
+        s = sum > 1 ? diff / (2 - sum) : diff / sum;
+
+    switch (max) {
+    case r:
+        h = (g - b) / diff + (g < b ? 6 : 0);
+        break;
+    case g:
+        h = (b - r) / diff + 2;
+        break;
+    case b:
+        h = (r - g) / diff + 4;
+        break;
+    default:
+        h = 0;
+        break;
+    }
+
+    h /= 6;
+
+    if (diff === 0) {
         h = s = 0; // achromatic
-    } else {
-        var d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        switch (max) {
-        case r:
-            h = (g - b) / d + (g < b ? 6 : 0);
-            break;
-        case g:
-            h = (b - r) / d + 2;
-            break;
-        case b:
-            h = (r - g) / d + 4;
-            break;
-        default:
-            h = 0;
-            break;
-        }
-
-        h /= 6;
     }
+
     var hsl = {
         h: Math.round(360 * h),
         s: Math.round(100 * s),
-        l: Math.round(100 * l),
+        l: Math.round(50 * sum),
         a: Math.round(100 * a) / 100
     };
 
@@ -303,6 +305,7 @@ function IconObject(canvas, markerOpts) {
     Object.assign(this, markerOpts);
     return this;
 }
+
 IconObject.prototype.toJSON = function () {
     return {
         url: null,
@@ -416,19 +419,13 @@ function createClusterIcon(theoptions) {
             anchorX = 27,
             anchorY = 53,
             radius = (anchorX - 9),
-            angulo = 1.1,
+            color1,
             font = options.font || 'fontello',
             fontsize = options.fontsize || 14,
-            context = canvas.getContext("2d"),
-            grad = context.createLinearGradient(0, 0, 0, anchorY);
+            context = canvas.getContext("2d");
 
         canvas.width = anchorX * 2;
         canvas.height = anchorY + 1;
-
-        var colors = getColors(options),
-            color0 = colors[0],
-            color1 = colors[1];
-
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.moveTo(anchorX, anchorY);
@@ -679,9 +676,7 @@ function createTransparentMarkerIcon(theoptions) {
         markerOpts = {};
 
     var scale = theoptions.scale;
-    /*if (theoptions.shadow) {
-        scale = 0.9 * scale;
-    }*/
+
     theoptions.type = 'transparent';
 
     Object.assign(markerOpts, theoptions);
@@ -709,9 +704,9 @@ var MarkerFactory = {
      * in rgba and hsla, with optional transparency
      * plus a darkened version (default is half of each RGB component) and a
      *
-     * @param {string} somecolor          - A color string in  rgb(a), hsl(a) or hex format
-     * @param {Number} [opacity=1]        - Opacity to apply to the color
-     * @param {Number} [darkenfactor=1] - How much darker should the resulting color be
+     * @param {string} somecolor    - A color string in  rgb(a), hsl(a) or hex format
+     * @param {Number} opacity      - Opacity to apply to the color. Optional, default 1
+     * @param {Number} darkenfactor - How much darker should the resulting color be. Optional, default 1
      *
      * @return     {Object}  input color parsed and modified as requested
      */

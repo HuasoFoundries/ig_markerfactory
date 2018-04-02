@@ -194,43 +194,43 @@ function getColors(options) {
 
 
 function rgbToHSL(in_r, in_g, in_b, in_a) {
-    let r = (in_r % 256) / 255,
+
+    let h,
+        r = (in_r % 256) / 255,
         g = (in_g % 256) / 255,
         b = (in_b % 256) / 255,
-        a = in_a;
-    if (in_a === undefined) {
-        a = 1;
-    }
-    let max = Math.max(r, g, b),
-        min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
+        a = in_a === undefined ? 1 : in_a,
+        max = Math.max(r, g, b),
+        min = Math.min(r, g, b),
+        sum = (max + min),
+        diff = (max - min),
+        s = sum > 1 ? diff / (2 - sum) : diff / sum;
 
-    if (max === min) {
+    switch (max) {
+    case r:
+        h = (g - b) / diff + (g < b ? 6 : 0);
+        break;
+    case g:
+        h = (b - r) / diff + 2;
+        break;
+    case b:
+        h = (r - g) / diff + 4;
+        break;
+    default:
+        h = 0;
+        break;
+    }
+
+    h /= 6;
+
+    if (diff === 0) {
         h = s = 0; // achromatic
-    } else {
-        let d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        switch (max) {
-        case r:
-            h = (g - b) / d + (g < b ? 6 : 0);
-            break;
-        case g:
-            h = (b - r) / d + 2;
-            break;
-        case b:
-            h = (r - g) / d + 4;
-            break;
-        default:
-            h = 0;
-            break;
-        }
-
-        h /= 6;
     }
+
     let hsl = {
         h: Math.round(360 * h),
         s: Math.round(100 * s),
-        l: Math.round(100 * l),
+        l: Math.round(50 * sum),
         a: Math.round(100 * a) / 100
     };
 
