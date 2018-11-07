@@ -133,7 +133,7 @@ If you're using an ES6 module bundler/transpiler (and you should!) import the ES
 
 
 ```js
-import MarkerFactory from 'ig_markerfactory/dist/markerfactory.es6';
+import {MarkerFactory} from 'ig_markerfactory/dist/markerfactory.es6';
 
 const myIcon = MarkerFactory.autoIcon({
 		label: 'f1b9',

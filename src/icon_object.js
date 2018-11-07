@@ -6,13 +6,11 @@ function IconObject(canvas, markerOpts) {
 	return this;
 }
 
-IconObject.prototype.toJSON = function () {
+IconObject.prototype.toJSON = function() {
 	return {
 		url: null,
 		markerOpts: this.markerOpts
 	};
 };
 
-export {
-	IconObject
-};
+export { IconObject };

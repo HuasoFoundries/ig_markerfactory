@@ -1,15 +1,35 @@
 export function hslaString(hslcolor) {
 	if (hslcolor.a) {
-		return 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%,' + hslcolor.a + ')';
+		return (
+			"hsla(" +
+			hslcolor.h +
+			"," +
+			hslcolor.s +
+			"%," +
+			hslcolor.l +
+			"%," +
+			hslcolor.a +
+			")"
+		);
 	}
-	return 'hsl(' + hslcolor.h + ',' + hslcolor.s + '%,' + hslcolor.l + '%)';
+	return "hsl(" + hslcolor.h + "," + hslcolor.s + "%," + hslcolor.l + "%)";
 }
 
 export function rgbaString(hexcolor) {
 	if (hexcolor.a) {
-		return 'rgba(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ',' + hexcolor.a + ')';
+		return (
+			"rgba(" +
+			hexcolor.r +
+			"," +
+			hexcolor.g +
+			"," +
+			hexcolor.b +
+			"," +
+			hexcolor.a +
+			")"
+		);
 	}
-	return 'rgb(' + hexcolor.r + ',' + hexcolor.g + ',' + hexcolor.b + ')';
+	return "rgb(" + hexcolor.r + "," + hexcolor.g + "," + hexcolor.b + ")";
 }
 
 export function parseHalf(foo) {

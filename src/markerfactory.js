@@ -1,47 +1,43 @@
 /** global: google, r, g, b */
 
-import {
-    createClusterIcon
-} from './create_cluster_icon.js';
-import {
-    createTextMarker
-} from './create_text_marker.js';
+import { createClusterIcon } from "./create_cluster_icon.js";
+import { createTextMarker } from "./create_text_marker.js";
 
-import {
-    createFatMarkerIcon
-} from './create_fat_marker_icon.js';
+import { createFatMarkerIcon } from "./create_fat_marker_icon.js";
 
-import {
-    createTransparentMarkerIcon
-} from './create_transparent_marker_icon.js';
+import { createTransparentMarkerIcon } from "./create_transparent_marker_icon.js";
 
-import {
-    parseHex,
-    parseHSL,
-    parseRGB,
-    hslToRGB,
-    rgbToHSL
-} from './parsers.js';
+import { parseHex, parseHSL, parseRGB, hslToRGB, rgbToHSL } from "./parsers.js";
 
 function padHex(str_in) {
-    if (('' + str_in).length === 1) {
-        return '0' + String(str_in);
+    if (("" + str_in).length === 1) {
+        return "0" + String(str_in);
     } else {
         return String(str_in);
     }
 }
 
-
 function generateAutoicon(options) {
-    if (!options.is_icon) {
-        return createTextMarker(options);
-    } else if (options.transparent_background) {
-        console.log('createTransparentMarkerIcon', options.font);
-        return createTransparentMarkerIcon(options);
-    } else {
-        console.log('createFatMarkerIcon', options.font);
-        return createFatMarkerIcon(options);
+    var cacheKey = JSON.stringify(options);
+
+    var iconObj = window.sessionStorage.getItem(cacheKey);
+    if (iconObj !== null) {
+        console.log("CACHED!");
+        return JSON.parse(iconObj);
     }
+    if (!options.is_icon) {
+        iconObj = createTextMarker(options);
+    } else if (options.transparent_background) {
+        //console.log("createTransparentMarkerIcon", options.font);
+        iconObj = createTransparentMarkerIcon(options);
+    } else {
+        //console.log("createFatMarkerIcon", options.font);
+        iconObj = createFatMarkerIcon(options);
+    }
+    var cached = iconObj.toJSON();
+    cached.url = iconObj.url;
+    window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+    return iconObj;
 }
 
 const MarkerFactory = {
@@ -59,28 +55,26 @@ const MarkerFactory = {
      *
      * @return     {Object}  input color parsed and modified as requested
      */
-    parseColorString: function (somecolor, opacity, darkenfactor) {
+    parseColorString: function(somecolor, opacity, darkenfactor) {
         let parsedcolor = {
                 original: somecolor
             },
-            hsl, rgb;
+            hsl,
+            rgb;
 
         darkenfactor = darkenfactor || 1;
         opacity = opacity || 1;
 
-        if (somecolor.indexOf('hsl') !== -1) {
+        if (somecolor.indexOf("hsl") !== -1) {
             hsl = parseHSL(somecolor, opacity);
             rgb = hslToRGB(hsl.h, hsl.s, hsl.l, hsl.a, darkenfactor);
-
-        } else if (somecolor.indexOf('rgb') !== -1) {
+        } else if (somecolor.indexOf("rgb") !== -1) {
             rgb = parseRGB(somecolor, opacity, darkenfactor);
         } else {
             rgb = parseHex(somecolor, opacity, darkenfactor);
         }
 
-
         hsl = rgbToHSL(rgb.r, rgb.g, rgb.b, rgb.a);
-
 
         parsedcolor.hsl = {
             h: hsl.h,
@@ -95,12 +89,16 @@ const MarkerFactory = {
             a: rgb.a
         };
 
-
         parsedcolor.fillColor = rgb.fillColor;
         parsedcolor.rgba = rgb.fillColor;
         parsedcolor.hsla = hsl.fillColor;
         parsedcolor.strokeColor = rgb.strokeColor;
-        parsedcolor.hex = ['#', padHex(rgb.r.toString(16)), padHex(rgb.g.toString(16)), padHex(rgb.b.toString(16))].join('');
+        parsedcolor.hex = [
+            "#",
+            padHex(rgb.r.toString(16)),
+            padHex(rgb.g.toString(16)),
+            padHex(rgb.b.toString(16))
+        ].join("");
         return parsedcolor;
     },
 
@@ -110,44 +108,42 @@ const MarkerFactory = {
      * @param      {Object}  options  The options
      * @return     {Object}  { description_of_the_return_value }
      */
-    autoIcon: function (options) {
-
-        if (typeof (options) !== 'object') {
-            console.warn('autoIcon expects an object as its only parameter');
+    autoIcon: function(options) {
+        if (typeof options !== "object") {
+            console.warn("autoIcon expects an object as its only parameter");
             return null;
         }
         // unless explicitly set to false, the icon doesn't have a marker-like wrapper
-        options.transparent_background = (options.transparent_background !== false);
-        options.label = String(options.label || 'A');
-        options.color = options.color || '#FF0000';
+        options.transparent_background =
+            options.transparent_background !== false;
+        options.label = String(options.label || "A");
+        options.color = options.color || "#FF0000";
 
-
-        if (options.label.length === 4 || options.label.substring(0, 2) === '0x') {
-            options.font = options.font || 'fontello';
-            options.label = (options.label || 'e836').slice(-4);
-            options.unicodelabel = String.fromCharCode('0x' + options.label);
+        if (
+            options.label.length === 4 ||
+            options.label.substring(0, 2) === "0x"
+        ) {
+            options.font = options.font || "fontello";
+            options.label = (options.label || "e836").slice(-4);
+            options.unicodelabel = String.fromCharCode("0x" + options.label);
             options.scale = options.scale || 1;
             options.is_icon = true;
-            return generateAutoicon(options);
 
+            return generateAutoicon(options);
         } else if (options.shadow) {
+            console.log("createClusterIcon", JSON.stringify(options));
 
             return createClusterIcon(options);
-
         } else {
             options.scale = options.scale || 0.75;
-            options.label = String(options.label || 'A');
+            options.label = String(options.label || "A");
             options.fontsize = options.fontsize || 11;
-            options.font = options.font || 'Arial';
+            options.font = options.font || "Arial";
             // This is text I should print literally
+
             return generateAutoicon(options);
         }
-
     }
 };
 
-
-export {
-    MarkerFactory
-};
-export default MarkerFactory;
+export { MarkerFactory };

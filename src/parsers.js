@@ -1,11 +1,6 @@
 /** global: google, r, g, b */
 
-import {
-    hslaString,
-    rgbaString,
-    parseHalf,
-    compact
-} from './helpers.js';
+import { hslaString, rgbaString, parseHalf, compact } from "./helpers.js";
 
 export function parseHex(hexstring, opacity, darkenfactor) {
     let hexcolor = {
@@ -13,28 +8,43 @@ export function parseHex(hexstring, opacity, darkenfactor) {
     };
     darkenfactor = darkenfactor || 1;
 
-    hexstring = hexstring.replace('#', '');
+    hexstring = hexstring.replace("#", "");
     if (hexstring.length === 3) {
-        hexstring = hexstring[0] + hexstring[0] + hexstring[1] + hexstring[1] + hexstring[2] + hexstring[2];
+        hexstring =
+            hexstring[0] +
+            hexstring[0] +
+            hexstring[1] +
+            hexstring[1] +
+            hexstring[2] +
+            hexstring[2];
     }
     if (isNaN(parseFloat(opacity, 10))) {
         opacity = 1;
     }
 
-    hexcolor.r = parseInt(darkenfactor * (parseInt(hexstring.substring(0, 2), 16)), 10);
-    hexcolor.g = parseInt(darkenfactor * (parseInt(hexstring.substring(2, 4), 16)), 10);
-    hexcolor.b = parseInt(darkenfactor * (parseInt(hexstring.substring(4, 6), 16)), 10);
+    hexcolor.r = parseInt(
+        darkenfactor * parseInt(hexstring.substring(0, 2), 16),
+        10
+    );
+    hexcolor.g = parseInt(
+        darkenfactor * parseInt(hexstring.substring(2, 4), 16),
+        10
+    );
+    hexcolor.b = parseInt(
+        darkenfactor * parseInt(hexstring.substring(4, 6), 16),
+        10
+    );
     hexcolor.a = opacity;
     hexcolor.fillColor = rgbaString(hexcolor);
     hexcolor.strokeColor = [
-        'rgba(' + parseHalf(hexcolor.r),
+        "rgba(" + parseHalf(hexcolor.r),
         parseHalf(hexcolor.g),
-        parseHalf(hexcolor.b), hexcolor.a + ')'
-    ].join(',');
+        parseHalf(hexcolor.b),
+        hexcolor.a + ")"
+    ].join(",");
     hexcolor.rgb = hexcolor.fillColor;
     return hexcolor;
 }
-
 
 export function parseHSL(hslstring, opacity) {
     let hslcolor = {},
@@ -53,7 +63,6 @@ export function parseHSL(hslstring, opacity) {
     hslcolor.l = parseFloat(hslparts[2], 10);
     hslcolor.a = hslcolor_stroke.a = parseFloat(opacity * hslparts[3], 10);
     hslcolor_stroke.l = parseInt(hslcolor.l / 2, 10);
-
 
     hslcolor.fillColor = hslaString(hslcolor);
     hslcolor.strokeColor = hslaString(hslcolor_stroke);
@@ -80,11 +89,19 @@ export function parseRGB(rgbstring, opacity, darkenfactor) {
     rgbcolor.b = parseInt(darkenfactor * (parseInt(rgbparts[2], 10) % 256), 10);
     rgbcolor.a = parseFloat(opacity * rgbparts[3], 10);
     rgbcolor.fillColor = rgbaString(rgbcolor);
-    rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
+    rgbcolor.strokeColor =
+        "rgba(" +
+        rgbcolor.r / 2 +
+        "," +
+        rgbcolor.g / 2 +
+        "," +
+        rgbcolor.b / 2 +
+        "," +
+        rgbcolor.a +
+        ")";
     rgbcolor.rgb = rgbcolor.fillColor;
     return rgbcolor;
 }
-
 
 function hue2rgb(p, q, t) {
     if (t < 0) {
@@ -118,8 +135,6 @@ export function hslToRGB(h, s, l, a, darkenfactor) {
     if (s === 0) {
         r = g = b = l; // achromatic
     } else {
-
-
         let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         let p = 2 * l - q;
         r = hue2rgb(p, q, h + 1 / 3);
@@ -141,11 +156,9 @@ export function hslToRGB(h, s, l, a, darkenfactor) {
     rgb.fillColor = rgbaString(rgb);
 
     return rgb;
-
 }
 
 export function rgbToHSL(in_r, in_g, in_b, in_a) {
-
     let h,
         r = (in_r % 256) / 255,
         g = (in_g % 256) / 255,
@@ -153,23 +166,23 @@ export function rgbToHSL(in_r, in_g, in_b, in_a) {
         a = in_a === undefined ? 1 : in_a,
         max = Math.max(r, g, b),
         min = Math.min(r, g, b),
-        sum = (max + min),
-        diff = (max - min),
+        sum = max + min,
+        diff = max - min,
         s = sum > 1 ? diff / (2 - sum) : diff / sum;
 
     switch (max) {
-    case r:
-        h = (g - b) / diff + (g < b ? 6 : 0);
-        break;
-    case g:
-        h = (b - r) / diff + 2;
-        break;
-    case b:
-        h = (r - g) / diff + 4;
-        break;
-    default:
-        h = 0;
-        break;
+        case r:
+            h = (g - b) / diff + (g < b ? 6 : 0);
+            break;
+        case g:
+            h = (b - r) / diff + 2;
+            break;
+        case b:
+            h = (r - g) / diff + 4;
+            break;
+        default:
+            h = 0;
+            break;
     }
 
     h /= 6;
@@ -190,14 +203,13 @@ export function rgbToHSL(in_r, in_g, in_b, in_a) {
     return hsl;
 }
 
-
 function toDecColor(stringcolor) {
     let parsedcolor = {};
     if (!stringcolor) {
-        parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
-    } else if (stringcolor.indexOf('rgb') !== -1) {
+        parsedcolor.fillColor = "rgba(100,250,50,0.99)";
+    } else if (stringcolor.indexOf("rgb") !== -1) {
         parsedcolor = parseRGB(stringcolor);
-    } else if (stringcolor.indexOf('hsl') !== -1) {
+    } else if (stringcolor.indexOf("hsl") !== -1) {
         parsedcolor = parseHSL(stringcolor);
     } else {
         parsedcolor = parseHex(stringcolor);
@@ -205,7 +217,6 @@ function toDecColor(stringcolor) {
 
     return parsedcolor;
 }
-
 
 function getColor(val, range) {
     const defaults = {
@@ -233,13 +244,13 @@ function darken(stringcolor, factor) {
     if (!factor) {
         factor = 1;
     }
-    if (stringcolor.fillColor.indexOf('rgb') !== -1) {
+    if (stringcolor.fillColor.indexOf("rgb") !== -1) {
         darkercolor.r = factor * parseHalf(stringcolor.r);
         darkercolor.g = factor * parseHalf(stringcolor.g);
         darkercolor.b = factor * parseHalf(stringcolor.b);
         darkercolor.a = 0.99;
         darkercolor.fillColor = rgbaString(darkercolor);
-    } else if (stringcolor.fillColor.indexOf('hsl') !== -1) {
+    } else if (stringcolor.fillColor.indexOf("hsl") !== -1) {
         darkercolor.h = stringcolor.h;
         darkercolor.s = stringcolor.s;
         darkercolor.l = factor * stringcolor.l - 30;
