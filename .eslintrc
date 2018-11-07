@@ -17,7 +17,10 @@
         "SystemJS":false,
         "MarkerFactory":true,
         "expect":true,
-        "_":true
+        "_":true,
+        "spyOn":true,
+        "jasmine":true,
+        "beforeAll":true
 
     },
     

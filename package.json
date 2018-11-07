@@ -1,6 +1,6 @@
 {
   "name": "ig_markerfactory",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "description": "Uses canvas to generate google.maps.Marker Icons from graphic fonts (i.e. font-awesome) on the fly",
   "keywords": [
     "google maps",

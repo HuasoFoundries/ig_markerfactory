@@ -17,33 +17,35 @@ function padHex(str_in) {
     }
 }
 
-function generateAutoicon(options) {
-    var cacheKey = JSON.stringify(options);
-
-    var iconObj = window.sessionStorage.getItem(cacheKey);
-    if (iconObj !== null) {
-        console.log("CACHED!");
-        return JSON.parse(iconObj);
-    }
-    if (!options.is_icon) {
-        iconObj = createTextMarker(options);
-    } else if (options.transparent_background) {
-        //console.log("createTransparentMarkerIcon", options.font);
-        iconObj = createTransparentMarkerIcon(options);
-    } else {
-        //console.log("createFatMarkerIcon", options.font);
-        iconObj = createFatMarkerIcon(options);
-    }
-    var cached = iconObj.toJSON();
-    cached.url = iconObj.url;
-    window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
-    return iconObj;
-}
-
 const MarkerFactory = {
     createTransparentMarkerIcon: createTransparentMarkerIcon,
     createFatMarkerIcon: createFatMarkerIcon,
     createTextMarker: createTextMarker,
+    createClusterIcon: createClusterIcon,
+
+    generateAutoicon: function(options) {
+        var cacheKey = JSON.stringify(options);
+
+        var iconObj = window.sessionStorage.getItem(cacheKey);
+        if (iconObj !== null && !options.no_cache) {
+            return JSON.parse(iconObj);
+        }
+        if (!options.is_icon) {
+            iconObj = MarkerFactory.createTextMarker(options);
+        } else if (options.transparent_background) {
+            //console.log("createTransparentMarkerIcon", options.font);
+            iconObj = MarkerFactory.createTransparentMarkerIcon(options);
+        } else {
+            //console.log("createFatMarkerIcon", options.font);
+            iconObj = MarkerFactory.createFatMarkerIcon(options);
+        }
+        if (!options.no_cache) {
+            var cached = iconObj.toJSON();
+            cached.url = iconObj.url;
+            window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+        }
+        return iconObj;
+    },
     /**
      * Receives a color string rgb(a), hsl(a) or hex, returns its components
      * in rgba and hsla, with optional transparency
@@ -129,11 +131,11 @@ const MarkerFactory = {
             options.scale = options.scale || 1;
             options.is_icon = true;
 
-            return generateAutoicon(options);
+            return MarkerFactory.generateAutoicon(options);
         } else if (options.shadow) {
             console.log("createClusterIcon", JSON.stringify(options));
 
-            return createClusterIcon(options);
+            return MarkerFactory.createClusterIcon(options);
         } else {
             options.scale = options.scale || 0.75;
             options.label = String(options.label || "A");
@@ -141,7 +143,7 @@ const MarkerFactory = {
             options.font = options.font || "Arial";
             // This is text I should print literally
 
-            return generateAutoicon(options);
+            return MarkerFactory.generateAutoicon(options);
         }
     }
 };
