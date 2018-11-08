@@ -22,14 +22,29 @@ const MarkerFactory = {
     createFatMarkerIcon: createFatMarkerIcon,
     createTextMarker: createTextMarker,
     createClusterIcon: createClusterIcon,
-
-    generateAutoicon: function(options) {
-        var cacheKey = JSON.stringify(options);
-
-        var iconObj = window.sessionStorage.getItem(cacheKey);
-        if (iconObj !== null && !options.no_cache) {
-            return JSON.parse(iconObj);
+    serializeOptions: function(options) {
+        if (typeof options !== "object") {
+            return null;
         }
+        var sortedOpts = Object.entries(options)
+            .filter(function(item) {
+                return (
+                    typeof item[1] !== "function" && typeof item[1] !== "object"
+                );
+            })
+            .sort();
+        return JSON.stringify(sortedOpts);
+    },
+    generateAutoicon: function(options) {
+        if (!options.no_cache) {
+            var cacheKey = MarkerFactory.serializeOptions(options);
+
+            var iconObj = window.sessionStorage.getItem(cacheKey);
+            if (iconObj !== null && !options.no_cache) {
+                return JSON.parse(iconObj);
+            }
+        }
+
         if (!options.is_icon) {
             iconObj = MarkerFactory.createTextMarker(options);
         } else if (options.transparent_background) {
