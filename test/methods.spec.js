@@ -10,6 +10,7 @@ describe("Generated icons", function() {
 			label: "f011",
 			color: "#FFCC00",
 			scale: 1,
+			no_cache: true,
 			transparent_background: true
 		},
 		fatIcon = {
@@ -18,13 +19,15 @@ describe("Generated icons", function() {
 			label: "f011",
 			color: "#FFCC00",
 			scale: 1,
+			no_cache: true,
 			transparent_background: false
 		},
 		textIcon = {
 			character: "A",
 			label: "A",
 			color: "#FFCC00",
-			scale: 1
+			scale: 1,
+			no_cache: true
 		};
 
 	it("should call createTransparentMarkerIcon when transparent_background is true", function() {

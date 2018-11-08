@@ -809,24 +809,29 @@ var MarkerFactory = {
         return JSON.stringify(sortedOpts);
     },
     generateAutoicon: function(options) {
+        var generatorFN = MarkerFactory.createFatMarkerIcon,
+            iconObj;
+        options.type = "fatmarker";
+
+        if (!options.is_icon) {
+            options.type = "textmarker";
+            generatorFN = MarkerFactory.createTextMarker;
+        } else if (options.transparent_background) {
+            options.type = "transparent";
+            generatorFN = MarkerFactory.createTransparentMarkerIcon;
+        }
+
         if (!options.no_cache) {
             var cacheKey = MarkerFactory.serializeOptions(options);
 
-            var iconObj = window.sessionStorage.getItem(cacheKey);
+            iconObj = window.sessionStorage.getItem(cacheKey);
             if (iconObj !== null && !options.no_cache) {
                 return JSON.parse(iconObj);
             }
         }
 
-        if (!options.is_icon) {
-            iconObj = MarkerFactory.createTextMarker(options);
-        } else if (options.transparent_background) {
-            //console.log("createTransparentMarkerIcon", options.font);
-            iconObj = MarkerFactory.createTransparentMarkerIcon(options);
-        } else {
-            //console.log("createFatMarkerIcon", options.font);
-            iconObj = MarkerFactory.createFatMarkerIcon(options);
-        }
+        iconObj = generatorFN(options);
+
         if (!options.no_cache) {
             var cached = iconObj.toJSON();
             cached.url = iconObj.url;
@@ -906,6 +911,7 @@ var MarkerFactory = {
         // unless explicitly set to false, the icon doesn't have a marker-like wrapper
         options.transparent_background =
             options.transparent_background !== false;
+
         options.label = String(options.label || "A");
         options.color = options.color || "#FF0000";
 
