@@ -1,93 +1,171 @@
 # .scrutinizer.yml
+
 tools:
     eslint:
         use_native_config: true
 
-
 filter:
-    excluded_paths: ['dist/*','examples/*','test/*','node_modules/*','jspm_packages/*']
+    excluded_paths:
+        ["dist/*", "examples/*", "test/*", "node_modules/*", "jspm_packages/*"]
 
 checks:
     javascript:
         valid_jsdoc: true
+
         valid_typeof: true
+
         vars_on_top: true
+
         space_return_throw_case: true
+
         radix: true
+
         one_var: true
+
         no_wrap_func: true
+
         no_with: true
+
         no_var: true
+
         no_void: true
+
         no_use_before_define: true
+
         no_unused_vars: true
+
         no_unreachable: true
+
         no_underscore_dangle: true
+
         no_undefined: true
+
         no_undef_init: true
+
         no_undef: true
+
         no_trailing_spaces: true
+
         no_ternary: true
+
         no_sync: true
+
         no_sparse_arrays: true
+
         no_space_before_semi: true
+
         no_shadow_restricted_names: true
+
         no_shadow: true
+
         no_sequences: true
+
         no_self_compare: true
+
         no_script_url: true
+
         no_return_assign: true
+
         no_redeclare: true
+
         no_reserved_keys: true
+
         no_process_exit: true
+
         no_process_env: false
+
         no_plusplus: true
+
         no_path_concat: true
+
         block_scoped_var: false
+
         camelcase: true
+
         consistent_return: true
+
         consistent_this: true
+
         curly: true
+
         default_case: true
+
         dot_notation: true
+
         eol_last: true
+
         eqeqeq: true
+
         func_names: true
+
         no_alert: true
+
         no_nested_ternary: true
+
         no_negated_in_lhs: true
+
         no_native_reassign: true
+
         no_multi_str: true
+
         no_mixed_spaces_and_tabs: true
+
         no_loop_func: true
+
         no_labels: true
+
         no_inner_declarations: true
+
         no_implied_eval: true
+
         no_floating_decimal: true
+
         no_fallthrough: true
+
         no_extra_strict: true
+
         no_extra_semi: true
+
         no_extra_boolean_cast: true
+
         no_extra_bind: true
+
         no_extend_native: true
+
         no_eval: true
+
         no_caller: true
+
         no_bitwise: true
+
         new_parens: true
+
         new_cap: true
+
         max_len:
-            max_length: '150'
+            max_length: "150"
+
         guard_for_in: true
+
         comma_style:
-            style: 'At the end of the line'
+            style: "At the end of the line"
+
         no_debugger: false
+
         no_delete_var: true
 
 build:
     environment:
-      node: 'v8.9.4'
+        node: "v8.9.4"
 
     tests:
         override:
             - npm test
+
             - eslint-run "src/*"
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - js-scrutinizer-run
+        tests: true
