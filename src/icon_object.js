@@ -1,3 +1,5 @@
+import { omit } from "./helpers.js";
+
 function IconObject(canvas, markerOpts) {
 	this.url = canvas.toDataURL();
 	this.fillColor = canvas.fillColor;
@@ -7,10 +9,9 @@ function IconObject(canvas, markerOpts) {
 }
 
 IconObject.prototype.toJSON = function() {
-	return {
-		url: null,
-		markerOpts: this.markerOpts
-	};
+	return omit(this.markerOpts, function(prop) {
+		return prop.indexOf("gm_") === 0 || prop === "url";
+	});
 };
 
 export { IconObject };

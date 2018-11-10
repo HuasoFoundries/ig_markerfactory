@@ -1,3 +1,70 @@
+function hslaString(hslcolor) {
+	if (hslcolor.a) {
+		return (
+			"hsla(" +
+			hslcolor.h +
+			"," +
+			hslcolor.s +
+			"%," +
+			hslcolor.l +
+			"%," +
+			hslcolor.a +
+			")"
+		);
+	}
+	return "hsl(" + hslcolor.h + "," + hslcolor.s + "%," + hslcolor.l + "%)";
+}
+
+function rgbaString(hexcolor) {
+	if (hexcolor.a) {
+		return (
+			"rgba(" +
+			hexcolor.r +
+			"," +
+			hexcolor.g +
+			"," +
+			hexcolor.b +
+			"," +
+			hexcolor.a +
+			")"
+		);
+	}
+	return "rgb(" + hexcolor.r + "," + hexcolor.g + "," + hexcolor.b + ")";
+}
+
+function parseHalf(foo) {
+	return parseInt(foo / 2, 10);
+}
+
+function compact(array) {
+	var index = -1,
+		length = array ? array.length : 0,
+		resIndex = 0,
+		result = [];
+
+	while (++index < length) {
+		var value = array[index];
+		if (value) {
+			result[resIndex++] = value;
+		}
+	}
+	return result;
+}
+
+function omit(obj, fn) {
+	var target = {};
+	for (var i in obj) {
+		if (fn(i)) {
+			continue;
+		}
+		if (!Object.prototype.hasOwnProperty.call(obj, i)) {
+			continue;
+		}
+		target[i] = obj[i];
+	}
+	return target;
+}
+
 function IconObject(canvas, markerOpts) {
 	this.url = canvas.toDataURL();
 	this.fillColor = canvas.fillColor;
@@ -7,14 +74,12 @@ function IconObject(canvas, markerOpts) {
 }
 
 IconObject.prototype.toJSON = function() {
-	return {
-		url: null,
-		markerOpts: this.markerOpts
-	};
+	return omit(this.markerOpts, function(prop) {
+		return prop.indexOf("gm_") === 0 || prop === "url";
+	});
 };
 
 /** global: google */
-
 function createClusterIcon(theoptions) {
     var generateClusterCanvas = function(options) {
         var canvas = options.canvas || document.createElement("canvas"),
@@ -130,59 +195,6 @@ function createClusterIcon(theoptions) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
-}
-
-function hslaString(hslcolor) {
-	if (hslcolor.a) {
-		return (
-			"hsla(" +
-			hslcolor.h +
-			"," +
-			hslcolor.s +
-			"%," +
-			hslcolor.l +
-			"%," +
-			hslcolor.a +
-			")"
-		);
-	}
-	return "hsl(" + hslcolor.h + "," + hslcolor.s + "%," + hslcolor.l + "%)";
-}
-
-function rgbaString(hexcolor) {
-	if (hexcolor.a) {
-		return (
-			"rgba(" +
-			hexcolor.r +
-			"," +
-			hexcolor.g +
-			"," +
-			hexcolor.b +
-			"," +
-			hexcolor.a +
-			")"
-		);
-	}
-	return "rgb(" + hexcolor.r + "," + hexcolor.g + "," + hexcolor.b + ")";
-}
-
-function parseHalf(foo) {
-	return parseInt(foo / 2, 10);
-}
-
-function compact(array) {
-	var index = -1,
-		length = array ? array.length : 0,
-		resIndex = 0,
-		result = [];
-
-	while (++index < length) {
-		var value = array[index];
-		if (value) {
-			result[resIndex++] = value;
-		}
-	}
-	return result;
 }
 
 /** global: google, r, g, b */
@@ -459,7 +471,6 @@ function getColors(options) {
 }
 
 /** global: google */
-
 function createTextMarker(theoptions) {
     var generateCanvas = function(options) {
         var canvas = document.createElement("canvas");
@@ -586,7 +597,6 @@ function createTextMarker(theoptions) {
 }
 
 /** global: google */
-
 function createFatMarkerIcon(theoptions) {
 	var generateFatCanvas = function(options) {
 		var canvas = options.canvas || document.createElement("canvas"),
@@ -686,7 +696,6 @@ function createFatMarkerIcon(theoptions) {
 }
 
 /** global: google */
-
 function createTransparentMarkerIcon(theoptions) {
     var generateTransparentCanvas = function(options) {
         var text_x,
@@ -799,13 +808,17 @@ var MarkerFactory = {
         if (typeof options !== "object") {
             return null;
         }
-        var sortedOpts = Object.entries(options)
-            .filter(function(item) {
-                return (
-                    typeof item[1] !== "function" && typeof item[1] !== "object"
-                );
-            })
-            .sort();
+        var cleanOptions = omit(options, function(prop) {
+                return prop.indexOf("gm_") === 0;
+            }),
+            sortedOpts = Object.entries(cleanOptions)
+                .filter(function(item) {
+                    return (
+                        typeof item[1] !== "function" &&
+                        typeof item[1] !== "object"
+                    );
+                })
+                .sort();
         return JSON.stringify(sortedOpts);
     },
     generateAutoicon: function(options) {

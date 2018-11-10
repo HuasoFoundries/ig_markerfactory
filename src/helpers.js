@@ -50,3 +50,17 @@ export function compact(array) {
 	}
 	return result;
 }
+
+export function omit(obj, fn) {
+	var target = {};
+	for (var i in obj) {
+		if (fn(i)) {
+			continue;
+		}
+		if (!Object.prototype.hasOwnProperty.call(obj, i)) {
+			continue;
+		}
+		target[i] = obj[i];
+	}
+	return target;
+}

@@ -9,6 +9,8 @@ import { createTransparentMarkerIcon } from "./create_transparent_marker_icon.js
 
 import { parseHex, parseHSL, parseRGB, hslToRGB, rgbToHSL } from "./parsers.js";
 
+import { omit } from "./helpers.js";
+
 function padHex(str_in) {
     if (("" + str_in).length === 1) {
         return "0" + String(str_in);
@@ -26,13 +28,17 @@ const MarkerFactory = {
         if (typeof options !== "object") {
             return null;
         }
-        var sortedOpts = Object.entries(options)
-            .filter(function(item) {
-                return (
-                    typeof item[1] !== "function" && typeof item[1] !== "object"
-                );
-            })
-            .sort();
+        var cleanOptions = omit(options, function(prop) {
+                return prop.indexOf("gm_") === 0;
+            }),
+            sortedOpts = Object.entries(cleanOptions)
+                .filter(function(item) {
+                    return (
+                        typeof item[1] !== "function" &&
+                        typeof item[1] !== "object"
+                    );
+                })
+                .sort();
         return JSON.stringify(sortedOpts);
     },
     generateAutoicon: function(options) {

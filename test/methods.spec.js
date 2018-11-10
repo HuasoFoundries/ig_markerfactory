@@ -52,30 +52,26 @@ describe("Generated icons", function() {
 		var newIcon = MarkerFactory.autoIcon(transparentIcon);
 
 		//console.log(newIcon.toJSON());
-		expect(newIcon.toJSON().markerOpts).toEqual(
+		expect(newIcon.toJSON()).toEqual(
 			jasmine.objectContaining(transparentIcon)
 		);
 
-		expect(newIcon.toJSON().markerOpts.type).toBe("transparent");
+		expect(newIcon.toJSON().type).toBe("transparent");
 	});
 	it("should serialize icons correctly for fat marker icons", function() {
 		var newIcon = MarkerFactory.autoIcon(fatIcon);
 
 		//console.log(newIcon.toJSON());
-		expect(newIcon.toJSON().markerOpts).toEqual(
-			jasmine.objectContaining(fatIcon)
-		);
+		expect(newIcon.toJSON()).toEqual(jasmine.objectContaining(fatIcon));
 
-		expect(newIcon.toJSON().markerOpts.type).toBe("fatmarker");
+		expect(newIcon.toJSON().type).toBe("fatmarker");
 	});
 	it("should serialize icons correctly for text marker icons", function() {
 		var newIcon = MarkerFactory.autoIcon(textIcon);
 
 		//console.log(newIcon.toJSON());
-		expect(newIcon.toJSON().markerOpts).toEqual(
-			jasmine.objectContaining(textIcon)
-		);
+		expect(newIcon.toJSON()).toEqual(jasmine.objectContaining(textIcon));
 
-		expect(newIcon.toJSON().markerOpts.type).toBe("textmarker");
+		expect(newIcon.toJSON().type).toBe("textmarker");
 	});
 });
