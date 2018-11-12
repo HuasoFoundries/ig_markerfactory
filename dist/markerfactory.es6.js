@@ -887,7 +887,6 @@ var MarkerFactory = {
                 return ["url", "fillColor"].indexOf(key) !== -1;
             })
         );
-        iconObj.cached = true;
         return iconObj;
     },
 
@@ -918,9 +917,7 @@ var MarkerFactory = {
         var iconObj = MarkerFactory.readCache(cacheKey, options);
         if (iconObj === null) {
             iconObj = generatorFN(options);
-            iconObj.cached = false;
         }
-        iconObj.cacheKey = cacheKey;
         if (options.no_cache) {
             return iconObj;
         }
