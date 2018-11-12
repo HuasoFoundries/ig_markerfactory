@@ -111,7 +111,7 @@
 			);
 			this.scaledSize = new google.maps.Size(
 				this.markerOpts.scaledSize.width,
-				this.markerOpts.size.height
+				this.markerOpts.scaledSize.height
 			);
 		}
 		return this;
