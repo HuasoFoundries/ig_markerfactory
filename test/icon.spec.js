@@ -104,6 +104,7 @@ var icons_number = {
 _.each(icons_number, function(obj, name) {
 	describe("It should create a marker with the number " + name, function() {
 		var icon = MarkerFactory.autoIcon(obj);
+		console.log(icon.fillColor);
 		it(
 			"should generate the same dataurl as expected for icon with number " +
 				name,
@@ -119,6 +120,7 @@ _.each(icons_fontello, function(obj, name) {
 		"It should create a marker with the symbol " + name + "using fontello",
 		function() {
 			var icon = MarkerFactory.autoIcon(obj);
+
 			it(
 				"should generate the same dataurl as expected for icon with symbol " +
 					name +

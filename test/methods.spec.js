@@ -3,6 +3,7 @@ describe("Generated icons", function() {
 		spyOn(MarkerFactory, "createTransparentMarkerIcon").and.callThrough();
 		spyOn(MarkerFactory, "createFatMarkerIcon").and.callThrough();
 		spyOn(MarkerFactory, "createTextMarker").and.callThrough();
+		spyOn(MarkerFactory, "createGroupedIcon").and.callThrough();
 	});
 	var transparentIcon = {
 			character: "f011",
@@ -11,6 +12,16 @@ describe("Generated icons", function() {
 			color: "#FFCC00",
 			scale: 1,
 			no_cache: true,
+			transparent_background: true
+		},
+		groupedIcon = {
+			character: "f011",
+			font: "fontello",
+			label: "f011",
+			color: "#FFCC00",
+			scale: 1,
+			no_cache: true,
+			shadow: true,
 			transparent_background: true
 		},
 		fatIcon = {
@@ -42,6 +53,13 @@ describe("Generated icons", function() {
 
 		return expect(MarkerFactory.createFatMarkerIcon).toHaveBeenCalled();
 	});
+
+	it("should call createGroupedIcon when shadow is true", function() {
+		var newIcon = MarkerFactory.autoIcon(groupedIcon); // eslint-disable-line
+
+		return expect(MarkerFactory.createGroupedIcon).toHaveBeenCalled();
+	});
+
 	it("should call createTextMarker when font is undefined", function() {
 		var newIcon = MarkerFactory.autoIcon(textIcon); // eslint-disable-line
 

@@ -64,3 +64,23 @@ export function omit(obj, fn) {
 	}
 	return target;
 }
+
+export function serializeOptions(options) {
+	if (typeof options !== "object") {
+		return null;
+	}
+	var cleanOptions = omit(options, function(prop) {
+			return prop.indexOf("gm_") === 0;
+		}),
+		sortedOpts = Object.entries(cleanOptions)
+			.filter(function(item) {
+				return (
+					typeof item[1] !== "function" &&
+					typeof item[1] !== "object" &&
+					item[1] !== null &&
+					typeof item[1] !== "undefined"
+				);
+			})
+			.sort();
+	return JSON.stringify(sortedOpts);
+}

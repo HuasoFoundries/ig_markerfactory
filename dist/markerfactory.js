@@ -4,140 +4,6 @@
 	(factory((global = global || {})));
 }(this, (function (exports) { 'use strict';
 
-	function IconObject(canvas, markerOpts) {
-		this.url = canvas.toDataURL();
-		this.fillColor = canvas.fillColor;
-		this.markerOpts = markerOpts;
-		Object.assign(this, markerOpts);
-		return this;
-	}
-
-	IconObject.prototype.toJSON = function() {
-		return {
-			url: null,
-			markerOpts: this.markerOpts
-		};
-	};
-
-	/** global: google */
-
-	function createClusterIcon(theoptions) {
-	    var generateClusterCanvas = function(options) {
-	        var canvas = options.canvas || document.createElement("canvas"),
-	            anchorX = 27,
-	            anchorY = 53,
-	            radius = anchorX - 9,
-	            color1,
-	            font = options.font || "fontello",
-	            fontsize = options.fontsize || 14,
-	            context = canvas.getContext("2d");
-
-	        canvas.width = anchorX * 2;
-	        canvas.height = anchorY + 1;
-
-	        context.clearRect(0, 0, canvas.width, canvas.height);
-	        context.moveTo(anchorX, anchorY);
-
-	        var labelvalue = parseInt(options.label, 10);
-	        if (labelvalue < 10) {
-	            color1 = "orange";
-	            fontsize = 14;
-	        } else if (labelvalue < 30) {
-	            color1 = "red";
-	            fontsize = 15;
-	        } else {
-	            color1 = "purple";
-	            fontsize = 16;
-	        }
-	        if (labelvalue > 99) {
-	            radius = radius + 3;
-	            context.setLineDash([5, 5]);
-	            context.beginPath();
-	            context.arc(
-	                anchorX,
-	                2 + 0.5 * anchorY,
-	                radius + 7,
-	                0,
-	                2 * Math.PI,
-	                false
-	            );
-	            context.fillStyle = "transparent";
-	            context.strokeStyle = color1;
-	            context.lineWidth = 2;
-	            context.fill();
-	            context.stroke();
-	        }
-
-	        context.setLineDash([5, 5]);
-	        context.beginPath();
-	        context.arc(
-	            anchorX,
-	            2 + 0.5 * anchorY,
-	            radius + 2,
-	            0,
-	            2 * Math.PI,
-	            false
-	        );
-	        context.fillStyle = "transparent";
-	        context.strokeStyle = color1;
-	        context.lineWidth = 2;
-	        context.fill();
-	        context.stroke();
-
-	        // Círculo blanco
-	        context.setLineDash([5, 0]);
-	        context.beginPath();
-	        context.arc(
-	            anchorX,
-	            2 + 0.5 * anchorY,
-	            radius - 3,
-	            0,
-	            2 * Math.PI,
-	            false
-	        );
-	        context.fillStyle = "white";
-	        context.strokeStyle = color1;
-	        context.lineWidth = 4;
-	        context.fill();
-	        context.stroke();
-
-	        context.beginPath();
-
-	        context.font = "normal normal normal " + fontsize + "px " + font;
-	        context.fillStyle = "#333";
-	        context.textBaseline = "top";
-
-	        var textWidth = context.measureText(options.label),
-	            text_x = options.label,
-	            label_x = Math.floor(canvas.width / 2 - textWidth.width / 2),
-	            label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
-
-	        // centre the text.
-	        context.fillText(text_x, label_x, label_y);
-
-	        return canvas;
-	    };
-	    theoptions.scale = theoptions.scale || 1;
-	    var markerCanvas = generateClusterCanvas(theoptions),
-	        markerOpts = {},
-	        scale = theoptions.scale;
-
-	    Object.assign(markerOpts, theoptions);
-
-	    if (window && window.google && window.google.maps) {
-	        Object.assign(markerOpts, {
-	            size: new google.maps.Size(54, 48),
-	            origin: new google.maps.Point(0, 0),
-	            anchor: new google.maps.Point(27 * scale, 24 * scale),
-	            scaledSize: new google.maps.Size(54 * scale, 48 * scale)
-	        });
-	    }
-
-	    var iconObj = new IconObject(markerCanvas, markerOpts);
-
-	    return iconObj;
-	}
-
 	function hslaString(hslcolor) {
 		if (hslcolor.a !== undefined) {
 			return (
@@ -189,6 +55,161 @@
 			}
 		}
 		return result;
+	}
+
+	function omit(obj, fn) {
+		var target = {};
+		for (var i in obj) {
+			if (fn(i)) {
+				continue;
+			}
+			if (!Object.prototype.hasOwnProperty.call(obj, i)) {
+				continue;
+			}
+			target[i] = obj[i];
+		}
+		return target;
+	}
+
+	function serializeOptions(options) {
+		if (typeof options !== "object") {
+			return null;
+		}
+		var cleanOptions = omit(options, function(prop) {
+				return prop.indexOf("gm_") === 0;
+			}),
+			sortedOpts = Object.entries(cleanOptions)
+				.filter(function(item) {
+					return (
+						typeof item[1] !== "function" &&
+						typeof item[1] !== "object" &&
+						item[1] !== null &&
+						typeof item[1] !== "undefined"
+					);
+				})
+				.sort();
+		return JSON.stringify(sortedOpts);
+	}
+
+	function IconObject(url, fillColor, markerOpts) {
+		this.url = url;
+		this.fillColor = fillColor;
+		this.markerOpts = markerOpts;
+		Object.assign(this, markerOpts);
+		return this;
+	}
+
+	IconObject.prototype.toJSON = function() {
+		var serialized = omit(this.markerOpts, function(prop) {
+			return prop.indexOf("gm_") === 0 || prop === "url";
+		});
+		serialized.fillColor = this.fillColor;
+		return serialized;
+	};
+
+	/** global: google */
+
+	var generateClusterCanvas = function(options) {
+	    var canvas = options.canvas || document.createElement("canvas"),
+	        anchorX = 27,
+	        anchorY = 53,
+	        radius = anchorX - 9,
+	        color1,
+	        font = options.font || "fontello",
+	        fontsize = options.fontsize || 14,
+	        context = canvas.getContext("2d");
+
+	    canvas.width = anchorX * 2;
+	    canvas.height = anchorY + 1;
+
+	    context.clearRect(0, 0, canvas.width, canvas.height);
+	    context.moveTo(anchorX, anchorY);
+
+	    var labelvalue = parseInt(options.label, 10);
+	    if (labelvalue < 10) {
+	        color1 = "orange";
+	        fontsize = 14;
+	    } else if (labelvalue < 30) {
+	        color1 = "red";
+	        fontsize = 15;
+	    } else {
+	        color1 = "purple";
+	        fontsize = 16;
+	    }
+	    if (labelvalue > 99) {
+	        radius = radius + 3;
+	        context.setLineDash([5, 5]);
+	        context.beginPath();
+	        context.arc(
+	            anchorX,
+	            2 + 0.5 * anchorY,
+	            radius + 7,
+	            0,
+	            2 * Math.PI,
+	            false
+	        );
+	        context.fillStyle = "transparent";
+	        context.strokeStyle = color1;
+	        context.lineWidth = 2;
+	        context.fill();
+	        context.stroke();
+	    }
+
+	    context.setLineDash([5, 5]);
+	    context.beginPath();
+	    context.arc(anchorX, 2 + 0.5 * anchorY, radius + 2, 0, 2 * Math.PI, false);
+	    context.fillStyle = "transparent";
+	    context.strokeStyle = color1;
+	    context.lineWidth = 2;
+	    context.fill();
+	    context.stroke();
+
+	    // Círculo blanco
+	    context.setLineDash([5, 0]);
+	    context.beginPath();
+	    context.arc(anchorX, 2 + 0.5 * anchorY, radius - 3, 0, 2 * Math.PI, false);
+	    context.fillStyle = "white";
+	    context.strokeStyle = color1;
+	    context.lineWidth = 4;
+	    context.fill();
+	    context.stroke();
+
+	    context.beginPath();
+
+	    context.font = "normal normal normal " + fontsize + "px " + font;
+	    context.fillStyle = "#333";
+	    context.textBaseline = "top";
+
+	    var textWidth = context.measureText(options.label),
+	        text_x = options.label,
+	        label_x = Math.floor(canvas.width / 2 - textWidth.width / 2),
+	        label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
+
+	    // centre the text.
+	    context.fillText(text_x, label_x, label_y);
+
+	    return canvas;
+	};
+	function createClusterIcon(theoptions) {
+	    theoptions.scale = theoptions.scale || 1;
+	    var markerCanvas = generateClusterCanvas(theoptions),
+	        markerOpts = {},
+	        scale = theoptions.scale;
+
+	    Object.assign(markerOpts, theoptions);
+
+	    Object.assign(markerOpts, {
+	        origin: { x: 0, y: 0 },
+	        anchor: { x: 27 * scale, y: 24 * scale },
+	        size: { width: 54, height: 48 },
+	        scaledSize: { width: 54 * scale, height: 48 * scale }
+	    });
+
+	    var url = markerCanvas.toDataURL(),
+	        fillColor = markerCanvas.fillColor,
+	        iconObj = new IconObject(url, fillColor, markerOpts);
+
+	    return iconObj;
 	}
 
 	/** global: google, r, g, b */
@@ -465,211 +486,198 @@
 	}
 
 	/** global: google */
+	var generateCanvas = function(options) {
+	    var canvas = document.createElement("canvas");
+	    var ancho = 30,
+	        alto = 40;
+	    canvas.width = ancho + 18;
+	    canvas.height = alto;
+	    var x = canvas.width / 2,
+	        y = canvas.height - 2,
+	        radius = ancho / 2,
+	        angulo = 0.6;
 
-	function createTextMarker(theoptions) {
-	    var generateCanvas = function(options) {
-	        var canvas = document.createElement("canvas");
-	        var ancho = 30,
-	            alto = 40;
-	        canvas.width = ancho + 18;
-	        canvas.height = alto;
-	        var x = canvas.width / 2,
-	            y = canvas.height - 2,
-	            radius = ancho / 2,
-	            angulo = 0.6;
+	    var font = "'" + options.font + "'" || "Arial";
+	    var fontsize = options.fontsize || 11;
 
-	        var font = "'" + options.font + "'" || "Arial";
-	        var fontsize = options.fontsize || 11;
+	    var context = canvas.getContext("2d");
 
-	        var context = canvas.getContext("2d");
+	    context.clearRect(0, 0, canvas.width, canvas.height);
 
-	        context.clearRect(0, 0, canvas.width, canvas.height);
+	    var radius0 = 2 * radius,
+	        cx = x + 0.95 * radius0,
+	        cy = y + 0.45 * radius0;
 
-	        var radius0 = 2 * radius,
-	            cx = x + 0.95 * radius0,
-	            cy = y + 0.45 * radius0;
+	    var grad = context.createLinearGradient(0, 0, 0, canvas.height),
+	        colors = getColors(options),
+	        color0 = colors[0],
+	        color1 = colors[1];
 
-	        var grad = context.createLinearGradient(0, 0, 0, canvas.height),
-	            colors = getColors(options),
-	            color0 = colors[0],
-	            color1 = colors[1];
+	    grad.addColorStop(0, color0);
+	    grad.addColorStop(1, color1);
 
-	        grad.addColorStop(0, color0);
-	        grad.addColorStop(1, color1);
+	    context.fillStyle = grad;
+	    context.strokeStyle = "rgba(200,200,200,0.7)";
 
-	        context.fillStyle = grad;
-	        context.strokeStyle = "rgba(200,200,200,0.7)";
+	    context.beginPath();
 
-	        context.beginPath();
+	    //arco izquierdo
+	    context.arc(
+	        cx - 1,
+	        cy,
+	        radius0,
+	        (9 * Math.PI) / 8,
+	        (-6 * Math.PI) / 8,
+	        false
+	    );
 
-	        //arco izquierdo
-	        context.arc(
-	            cx - 1,
-	            cy,
-	            radius0,
-	            (9 * Math.PI) / 8,
-	            (-6 * Math.PI) / 8,
-	            false
+	    // arco superior
+	    context.arc(x, (y - 7) / 2, radius, angulo, Math.PI - angulo, true);
+
+	    //arco derecho
+	    context.arc(
+	        2 * x - cx + 1,
+	        cy,
+	        radius0,
+	        (-0.95 * Math.PI) / 3,
+	        -Math.PI / 8,
+	        false
+	    );
+	    context.fill();
+	    context.stroke();
+
+	    context.beginPath();
+	    context.arc(x, 0.4 * y, (2 * radius) / 3, 0, 2 * Math.PI, false);
+	    context.fillStyle = "white";
+	    context.fill();
+
+	    context.beginPath();
+
+	    // Render Label
+	    //context.font = "11pt Arial";
+	    context.font = fontsize + "pt " + font;
+	    context.textBaseline = "top";
+
+	    var textWidth = context.measureText(options.label);
+
+	    if (textWidth.width > ancho || String(options.label).length > 3) {
+	        context.rect(
+	            x - 2 - textWidth.width / 2,
+	            y - 30,
+	            x - 2 + textWidth.width / 2,
+	            y - 23
 	        );
-
-	        // arco superior
-	        context.arc(x, (y - 7) / 2, radius, angulo, Math.PI - angulo, true);
-
-	        //arco derecho
-	        context.arc(
-	            2 * x - cx + 1,
-	            cy,
-	            radius0,
-	            (-0.95 * Math.PI) / 3,
-	            -Math.PI / 8,
-	            false
-	        );
+	        context.fillStyle = "#F7F0F0";
 	        context.fill();
 	        context.stroke();
+	    }
 
-	        context.beginPath();
-	        context.arc(x, 0.4 * y, (2 * radius) / 3, 0, 2 * Math.PI, false);
-	        context.fillStyle = "white";
-	        context.fill();
+	    context.fillStyle = "black";
+	    context.strokeStyle = "black";
+	    // centre the text.
+	    context.fillText(
+	        options.label,
+	        1 + Math.floor(canvas.width / 2 - textWidth.width / 2),
+	        8
+	    );
+	    canvas.fillColor = color0;
 
-	        context.beginPath();
-
-	        // Render Label
-	        //context.font = "11pt Arial";
-	        context.font = fontsize + "pt " + font;
-	        context.textBaseline = "top";
-
-	        var textWidth = context.measureText(options.label);
-
-	        if (textWidth.width > ancho || String(options.label).length > 3) {
-	            context.rect(
-	                x - 2 - textWidth.width / 2,
-	                y - 30,
-	                x - 2 + textWidth.width / 2,
-	                y - 23
-	            );
-	            context.fillStyle = "#F7F0F0";
-	            context.fill();
-	            context.stroke();
-	        }
-
-	        context.fillStyle = "black";
-	        context.strokeStyle = "black";
-	        // centre the text.
-	        context.fillText(
-	            options.label,
-	            1 + Math.floor(canvas.width / 2 - textWidth.width / 2),
-	            8
-	        );
-
-	        return canvas;
-	    };
-	    theoptions.scale = theoptions.scale || 0.75;
-	    var markerCanvas = generateCanvas(theoptions),
+	    return canvas;
+	};
+	function createTextMarker(theoptions) {
+	    var scale = theoptions.scale || 0.75,
+	        markerCanvas = generateCanvas(theoptions),
 	        markerOpts = {};
 
 	    theoptions.type = "textmarker";
 
 	    Object.assign(markerOpts, theoptions);
 
-	    if (window && window.google && window.google.maps) {
-	        Object.assign(markerOpts, {
-	            size: new google.maps.Size(48, 40),
-	            origin: new google.maps.Point(0, 0),
-	            anchor: new google.maps.Point(
-	                24 * theoptions.scale,
-	                40 * theoptions.scale
-	            ),
-	            scaledSize: new google.maps.Size(
-	                48 * theoptions.scale,
-	                40 * theoptions.scale
-	            )
-	        });
-	    }
-	    var iconObj = new IconObject(markerCanvas, markerOpts);
+	    Object.assign(markerOpts, {
+	        origin: { x: 0, y: 0 },
+	        anchor: { x: 24 * scale, y: 40 * scale },
+	        size: { width: 48, height: 40 },
+	        scaledSize: { width: 48 * scale, height: 40 * scale }
+	    });
+
+	    var url = markerCanvas.toDataURL(),
+	        fillColor = markerCanvas.fillColor,
+	        iconObj = new IconObject(url, fillColor, markerOpts);
 
 	    return iconObj;
 	}
 
 	/** global: google */
+	var generateFatCanvas = function(options) {
+		var canvas = options.canvas || document.createElement("canvas"),
+			anchorX = 27,
+			anchorY = 53,
+			radius = anchorX - 9,
+			angulo = 1.1,
+			font = options.font || "fontello",
+			fontsize = options.fontsize || 14,
+			context = canvas.getContext("2d"),
+			grad = context.createLinearGradient(0, 0, 0, anchorY);
+
+		canvas.width = anchorX * 2;
+		canvas.height = anchorY + 1;
+
+		var colors = getColors(options),
+			color0 = colors[0],
+			color1 = colors[1];
+
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		grad.addColorStop(0, color0);
+		grad.addColorStop(1, color1);
+
+		context.fillStyle = grad;
+		context.strokeStyle = color1;
+		context.beginPath();
+
+		context.moveTo(anchorX, anchorY);
+
+		// arco superior
+		context.arc(
+			anchorX,
+			2 + 0.5 * anchorY,
+			radius,
+			angulo,
+			Math.PI - angulo,
+			true
+		);
+
+		//punta inferior
+		context.lineTo(anchorX, anchorY);
+
+		context.fill();
+		context.stroke();
+
+		// Círculo blanco
+		context.beginPath();
+		context.arc(anchorX, 2 + 0.5 * anchorY, radius - 3, 0, 2 * Math.PI, false);
+		context.fillStyle = "white";
+		context.fill();
+
+		context.beginPath();
+
+		context.font = "normal normal normal " + fontsize + "px " + font;
+		//console.log('context font', context.font);
+		context.fillStyle = color1;
+		context.textBaseline = "top";
+
+		var textWidth = context.measureText(options.unicodelabel),
+			text_x = options.unicodelabel,
+			label_x = Math.floor(canvas.width / 2 - textWidth.width / 2),
+			label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
+
+		// centre the text.
+		context.fillText(text_x, label_x, label_y);
+		canvas.fillColor = color0;
+		return canvas;
+	};
 
 	function createFatMarkerIcon(theoptions) {
-		var generateFatCanvas = function(options) {
-			var canvas = options.canvas || document.createElement("canvas"),
-				anchorX = 27,
-				anchorY = 53,
-				radius = anchorX - 9,
-				angulo = 1.1,
-				font = options.font || "fontello",
-				fontsize = options.fontsize || 14,
-				context = canvas.getContext("2d"),
-				grad = context.createLinearGradient(0, 0, 0, anchorY);
-
-			canvas.width = anchorX * 2;
-			canvas.height = anchorY + 1;
-
-			var colors = getColors(options),
-				color0 = colors[0],
-				color1 = colors[1];
-
-			context.clearRect(0, 0, canvas.width, canvas.height);
-
-			grad.addColorStop(0, color0);
-			grad.addColorStop(1, color1);
-
-			context.fillStyle = grad;
-			context.strokeStyle = color1;
-			context.beginPath();
-
-			context.moveTo(anchorX, anchorY);
-
-			// arco superior
-			context.arc(
-				anchorX,
-				2 + 0.5 * anchorY,
-				radius,
-				angulo,
-				Math.PI - angulo,
-				true
-			);
-
-			//punta inferior
-			context.lineTo(anchorX, anchorY);
-
-			context.fill();
-			context.stroke();
-
-			// Círculo blanco
-			context.beginPath();
-			context.arc(
-				anchorX,
-				2 + 0.5 * anchorY,
-				radius - 3,
-				0,
-				2 * Math.PI,
-				false
-			);
-			context.fillStyle = "white";
-			context.fill();
-
-			context.beginPath();
-
-			context.font = "normal normal normal " + fontsize + "px " + font;
-			//console.log('context font', context.font);
-			context.fillStyle = color1;
-			context.textBaseline = "top";
-
-			var textWidth = context.measureText(options.unicodelabel),
-				text_x = options.unicodelabel,
-				label_x = Math.floor(canvas.width / 2 - textWidth.width / 2),
-				label_y = 1 + Math.floor(canvas.height / 2 - fontsize / 2);
-
-			// centre the text.
-			context.fillText(text_x, label_x, label_y);
-			canvas.fillColor = color0;
-			return canvas;
-		};
-
 		var scale = theoptions.scale || 1,
 			markerCanvas = generateFatCanvas(theoptions),
 			markerOpts = {};
@@ -678,89 +686,134 @@
 
 		Object.assign(markerOpts, theoptions);
 
-		if (window && window.google && window.google.maps) {
-			Object.assign(markerOpts, {
-				size: new google.maps.Size(54, 48),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(21 * scale, 36 * scale),
-				scaledSize: new google.maps.Size(42 * scale, 36 * scale),
-				scale: scale
-			});
-		}
-		var iconObj = new IconObject(markerCanvas, markerOpts);
+		Object.assign(markerOpts, {
+			origin: { x: 0, y: 0 },
+			anchor: { x: 21 * scale, y: 36 * scale },
+			size: { width: 54, height: 48 },
+			scaledSize: { width: 42 * scale, height: 36 * scale },
+			scale: scale
+		});
+
+		var url = markerCanvas.toDataURL(),
+			fillColor = markerCanvas.fillColor,
+			iconObj = new IconObject(url, fillColor, markerOpts);
 		return iconObj;
 	}
 
 	/** global: google */
+	var generateGroupedCanvas = function(options) {
+	    var text_x,
+	        canvas = options.canvas || document.createElement("canvas"),
+	        context = canvas.getContext("2d"),
+	        font = options.font || "fontello",
+	        fontsize = options.fontsize || 26;
+
+	    canvas.width = 54;
+	    canvas.height = 48;
+	    context.clearRect(0, 0, canvas.width, canvas.height);
+
+	    var colors = getColors(options),
+	        color0 = colors[0];
+	    context.beginPath();
+
+	    context.font = "normal normal normal " + fontsize + "px " + font;
+
+	    context.textBaseline = "top";
+	    var textWidth = context.measureText(options.unicodelabel);
+	    text_x = Math.floor(canvas.width / 2 - textWidth.width / 2);
+
+	    context.shadowOffsetX = -2;
+	    context.shadowOffsetY = -2;
+	    context.shadowBlur = 0;
+
+	    context.fillStyle = "#FFFFFF";
+	    context.shadowColor = "#666666";
+
+	    context.fillText(options.unicodelabel, text_x - 4, 2);
+	    context.fillText(options.unicodelabel, text_x, 5);
+	    context.fillStyle = color0;
+	    context.fillText(options.unicodelabel, text_x + 4, 8);
+
+	    context.strokeStyle = "#FFFFFF";
+	    context.strokeText(options.unicodelabel, text_x + 4, 8);
+
+	    canvas.fillColor = color0;
+
+	    return canvas;
+	};
+
+	function createGroupedIcon(theoptions) {
+	    theoptions.scale = theoptions.scale || 1;
+	    theoptions.fontsize = theoptions.fontsize || 26;
+
+	    var markerCanvas = generateGroupedCanvas(theoptions),
+	        markerOpts = {};
+
+	    var scale = theoptions.scale;
+
+	    theoptions.type = "transparent";
+
+	    Object.assign(markerOpts, theoptions);
+
+	    Object.assign(markerOpts, {
+	        origin: { x: 0, y: 0 },
+	        anchor: { x: 27 * scale, y: 24 * scale },
+	        size: { width: 54, height: 48 },
+	        scaledSize: { width: 54 * scale, height: 48 * scale }
+	    });
+
+	    var url = markerCanvas.toDataURL(),
+	        fillColor = markerCanvas.fillColor,
+	        iconObj = new IconObject(url, fillColor, markerOpts);
+
+	    return iconObj;
+	}
+
+	/** global: google */
+	var generateTransparentCanvas = function(options) {
+	    var text_x,
+	        canvas = options.canvas || document.createElement("canvas"),
+	        context = canvas.getContext("2d"),
+	        font = options.font || "fontello",
+	        fontsize = options.fontsize || 26;
+
+	    canvas.width = 54;
+	    canvas.height = 48;
+	    context.clearRect(0, 0, canvas.width, canvas.height);
+
+	    var colors = getColors(options),
+	        color0 = colors[0],
+	        color1 = colors[1];
+	    context.beginPath();
+
+	    context.font = "normal normal normal " + (fontsize - 3) + "px " + font;
+
+	    context.textBaseline = "top";
+	    var textmetric = context.measureText(options.unicodelabel);
+	    text_x = Math.floor(canvas.width / 2 - textmetric.width / 2);
+
+	    //console.debug('textmetric', textmetric);
+
+	    context.shadowOffsetX = 2;
+	    context.shadowOffsetY = 2;
+	    context.shadowBlur = 0;
+	    context.shadowColor = "#FFFFFF";
+	    context.fillStyle = color0;
+	    context.fillText(options.unicodelabel, text_x + 1, 6);
+
+	    context.shadowOffsetX = 2;
+	    context.shadowOffsetY = 2;
+	    context.shadowBlur = 1;
+	    context.shadowColor = "#FFFFFF";
+	    context.strokeStyle = color1;
+	    context.strokeText(options.unicodelabel, text_x + 1, 6);
+
+	    canvas.fillColor = color0;
+
+	    return canvas;
+	};
 
 	function createTransparentMarkerIcon(theoptions) {
-	    var generateTransparentCanvas = function(options) {
-	        var text_x,
-	            canvas = options.canvas || document.createElement("canvas"),
-	            context = canvas.getContext("2d"),
-	            font = options.font || "fontello",
-	            fontsize = options.fontsize || 26;
-
-	        canvas.width = 54;
-	        canvas.height = 48;
-	        context.clearRect(0, 0, canvas.width, canvas.height);
-
-	        var colors = getColors(options),
-	            color0 = colors[0],
-	            color1 = colors[1];
-	        context.beginPath();
-
-	        if (options.shadow) {
-	            context.font = "normal normal normal " + fontsize + "px " + font;
-
-	            context.textBaseline = "top";
-	            var textWidth = context.measureText(options.unicodelabel);
-	            text_x = Math.floor(canvas.width / 2 - textWidth.width / 2);
-
-	            context.shadowOffsetX = -2;
-	            context.shadowOffsetY = -2;
-	            context.shadowBlur = 0;
-
-	            context.fillStyle = "#FFFFFF";
-	            context.shadowColor = "#666666";
-
-	            context.fillText(options.unicodelabel, text_x - 4, 2);
-	            context.fillText(options.unicodelabel, text_x, 5);
-	            context.fillStyle = color0;
-	            context.fillText(options.unicodelabel, text_x + 4, 8);
-
-	            context.strokeStyle = "#FFFFFF";
-	            context.strokeText(options.unicodelabel, text_x + 4, 8);
-	        } else {
-	            context.font =
-	                "normal normal normal " + (fontsize - 3) + "px " + font;
-
-	            context.textBaseline = "top";
-	            var textmetric = context.measureText(options.unicodelabel);
-	            text_x = Math.floor(canvas.width / 2 - textmetric.width / 2);
-
-	            //console.debug('textmetric', textmetric);
-
-	            context.shadowOffsetX = 2;
-	            context.shadowOffsetY = 2;
-	            context.shadowBlur = 0;
-	            context.shadowColor = "#FFFFFF";
-	            context.fillStyle = color0;
-	            context.fillText(options.unicodelabel, text_x + 1, 6);
-
-	            context.shadowOffsetX = 2;
-	            context.shadowOffsetY = 2;
-	            context.shadowBlur = 1;
-	            context.shadowColor = "#FFFFFF";
-	            context.strokeStyle = color1;
-	            context.strokeText(options.unicodelabel, text_x + 1, 6);
-	        }
-
-	        canvas.fillColor = color0;
-
-	        return canvas;
-	    };
-
 	    theoptions.scale = theoptions.scale || 1;
 	    theoptions.fontsize = theoptions.fontsize || 26;
 
@@ -773,15 +826,16 @@
 
 	    Object.assign(markerOpts, theoptions);
 
-	    if (window.google && window.google.maps) {
-	        Object.assign(markerOpts, {
-	            size: new google.maps.Size(54 * scale, 48 * scale),
-	            origin: new google.maps.Point(0, 0),
-	            anchor: new google.maps.Point(27 * scale, 24 * scale),
-	            scaledSize: new google.maps.Size(54 * scale, 48 * scale)
-	        });
-	    }
-	    var iconObj = new IconObject(markerCanvas, markerOpts);
+	    Object.assign(markerOpts, {
+	        origin: { x: 0, y: 0 },
+	        anchor: { x: 27 * scale, y: 24 * scale },
+	        size: { width: 54, height: 48 },
+	        scaledSize: { width: 54 * scale, height: 48 * scale }
+	    });
+
+	    var url = markerCanvas.toDataURL(),
+	        fillColor = markerCanvas.fillColor,
+	        iconObj = new IconObject(url, fillColor, markerOpts);
 
 	    return iconObj;
 	}
@@ -801,49 +855,64 @@
 	    createFatMarkerIcon: createFatMarkerIcon,
 	    createTextMarker: createTextMarker,
 	    createClusterIcon: createClusterIcon,
-	    serializeOptions: function(options) {
-	        if (typeof options !== "object") {
+	    createGroupedIcon: createGroupedIcon,
+
+	    readCache: function(cacheKey, options) {
+	        if (options.no_cache) {
 	            return null;
 	        }
-	        var sortedOpts = Object.entries(options)
-	            .filter(function(item) {
-	                return (
-	                    typeof item[1] !== "function" && typeof item[1] !== "object"
-	                );
+
+	        var cached = window.sessionStorage.getItem(cacheKey);
+	        if (cached === null) {
+	            return null;
+	        }
+
+	        var cachedObj = JSON.parse(cached);
+	        var iconObj = new IconObject(
+	            cachedObj.url,
+	            cachedObj.fillColor,
+	            omit(cachedObj, function(key) {
+	                return ["url", "fillColor"].indexOf(key) !== -1;
 	            })
-	            .sort();
-	        return JSON.stringify(sortedOpts);
+	        );
+	        iconObj.cached = true;
+	        return iconObj;
 	    },
+
+	    setCache: function(cacheKey, iconObj) {
+	        var cached = iconObj.toJSON();
+	        cached.url = iconObj.url;
+	        window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+	        return iconObj;
+	    },
+
 	    generateAutoicon: function(options) {
-	        var generatorFN = MarkerFactory.createFatMarkerIcon,
-	            iconObj;
-	        options.type = "fatmarker";
+	        var generatorFN;
 
 	        if (!options.is_icon) {
 	            options.type = "textmarker";
 	            generatorFN = MarkerFactory.createTextMarker;
+	        } else if (options.shadow || options.type === "grouped") {
+	            options.type = "grouped";
+	            generatorFN = MarkerFactory.createGroupedIcon;
 	        } else if (options.transparent_background) {
 	            options.type = "transparent";
 	            generatorFN = MarkerFactory.createTransparentMarkerIcon;
+	        } else {
+	            generatorFN = MarkerFactory.createFatMarkerIcon;
+	            options.type = "fatmarker";
 	        }
-
-	        if (!options.no_cache) {
-	            var cacheKey = MarkerFactory.serializeOptions(options);
-
-	            iconObj = window.sessionStorage.getItem(cacheKey);
-	            if (iconObj !== null && !options.no_cache) {
-	                return JSON.parse(iconObj);
-	            }
+	        var cacheKey = serializeOptions(options);
+	        var iconObj = MarkerFactory.readCache(cacheKey, options);
+	        if (iconObj === null) {
+	            iconObj = generatorFN(options);
+	            iconObj.cached = false;
 	        }
-
-	        iconObj = generatorFN(options);
-
-	        if (!options.no_cache) {
-	            var cached = iconObj.toJSON();
-	            cached.url = iconObj.url;
-	            window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+	        iconObj.cacheKey = cacheKey;
+	        if (options.no_cache) {
+	            return iconObj;
 	        }
-	        return iconObj;
+	        return MarkerFactory.setCache(cacheKey, iconObj);
 	    },
 	    /**
 	     * Receives a color string rgb(a), hsl(a) or hex, returns its components

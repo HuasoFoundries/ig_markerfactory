@@ -1,15 +1,19 @@
 /** global: google, r, g, b */
 
+import { IconObject } from "./icon_object.js";
+
 import { createClusterIcon } from "./create_cluster_icon.js";
 import { createTextMarker } from "./create_text_marker.js";
 
 import { createFatMarkerIcon } from "./create_fat_marker_icon.js";
 
+import { createGroupedIcon } from "./create_grouped_icon.js";
+
 import { createTransparentMarkerIcon } from "./create_transparent_marker_icon.js";
 
 import { parseHex, parseHSL, parseRGB, hslToRGB, rgbToHSL } from "./parsers.js";
 
-import { omit } from "./helpers.js";
+import { omit, serializeOptions } from "./helpers.js";
 
 function padHex(str_in) {
     if (("" + str_in).length === 1) {
@@ -24,53 +28,64 @@ const MarkerFactory = {
     createFatMarkerIcon: createFatMarkerIcon,
     createTextMarker: createTextMarker,
     createClusterIcon: createClusterIcon,
-    serializeOptions: function(options) {
-        if (typeof options !== "object") {
+    createGroupedIcon: createGroupedIcon,
+
+    readCache: function(cacheKey, options) {
+        if (options.no_cache) {
             return null;
         }
-        var cleanOptions = omit(options, function(prop) {
-                return prop.indexOf("gm_") === 0;
-            }),
-            sortedOpts = Object.entries(cleanOptions)
-                .filter(function(item) {
-                    return (
-                        typeof item[1] !== "function" &&
-                        typeof item[1] !== "object"
-                    );
-                })
-                .sort();
-        return JSON.stringify(sortedOpts);
+
+        var cached = window.sessionStorage.getItem(cacheKey);
+        if (cached === null) {
+            return null;
+        }
+
+        var cachedObj = JSON.parse(cached);
+        var iconObj = new IconObject(
+            cachedObj.url,
+            cachedObj.fillColor,
+            omit(cachedObj, function(key) {
+                return ["url", "fillColor"].indexOf(key) !== -1;
+            })
+        );
+        iconObj.cached = true;
+        return iconObj;
     },
+
+    setCache: function(cacheKey, iconObj) {
+        var cached = iconObj.toJSON();
+        cached.url = iconObj.url;
+        window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+        return iconObj;
+    },
+
     generateAutoicon: function(options) {
-        var generatorFN = MarkerFactory.createFatMarkerIcon,
-            iconObj;
-        options.type = "fatmarker";
+        var generatorFN;
 
         if (!options.is_icon) {
             options.type = "textmarker";
             generatorFN = MarkerFactory.createTextMarker;
+        } else if (options.shadow || options.type === "grouped") {
+            options.type = "grouped";
+            generatorFN = MarkerFactory.createGroupedIcon;
         } else if (options.transparent_background) {
             options.type = "transparent";
             generatorFN = MarkerFactory.createTransparentMarkerIcon;
+        } else {
+            generatorFN = MarkerFactory.createFatMarkerIcon;
+            options.type = "fatmarker";
         }
-
-        if (!options.no_cache) {
-            var cacheKey = MarkerFactory.serializeOptions(options);
-
-            iconObj = window.sessionStorage.getItem(cacheKey);
-            if (iconObj !== null && !options.no_cache) {
-                return JSON.parse(iconObj);
-            }
+        var cacheKey = serializeOptions(options);
+        var iconObj = MarkerFactory.readCache(cacheKey, options);
+        if (iconObj === null) {
+            iconObj = generatorFN(options);
+            iconObj.cached = false;
         }
-
-        iconObj = generatorFN(options);
-
-        if (!options.no_cache) {
-            var cached = iconObj.toJSON();
-            cached.url = iconObj.url;
-            window.sessionStorage.setItem(cacheKey, JSON.stringify(cached));
+        iconObj.cacheKey = cacheKey;
+        if (options.no_cache) {
+            return iconObj;
         }
-        return iconObj;
+        return MarkerFactory.setCache(cacheKey, iconObj);
     },
     /**
      * Receives a color string rgb(a), hsl(a) or hex, returns its components
