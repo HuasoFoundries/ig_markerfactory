@@ -1,5 +1,5 @@
 export function hslaString(hslcolor) {
-	if (hslcolor.a) {
+	if (hslcolor.a !== undefined) {
 		return (
 			"hsla(" +
 			hslcolor.h +
@@ -8,7 +8,7 @@ export function hslaString(hslcolor) {
 			"%," +
 			hslcolor.l +
 			"%," +
-			hslcolor.a +
+			parseFloat(hslcolor.a, 10) +
 			")"
 		);
 	}
@@ -16,7 +16,7 @@ export function hslaString(hslcolor) {
 }
 
 export function rgbaString(hexcolor) {
-	if (hexcolor.a) {
+	if (hexcolor.a !== undefined) {
 		return (
 			"rgba(" +
 			hexcolor.r +
@@ -25,7 +25,7 @@ export function rgbaString(hexcolor) {
 			"," +
 			hexcolor.b +
 			"," +
-			hexcolor.a +
+			parseFloat(hexcolor.a, 10) +
 			")"
 		);
 	}

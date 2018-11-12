@@ -1,4 +1,12 @@
 module.exports = function(config) {
+  function getSpecs() {
+    var prefix = process.env.KARMA_SPECS; // eslint-disable-line
+    if (!prefix) {
+      return ["test/*.spec.js"];
+    }
+    return [`test/${prefix}*.spec.js`];
+  }
+
   config.set({
     basePath: "",
     port: 9877,
@@ -17,8 +25,7 @@ module.exports = function(config) {
       "test/vendor/object-entries-polyfill.js",
       "test/vendor/prototype-bind-polyfill.js",
       "test/vendor/underscore.js",
-      "dist/markerfactory.js",
-      "test/*.spec.js"
-    ]
+      "dist/markerfactory.js"
+    ].concat(getSpecs())
   });
 };

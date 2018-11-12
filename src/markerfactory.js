@@ -91,7 +91,7 @@ const MarkerFactory = {
             rgb;
 
         darkenfactor = darkenfactor || 1;
-        opacity = opacity || 1;
+        opacity = isNaN(parseFloat(opacity, 10)) ? 1 : parseFloat(opacity, 10);
 
         if (somecolor.indexOf("hsl") !== -1) {
             hsl = parseHSL(somecolor, opacity);
@@ -125,7 +125,8 @@ const MarkerFactory = {
             "#",
             padHex(rgb.r.toString(16)),
             padHex(rgb.g.toString(16)),
-            padHex(rgb.b.toString(16))
+            padHex(rgb.b.toString(16)),
+            rgb.a === 0 ? "00" : ""
         ].join("");
         return parsedcolor;
     },
