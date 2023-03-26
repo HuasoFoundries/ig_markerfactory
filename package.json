@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/HuasoFoundries/ig_markerfactory#readme",
   "engines": {
-    "node": "6.11.2"
+    "node": ">14"
   },
   "files": [
     "README.md",
